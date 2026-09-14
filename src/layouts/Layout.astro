@@ -233,6 +233,15 @@ const schemaData = {
     <!-- Structured Data: WebApplication + FAQPage JSON-LD -->
     <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
 
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FS50H5QYJ3"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FS50H5QYJ3');
+    </script>
+
     <!-- Preload local client-side ZIP engine -->
     <script is:inline src="/vendor/jszip.min.js" defer></script>
 

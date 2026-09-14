@@ -194,6 +194,11 @@ const t = isEn
   const processAllBtn  = document.getElementById('process-all-btn');
   const clearBtn       = document.getElementById('clear-btn');
 
+  /** Helper: fire a GA4 event safely (won't crash if gtag isn't loaded yet) */
+  function track(eventName, params = {}) {
+    if (typeof gtag === 'function') gtag('event', eventName, params);
+  }
+
   const downloadIconSvg = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
 
   /** @type {'process' | 'download' | 'processing'} */
@@ -333,9 +338,18 @@ const t = isEn
     try {
       entry.result = await removeMetadata(entry.file, () => {});
       entry.status = 'done';
+      // ✅ Event: successful metadata removal
+      track('metadata_removed', {
+        file_type: entry.file.name.split('.').pop()?.toLowerCase() || 'unknown',
+        file_size_kb: Math.round(entry.file.size / 1024),
+      });
     } catch (err) {
       console.error(err);
       entry.status = 'error';
+      // ⚠️ Event: processing error
+      track('metadata_error', {
+        file_type: entry.file.name.split('.').pop()?.toLowerCase() || 'unknown',
+      });
     }
     renderCards();
   }
@@ -356,6 +370,11 @@ const t = isEn
 
       if (doneEntries.length === 1) {
         downloadBlob(doneEntries[0].result.blob, doneEntries[0].result.filename);
+        // ✅ Event: single file downloaded
+        track('file_downloaded', {
+          file_type: doneEntries[0].file?.name.split('.').pop()?.toLowerCase() || 'unknown',
+          file_size_kb: Math.round(doneEntries[0].file?.size / 1024),
+        });
         const originalHtml = processAllBtn.innerHTML;
         processAllBtn.innerHTML = t.downloadedSingle || `✓ Baixado`;
         setTimeout(() => {
@@ -367,6 +386,8 @@ const t = isEn
         try {
           const zip = await bundleAsZip(doneEntries.map(e => e.result));
           downloadBlob(zip, t.zipFileName || 'metadados-removidos.zip');
+          // ✅ Event: ZIP bundle downloaded
+          track('zip_downloaded', { file_count: doneEntries.length });
           processAllBtn.innerHTML = t.downloadedZip || `✓ Baixado (.zip)`;
         } catch (err) {
           console.error(err);
@@ -382,9 +403,22 @@ const t = isEn
   }
 
   function addFiles(files) {
+    let newCount = 0;
+    const types = new Set();
     for (const f of files) {
       const id = genId(f);
-      if (!fileMap.has(id)) fileMap.set(id, { file: f, status: 'waiting', result: null });
+      if (!fileMap.has(id)) {
+        fileMap.set(id, { file: f, status: 'waiting', result: null });
+        newCount++;
+        types.add(f.name.split('.').pop()?.toLowerCase() || 'unknown');
+      }
+    }
+    if (newCount > 0) {
+      // ✅ Event: files added to the drop zone
+      track('file_added', {
+        file_count: newCount,
+        file_types: [...types].join(','),
+      });
     }
     updateUI();
   }
@@ -411,7 +445,13 @@ const t = isEn
 
   processAllBtn.addEventListener('click', handleMainAction);
 
-  clearBtn.addEventListener('click', () => { fileMap.clear(); updateUI(); });
+  clearBtn.addEventListener('click', () => {
+    const count = fileMap.size;
+    fileMap.clear();
+    // ✅ Event: user cleared all files
+    track('files_cleared', { file_count: count });
+    updateUI();
+  });
 </script>
 
 <style>
