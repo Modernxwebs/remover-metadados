@@ -3,7 +3,6 @@ Creator: Dev Sharma
 Contact: hello@remover-metadados.com
 Twitter: https://x.com/DevSharmaBuilds
 LinkedIn: https://www.linkedin.com/in/dev000111/
-Location: Brazil
 
 /* SITE */
 Last update: 2026/09
