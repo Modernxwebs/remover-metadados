@@ -1,0 +1,495 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const title = 'Privacy Policy — Metadata Remover | 100% Client-Side Privacy';
+const description = 'Privacy Policy for Metadata Remover. 100% in-browser processing (zero server upload). We do not collect, view, or store your photos, documents, or personal data.';
+const canonicalUrl = 'https://remover-metadados.com/en/privacy/';
+const alternatePt = 'https://remover-metadados.com/privacidade/';
+const alternateEn = 'https://remover-metadados.com/en/privacy/';
+const contactEmail = 'hello@remover-metadados.com';
+const lastUpdated = 'September 14, 2026';
+---
+
+<Layout
+  title={title}
+  description={description}
+  lang="en"
+  canonicalUrl={canonicalUrl}
+  alternatePt={alternatePt}
+  alternateEn={alternateEn}
+>
+  <Header lang="en" ptUrl="/privacidade/" enUrl="/en/privacy/" isSubpage={true} />
+
+  <main class="page-wrap legal-page">
+    <!-- Breadcrumb & Back -->
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb navigation">
+      <a href="/en/" class="back-link">&larr; Back to Metadata Remover</a>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">Privacy Policy</span>
+    </nav>
+
+    <!-- Header Block -->
+    <header class="legal-header">
+      <div class="legal-badge-row">
+        <span class="badge-accent">LEGAL & PRIVACY</span>
+        <span class="badge-lgpd">🛡️ ZERO-UPLOAD ARCHITECTURE</span>
+        <span class="badge-mono">Last updated: {lastUpdated}</span>
+      </div>
+      <h1 class="legal-title">Privacy Policy</h1>
+      <p class="legal-subtitle">
+        Our architecture was engineered with one non-negotiable principle: <strong>radical privacy</strong>. Your files never leave your browser.
+      </p>
+    </header>
+
+    <!-- Highlight Box -->
+    <section class="highlight-card">
+      <div class="highlight-icon" aria-hidden="true">🔒</div>
+      <div>
+        <h2 class="highlight-title">Executive Summary in Plain English</h2>
+        <p class="highlight-desc">
+          <strong>Metadata Remover (remover-metadados.com)</strong> operates <strong>100% locally on your device (Client-Side)</strong>. When you drag and drop photos, PDFs, or documents into our tool, all EXIF, GPS, author histories, and AI provenance tags are permanently removed inside your browser's memory using JavaScript and WebAssembly. <strong>No files are ever uploaded across the internet to our servers or any third parties.</strong>
+        </p>
+      </div>
+    </section>
+
+    <!-- Article Content -->
+    <article class="legal-content">
+      <section class="legal-section">
+        <h2>1. Zero-Upload In-Browser Architecture</h2>
+        <p>
+          Unlike conventional cloud-based file tools that secretly upload your documents to remote servers for processing, <strong>Metadata Remover</strong> is built entirely around local client-side execution:
+        </p>
+        <ul>
+          <li><strong>Photos (JPEG, PNG, WebP, HEIC):</strong> Decoded and re-encoded directly on your device's GPU/CPU using the HTML5 Canvas API and byte buffers.</li>
+          <li><strong>Documents (PDF, DOCX, XLSX, PPTX):</strong> Binary metadata streams, revision history tables, and author entries are sanitized locally in-memory via WebAssembly.</li>
+          <li><strong>Network Verification:</strong> You can open your browser's Developer Tools (F12) &rarr; Network tab at any time and confirm that zero file payloads are transmitted over the wire.</li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>2. Data We NEVER Collect</h2>
+        <p>
+          Because our service requires no registration, no authentication, and maintains no user database:
+        </p>
+        <ul>
+          <li><strong>We do not collect or store your files:</strong> Personal photos, legal contracts, confidential financial spreadsheets, and GPS location coordinates are never seen by us.</li>
+          <li><strong>We do not ask for personal information:</strong> No names, email addresses, phone numbers, passwords, or payment credentials are required to use the tool.</li>
+          <li><strong>We do not track you across the web:</strong> No Facebook pixels, ad network beacons, or behavioral profiling trackers exist on this site.</li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>3. Local Device Storage (localStorage)</h2>
+        <p>
+          We use your browser's built-in <code>localStorage</code> mechanism strictly to remember a single aesthetic preference:
+        </p>
+        <div class="storage-box">
+          <div class="storage-row">
+            <span class="storage-key">Key: <code>theme</code></span>
+            <span class="storage-val">Values: <code>"dark"</code> or <code>"light"</code></span>
+            <span class="storage-purpose">Purpose: Remembers your preferred dark or light mode color palette.</span>
+          </div>
+        </div>
+        <p>
+          This data remains on your physical device, is never transmitted to any server, and can be cleared instantly by clearing your browser cache.
+        </p>
+      </section>
+
+      <section class="legal-section">
+        <h2>4. Global Privacy Compliance (GDPR, CCPA, LGPD)</h2>
+        <p>
+          Because we do not ingest, store, or sell personal data:
+        </p>
+        <ul>
+          <li><strong>EU GDPR (General Data Protection Regulation):</strong> We adhere to the core principles of Data Minimization (Article 5(1)(c)) and Privacy by Design (Article 25). Zero personal data processing occurs on remote infrastructure.</li>
+          <li><strong>California CCPA / CPRA:</strong> We do not sell, share, or monetize personal information. We have no commercial relationship with data brokers.</li>
+          <li><strong>Brazil LGPD (Lei Geral de Proteção de Dados - Law 13,709/2018):</strong> Fully compliant with Brazilian data sovereignty regulations. Users maintain absolute custody of their personal files.</li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>5. Static Asset Hosting & Infrastructure Security</h2>
+        <p>
+          Our static code (HTML, CSS, JavaScript, WebAssembly binaries) is distributed globally via reputable Content Delivery Networks (CDN). Like all internet services, standard web server logs (IP address, user agent, timestamp) may be temporarily processed by infrastructure providers strictly for DDoS prevention, rate limiting, and network integrity.
+        </p>
+      </section>
+
+      <section class="legal-section">
+        <h2>6. Your Data Rights</h2>
+        <p>
+          Under global privacy frameworks, users have rights regarding access, portability, and erasure of their personal information.
+        </p>
+        <p>
+          Because we do not identify you or hold your data on any server, there is no database entry to modify or delete — you already possess complete, autonomous custody over your files.
+        </p>
+      </section>
+
+      <section class="legal-section">
+        <h2>7. Data Protection Officer & Contact Information</h2>
+        <p>
+          If you have questions about this policy, want to suggest security improvements, or require assistance:
+        </p>
+        <div class="contact-card-inline">
+          <div class="contact-inline-item">
+            <span class="contact-inline-label">Privacy Inquiries Email:</span>
+            <a href={`mailto:${contactEmail}`} class="contact-email-link">{contactEmail}</a>
+          </div>
+          <div class="contact-inline-item">
+            <span class="contact-inline-label">Creator & Maintainer:</span>
+            <span class="contact-inline-val">Dev Sharma</span>
+          </div>
+          <div class="contact-inline-item">
+            <span class="contact-inline-label">Expected Response Time:</span>
+            <span class="contact-inline-val">Within 24 to 48 business hours</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="legal-section">
+        <h2>8. Policy Amendments</h2>
+        <p>
+          We may update this policy occasionally to reflect new browser security APIs or emerging privacy regulations. Any updates will be reflected with a revised timestamp at the top of this page.
+        </p>
+      </section>
+    </article>
+
+    <!-- Bottom Actions -->
+    <div class="legal-actions">
+      <a href="/en/" class="btn-primary-action">
+        <span>&larr; Return to Metadata Remover</span>
+      </a>
+      <a href="/en/terms/" class="btn-secondary-action">
+        <span>Read Terms of Service &rarr;</span>
+      </a>
+    </div>
+  </main>
+
+  <Footer lang="en" />
+</Layout>
+
+<style>
+  .legal-page {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    margin-bottom: 2rem;
+  }
+
+  .back-link {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .back-link:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .breadcrumb-separator,
+  .breadcrumb-current {
+    color: var(--text-muted);
+  }
+
+  .legal-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .legal-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .badge-accent {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    padding: 0.2rem 0.55rem;
+    border: 1.5px solid var(--border);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+    border-radius: 2px;
+  }
+
+  .badge-lgpd {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: var(--card-bg);
+    color: var(--text);
+    padding: 0.2rem 0.55rem;
+    border: 1.5px solid var(--border);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+    border-radius: 2px;
+  }
+
+  .badge-mono {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  .legal-title {
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin: 0;
+    color: var(--text);
+  }
+
+  .legal-subtitle {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .highlight-card {
+    display: flex;
+    gap: 1.25rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: 4px 4px 0px var(--shadow-color);
+    padding: 1.5rem;
+    border-radius: 4px;
+    margin-bottom: 2.5rem;
+    align-items: flex-start;
+  }
+
+  .highlight-icon {
+    font-size: 2rem;
+    background: var(--btn-accent);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--border);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .highlight-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    color: var(--text);
+  }
+
+  .highlight-desc {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .legal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .legal-section {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0px var(--shadow-color);
+    padding: 1.75rem;
+    border-radius: 4px;
+  }
+
+  .legal-section h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem;
+    color: var(--text);
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .legal-section p {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin: 0 0 1rem;
+  }
+
+  .legal-section p:last-child {
+    margin-bottom: 0;
+  }
+
+  .legal-section ul {
+    margin: 0 0 1rem;
+    padding-left: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .legal-section li {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+
+  .legal-section strong {
+    color: var(--text);
+  }
+
+  .storage-box {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    padding: 0.85rem 1rem;
+    border-radius: 3px;
+    margin: 1rem 0;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .storage-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .storage-key code,
+  .storage-val code {
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    padding: 0.1rem 0.35rem;
+    border-radius: 2px;
+  }
+
+  .contact-card-inline {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+    padding: 1rem 1.25rem;
+    border-radius: 3px;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .contact-inline-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+  }
+
+  .contact-inline-label {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .contact-email-link {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: underline;
+  }
+
+  .contact-email-link:hover {
+    color: var(--accent);
+  }
+
+  .contact-inline-val {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .legal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .btn-primary-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    padding: 0.75rem 1.25rem;
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0px var(--shadow-color);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .btn-primary-action:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 4.5px 4.5px 0px var(--shadow-color);
+  }
+
+  .btn-secondary-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--card-bg);
+    color: var(--text);
+    padding: 0.75rem 1.25rem;
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0px var(--shadow-color);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .btn-secondary-action:hover {
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    transform: translate(-1.5px, -1.5px);
+  }
+
+  @media (max-width: 640px) {
+    .highlight-card {
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .legal-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .btn-primary-action,
+    .btn-secondary-action {
+      justify-content: center;
+    }
+  }
+</style>

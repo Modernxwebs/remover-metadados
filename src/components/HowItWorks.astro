@@ -1,0 +1,186 @@
+---
+// How It Works — 3-column horizontal container layout
+export interface Props {
+  lang?: string;
+}
+
+const currentLocale = Astro.props.lang || Astro.currentLocale || 'pt-BR';
+const isEn = currentLocale === 'en';
+
+const steps = isEn
+  ? [
+      {
+        num: "01",
+        title: "Add one or multiple files",
+        desc: "Drag photos, PDFs, Office documents, or videos into the drop zone or browse files from your device with no batch size limits.",
+        icon: "upload",
+      },
+      {
+        num: "02",
+        title: "Local in-browser processing",
+        desc: "All stripping happens client-side inside your browser. Files never touch external servers or cloud storage, guaranteeing total privacy.",
+        icon: "shield",
+      },
+      {
+        num: "03",
+        title: "Download clean files",
+        desc: "Download files individually or packaged together in a single clean .zip archive. GPS, camera EXIF, author details, and AI tags are permanently wiped.",
+        icon: "download",
+      },
+    ]
+  : [
+      {
+        num: "01",
+        title: "Adicione um ou mais arquivos",
+        desc: "Arraste fotos, documentos, PDFs ou vídeos para a área indicada ou selecione múltiplos arquivos do seu dispositivo sem limite de quantidade.",
+        icon: "upload",
+      },
+      {
+        num: "02",
+        title: "Processamento local no navegador",
+        desc: "Todo o processamento acontece diretamente no seu navegador. Seus arquivos nunca são enviados a servidores externos, garantindo privacidade absoluta.",
+        icon: "shield",
+      },
+      {
+        num: "03",
+        title: "Baixe os arquivos limpos",
+        desc: "Faça o download individual ou em lote em um único arquivo .zip. Dados como GPS, informações da câmera, autoria e histórico são apagados definitivamente.",
+        icon: "download",
+      },
+    ];
+---
+
+<section id={isEn ? "how-it-works" : "como-funciona"} style="padding: 4rem 0; border-top: 2px solid var(--border);">
+  <div class="page-wrap">
+
+    <h2>{isEn ? "How to remove file metadata" : "Como remover metadados de arquivos"}</h2>
+
+    <div class="steps-grid">
+      {steps.map((step) => (
+        <div class="step-card">
+          <div class="step-card-header">
+            <span class="step-badge">{step.num}</span>
+            <div class="step-icon">
+              {step.icon === "upload" && (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+              )}
+              {step.icon === "shield" && (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <path d="m9 12 2 2 4-4"/>
+                </svg>
+              )}
+              {step.icon === "download" && (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+              )}
+            </div>
+          </div>
+          <h3 class="step-title">{step.title}</h3>
+          <p class="step-desc">{step.desc}</p>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    text-align: left;
+  }
+
+  .step-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 4px;
+    padding: 1.75rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .step-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--neo-shadow-lg);
+  }
+
+  .step-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  .step-badge {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--btn-accent-text);
+    background: var(--btn-accent);
+    border: 1.5px solid var(--border);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  .step-icon {
+    width: 34px;
+    height: 34px;
+    border: 1.5px solid var(--border);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+    background: var(--bg);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+  }
+
+  .step-title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    line-height: 1.35;
+  }
+
+  .step-desc {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .steps-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .step-card {
+      padding: 1.35rem 1.2rem;
+    }
+    .step-title {
+      font-size: 0.95rem;
+    }
+    .step-desc {
+      font-size: 0.82rem;
+    }
+  }
+</style>

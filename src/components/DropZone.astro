@@ -1,0 +1,444 @@
+---
+// DropZone — drag-and-drop upload area + file processing panel
+---
+
+<section id="ferramenta" style="padding: 2rem 0 4rem;">
+  <div class="container-wide">
+
+    <!-- ── Drop Zone ─────────────────────────────────────── -->
+    <div
+      id="drop-zone"
+      role="button"
+      tabindex="0"
+      aria-label="Arraste arquivos aqui ou clique para selecionar"
+      style="
+        padding: 4rem 2rem;
+        text-align: center;
+        user-select: none;
+      "
+    >
+      <!-- Hidden file input -->
+      <input
+        type="file"
+        id="file-input"
+        multiple
+        accept="image/*,.pdf,.docx,.xlsx,.pptx,.odt,.ods,.odp,.mp3,.mp4,.m4v,.mov,.svg,.heic,.heif,.tif,.tiff"
+        style="display: none;"
+        aria-hidden="true"
+      />
+
+      <!-- Upload icon -->
+      <div style="
+        width: 64px;
+        height: 64px;
+        border-radius: var(--radius-lg);
+        background: var(--color-surface-2);
+        border: 1px solid var(--color-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+      ">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-muted)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </div>
+
+      <p style="font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin-bottom: 0.5rem;">
+        Arraste e solte seus arquivos aqui
+      </p>
+      <p style="font-size: 0.875rem; color: var(--color-muted); margin-bottom: 1.5rem;">
+        ou clique para selecionar — vários arquivos ao mesmo tempo
+      </p>
+
+      <button
+        id="browse-btn"
+        class="btn btn-primary"
+        style="font-size: 0.9rem;"
+        type="button"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+          <polyline points="13 2 13 9 20 9"/>
+        </svg>
+        Escolher Arquivos
+      </button>
+
+      <p id="drop-hint" style="font-size: 0.75rem; color: var(--color-muted); margin-top: 1.25rem; opacity: 0.75;">
+        JPG · PNG · WebP · GIF · BMP · HEIC · SVG · TIFF · PDF · DOCX · XLSX · PPTX · MP3 · MP4 · MOV
+      </p>
+    </div>
+
+    <!-- ── File List & Results ────────────────────────────── -->
+    <div id="file-list" style="margin-top: 1.5rem; display: none;" aria-live="polite" aria-label="Lista de arquivos">
+
+      <!-- Header row -->
+      <div style="
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      ">
+        <div>
+          <h2 style="font-size: 1rem; font-weight: 700; color: var(--color-text); margin-bottom: 0.15rem;">
+            Arquivos selecionados
+          </h2>
+          <p id="file-count-label" style="font-size: 0.8rem; color: var(--color-muted);">0 arquivos</p>
+        </div>
+        <div style="display: flex; gap: 0.625rem; flex-wrap: wrap;">
+          <button id="process-all-btn" class="btn btn-primary" type="button" style="font-size: 0.85rem;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            Remover Todos
+          </button>
+          <button id="download-all-btn" class="btn btn-outline" type="button" style="font-size: 0.85rem; display: none;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Baixar Tudo (.zip)
+          </button>
+          <button id="clear-btn" class="btn btn-ghost" type="button" style="font-size: 0.85rem;">
+            Limpar
+          </button>
+        </div>
+      </div>
+
+      <!-- File cards container -->
+      <div id="file-cards" style="display: flex; flex-direction: column; gap: 0.625rem;"></div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .file-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0.875rem 1.125rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .file-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .file-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .file-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0.2rem;
+  }
+  .file-size {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+  }
+  .file-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    flex-shrink: 0;
+  }
+  .file-status {
+    font-size: 0.78rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  @media (max-width: 560px) {
+    .file-card { flex-wrap: wrap; }
+    .file-actions { width: 100%; justify-content: flex-end; }
+  }
+</style>
+
+<script type="module">
+  import { removeMetadata, bundleAsZip, downloadBlob } from '/src/scripts/metadataRemover.js';
+
+  // ── DOM refs ──────────────────────────────────────────────
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+  const browseBtn = document.getElementById('browse-btn');
+  const fileList = document.getElementById('file-list');
+  const fileCards = document.getElementById('file-cards');
+  const fileCountLabel = document.getElementById('file-count-label');
+  const processAllBtn = document.getElementById('process-all-btn');
+  const downloadAllBtn = document.getElementById('download-all-btn');
+  const clearBtn = document.getElementById('clear-btn');
+
+  // ── State ─────────────────────────────────────────────────
+  /** @type {Map<string, { file: File, status: string, result: null | { blob: Blob, filename: string } }>} */
+  const fileMap = new Map();
+
+  // ── Helpers ───────────────────────────────────────────────
+  function formatBytes(bytes) {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  }
+
+  function getExtLabel(filename) {
+    return filename.split('.').pop()?.toUpperCase() ?? '???';
+  }
+
+  function getExtColor(ext) {
+    const map = {
+      JPG: '#ef4444', JPEG: '#ef4444',
+      PNG: '#3b82f6',
+      WEBP: '#06b6d4',
+      GIF: '#f59e0b',
+      SVG: '#22c55e',
+      PDF: '#dc2626',
+      DOCX: '#2563eb', DOC: '#2563eb',
+      XLSX: '#16a34a', XLS: '#16a34a',
+      PPTX: '#ea580c', PPT: '#ea580c',
+      MP3: '#7c3aed',
+      MP4: '#7c3aed', MOV: '#6d28d9', MKV: '#5b21b6',
+      HEIC: '#db2777', HEIF: '#db2777',
+      TIFF: '#0891b2', TIF: '#0891b2',
+      BMP: '#65a30d',
+    };
+    return map[ext] || '#6b7280';
+  }
+
+  function generateId(file) {
+    return `${file.name}-${file.size}-${file.lastModified}`;
+  }
+
+  // ── Render cards ──────────────────────────────────────────
+  function renderCards() {
+    fileCards.innerHTML = '';
+    for (const [id, entry] of fileMap) {
+      const ext = getExtLabel(entry.file.name);
+      const extColor = getExtColor(ext);
+      const card = document.createElement('div');
+      card.className = 'file-card';
+      card.id = `card-${id.replace(/[^a-z0-9]/gi, '_')}`;
+
+      let statusHtml = '';
+      let actionHtml = '';
+
+      if (entry.status === 'waiting') {
+        statusHtml = `<span class="file-status status-waiting">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Aguardando
+        </span>`;
+        actionHtml = `
+          <button class="btn btn-primary process-one-btn" data-id="${id}" style="font-size: 0.78rem; padding: 0.45rem 0.875rem;" type="button">Remover</button>
+          <button class="btn btn-ghost remove-btn" data-id="${id}" style="font-size: 0.78rem; padding: 0.45rem 0.6rem; width:34px; height:34px;" type="button" aria-label="Remover arquivo">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>`;
+      } else if (entry.status === 'processing') {
+        statusHtml = `<span class="file-status status-processing">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+          Processando...
+        </span>`;
+        actionHtml = '';
+      } else if (entry.status === 'done') {
+        statusHtml = `<span class="file-status status-done">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluído
+        </span>`;
+        actionHtml = `
+          <button class="btn btn-outline download-one-btn" data-id="${id}" style="font-size: 0.78rem; padding: 0.45rem 0.875rem;" type="button">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Baixar
+          </button>`;
+      } else if (entry.status === 'error') {
+        statusHtml = `<span class="file-status status-error">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          Erro
+        </span>`;
+        actionHtml = `<button class="btn btn-ghost remove-btn" data-id="${id}" style="font-size:0.78rem;padding:0.45rem 0.6rem;width:34px;height:34px;" type="button" aria-label="Remover">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>`;
+      }
+
+      card.innerHTML = `
+        <div class="file-icon" style="color: ${extColor}; border-color: ${extColor}22; background: ${extColor}11;">
+          ${ext.slice(0,4)}
+        </div>
+        <div class="file-info">
+          <div class="file-name" title="${entry.file.name}">${entry.file.name}</div>
+          <div class="file-size">${formatBytes(entry.file.size)}</div>
+        </div>
+        <div class="file-actions">
+          ${statusHtml}
+          ${actionHtml}
+        </div>
+      `;
+      fileCards.appendChild(card);
+    }
+
+    // Bind per-card buttons
+    fileCards.querySelectorAll('.process-one-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.currentTarget.dataset.id;
+        processFile(id);
+      });
+    });
+    fileCards.querySelectorAll('.download-one-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.currentTarget.dataset.id;
+        const entry = fileMap.get(id);
+        if (entry?.result) downloadBlob(entry.result.blob, entry.result.filename);
+      });
+    });
+    fileCards.querySelectorAll('.remove-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.currentTarget.dataset.id;
+        fileMap.delete(id);
+        updateUI();
+      });
+    });
+
+    updateDownloadAllBtn();
+  }
+
+  function updateUI() {
+    const count = fileMap.size;
+    if (count === 0) {
+      fileList.style.display = 'none';
+    } else {
+      fileList.style.display = 'block';
+      fileCountLabel.textContent = `${count} arquivo${count !== 1 ? 's' : ''}`;
+      renderCards();
+    }
+  }
+
+  function updateDownloadAllBtn() {
+    const doneCount = [...fileMap.values()].filter(e => e.status === 'done').length;
+    if (doneCount >= 2) {
+      downloadAllBtn.style.display = '';
+    } else {
+      downloadAllBtn.style.display = 'none';
+    }
+  }
+
+  // ── File processing ───────────────────────────────────────
+  async function processFile(id) {
+    const entry = fileMap.get(id);
+    if (!entry || entry.status === 'processing' || entry.status === 'done') return;
+
+    entry.status = 'processing';
+    renderCards();
+
+    try {
+      const result = await removeMetadata(entry.file, () => {});
+      entry.result = result;
+      entry.status = 'done';
+    } catch (err) {
+      console.error(err);
+      entry.status = 'error';
+    }
+    renderCards();
+  }
+
+  async function processAll() {
+    const ids = [...fileMap.keys()].filter(id => fileMap.get(id).status === 'waiting');
+    processAllBtn.disabled = true;
+    for (const id of ids) {
+      await processFile(id);
+    }
+    processAllBtn.disabled = false;
+  }
+
+  // ── Add files ─────────────────────────────────────────────
+  function addFiles(files) {
+    for (const file of files) {
+      const id = generateId(file);
+      if (!fileMap.has(id)) {
+        fileMap.set(id, { file, status: 'waiting', result: null });
+      }
+    }
+    updateUI();
+  }
+
+  // ── Event: browse ─────────────────────────────────────────
+  browseBtn.addEventListener('click', () => fileInput.click());
+  dropZone.addEventListener('click', (e) => {
+    if (e.target === dropZone || e.target.closest('#drop-zone') === dropZone) {
+      if (e.target.tagName !== 'BUTTON') fileInput.click();
+    }
+  });
+  dropZone.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
+  });
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files?.length) addFiles(Array.from(fileInput.files));
+    fileInput.value = '';
+  });
+
+  // ── Event: drag and drop ──────────────────────────────────
+  dropZone.addEventListener('dragenter', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', (e) => {
+    if (!dropZone.contains(e.relatedTarget)) dropZone.classList.remove('drag-over');
+  });
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); });
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const files = Array.from(e.dataTransfer?.files ?? []);
+    if (files.length) addFiles(files);
+  });
+
+  // ── Event: process all ────────────────────────────────────
+  processAllBtn.addEventListener('click', processAll);
+
+  // ── Event: download all as ZIP ────────────────────────────
+  downloadAllBtn.addEventListener('click', async () => {
+    const done = [...fileMap.values()].filter(e => e.status === 'done' && e.result);
+    if (done.length === 0) return;
+    downloadAllBtn.disabled = true;
+    downloadAllBtn.textContent = 'Gerando ZIP...';
+    try {
+      const zip = await bundleAsZip(done.map(e => e.result));
+      downloadBlob(zip, 'metadados-removidos.zip');
+    } finally {
+      downloadAllBtn.disabled = false;
+      downloadAllBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Baixar Tudo (.zip)`;
+    }
+  });
+
+  // ── Event: clear ──────────────────────────────────────────
+  clearBtn.addEventListener('click', () => {
+    fileMap.clear();
+    updateUI();
+  });
+</script>
+
+<style>
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .spin {
+    animation: spin 0.9s linear infinite;
+    transform-origin: center;
+  }
+</style>

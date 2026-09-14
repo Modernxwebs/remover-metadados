@@ -1,0 +1,131 @@
+---
+// Privacy Banner — client-side security highlights
+export interface Props {
+  lang?: string;
+}
+
+const currentLocale = Astro.props.lang || Astro.currentLocale || 'pt-BR';
+const isEn = currentLocale === 'en';
+---
+
+<section class="privacy-section">
+  <div class="page-wrap">
+    <div class="privacy-card">
+      <div class="privacy-header">
+        <span class="privacy-badge">
+          <span class="privacy-dot"></span>
+          {isEn ? '100% IN YOUR BROWSER · COMPLETELY PRIVATE' : '100% no seu navegador · Totalmente privado'}
+        </span>
+        <span class="privacy-subtag">
+          {isEn ? '// LOCAL PROCESSING // NO REGISTRATION' : '// PROCESSAMENTO LOCAL // SEM CADASTRO'}
+        </span>
+      </div>
+
+      <p class="privacy-title">
+        {isEn
+          ? 'Metadata is hidden information embedded inside your files — such as GPS coordinates in photos, author names in PDFs, or camera serial numbers.'
+          : 'Metadados são informações ocultas gravadas dentro dos seus arquivos — como coordenadas GPS em fotos, nome do autor em PDFs ou número de série da câmera.'}
+      </p>
+
+      <p class="privacy-desc">
+        {isEn
+          ? 'Metadata Remover operates entirely inside your web browser via local binary parsing. Not a single byte is ever transmitted to remote servers. Free, instant, and strictly zero-log.'
+          : 'O Remover Metadados opera inteiramente no seu próprio navegador via manipulação binária local. Nenhum byte é transmitido para servidores remotos. Gratuito, instantâneo e em conformidade total com a LGPD.'}
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .privacy-section {
+    padding: clamp(2.25rem, 4vh, 3.5rem) 0;
+    border-top: 2px solid var(--border);
+  }
+
+  .privacy-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 4px;
+    padding: clamp(1.35rem, 3.5vw, 2.25rem) clamp(1.15rem, 3.5vw, 2rem);
+    text-align: left;
+    position: relative;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .privacy-card:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: var(--neo-shadow-lg);
+  }
+
+  .privacy-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .privacy-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .privacy-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    flex-shrink: 0;
+  }
+
+  .privacy-subtag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .privacy-title {
+    font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.55;
+    margin-bottom: 0.75rem;
+  }
+
+  .privacy-desc {
+    font-size: clamp(0.82rem, 2vw, 0.88rem);
+    font-weight: 400;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  @media (max-width: 640px) {
+    .privacy-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .privacy-badge {
+      font-size: 0.62rem;
+      padding: 0.2rem 0.5rem;
+    }
+    .privacy-subtag {
+      font-size: 0.62rem;
+    }
+  }
+</style>

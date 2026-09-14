@@ -1,0 +1,600 @@
+---
+// Hero — headline + formats line + drop zone, privmeta-style
+export interface Props {
+  lang?: string;
+}
+
+const currentLocale = Astro.props.lang || Astro.currentLocale || 'pt-BR';
+const isEn = currentLocale === 'en';
+
+const t = isEn
+  ? {
+      headlinePart1: "Remove metadata from photos, PDFs, and documents",
+      headlinePart2: "free, without sending anything to the internet.",
+      formatsTag: "FORMATS",
+      badgePrivacy: "100% PRIVATE · NOTHING LEAVES YOUR DEVICE",
+      dropPrompt: "Drag & drop your files here",
+      dropOr: "or",
+      browseBtn: "select from device",
+      counterZero: "0 files",
+      clearBtn: "Clear all",
+      processBtn: "Remove metadata",
+      processingBtn: "Removing metadata...",
+      downloadSingle: "Download clean file",
+      downloadZip: "Download all (.zip)",
+      statusWaiting: "Waiting",
+      statusProcessing: "Processing",
+      statusDone: "✓ Done",
+      statusError: "Error",
+      btnRemoveOne: "Remove",
+      btnDownloadOne: "Download",
+      zipFileName: "cleaned-metadata.zip",
+      generatingZip: "Creating ZIP...",
+      downloadedZip: "✓ Downloaded (.zip)",
+      errorZip: "Error creating ZIP",
+      downloadedSingle: "✓ Downloaded",
+      singularFile: "file",
+      pluralFiles: "files",
+      dropAria: "Drag files here or click to select from device",
+    }
+  : {
+      headlinePart1: "Remova metadados de fotos, PDFs e documentos",
+      headlinePart2: "gratuitamente, sem enviar nada para a internet.",
+      formatsTag: "FORMATOS",
+      badgePrivacy: "100% PRIVADO · NADA SAI DO SEU DISPOSITIVO",
+      dropPrompt: "Arraste e solte seus arquivos aqui",
+      dropOr: "ou",
+      browseBtn: "selecionar do dispositivo",
+      counterZero: "0 arquivos",
+      clearBtn: "Limpar tudo",
+      processBtn: "Remover metadados",
+      processingBtn: "Removendo metadados...",
+      downloadSingle: "Baixar arquivo limpo",
+      downloadZip: "Baixar todos (.zip)",
+      statusWaiting: "Aguardando",
+      statusProcessing: "Processando",
+      statusDone: "✓ Concluído",
+      statusError: "Erro",
+      btnRemoveOne: "Remover",
+      btnDownloadOne: "Baixar",
+      zipFileName: "metadados-removidos.zip",
+      generatingZip: "Gerando ZIP...",
+      downloadedZip: "✓ Baixado (.zip)",
+      errorZip: "Erro ao gerar ZIP",
+      downloadedSingle: "✓ Baixado",
+      singularFile: "arquivo",
+      pluralFiles: "arquivos",
+      dropAria: "Arraste arquivos aqui ou clique para selecionar",
+    };
+---
+
+<section
+  id="hero-section"
+  data-i18n={JSON.stringify(t)}
+  style="
+    min-height: calc(100vh - var(--header-h, 70px));
+    min-height: calc(100dvh - var(--header-h, 70px));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(1.5rem, 3.5vh, 2.5rem) 0;
+    box-sizing: border-box;
+  "
+>
+  <div class="page-wrap" style="width: 100%;">
+
+    <!-- Headline -->
+    <h1 style="margin-bottom: 1.25rem;">
+      {t.headlinePart1}{' '}<br class="hero-br" />{t.headlinePart2}
+    </h1>
+
+    <!-- Formats ticker bar -->
+    <div class="formats-ticker">
+      <span class="formats-ticker-badge">{t.formatsTag}</span>
+      <p class="formats-ticker-text">
+        JPEG · PNG · WEBP · HEIC · SVG · PDF · DOCX · XLSX · PPTX · MP4 · MOV
+      </p>
+    </div>
+
+    <!-- Drop Zone -->
+    <div
+      id="drop-zone"
+      class="drop-zone-main"
+      role="button"
+      tabindex="0"
+      aria-label={t.dropAria}
+    >
+      <input
+        type="file"
+        id="file-input"
+        multiple
+        accept="image/*,.pdf,.docx,.xlsx,.pptx,.odt,.ods,.odp,.mp3,.mp4,.m4v,.mov,.svg,.heic,.heif,.tif,.tiff"
+        style="display:none;"
+        aria-hidden="true"
+      />
+
+      <!-- Animated moving dashed border -->
+      <svg
+        class="drop-border-svg"
+        aria-hidden="true"
+      >
+        <rect class="marching-rect" />
+      </svg>
+
+      <!-- Badge de segurança e privacidade em linguagem clara -->
+      <div class="drop-privacy-badge">
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: #16a34a; display: inline-block; flex-shrink: 0;"></span>
+        <span>{t.badgePrivacy}</span>
+      </div>
+
+      <!-- Icon box -->
+      <div class="drop-icon-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </div>
+
+      <p class="drop-prompt-title">
+        {t.dropPrompt}
+      </p>
+      <div class="drop-prompt-sub">
+        <span>{t.dropOr}</span>
+        <button id="browse-btn" class="btn-accent drop-browse-btn" type="button">
+          {t.browseBtn}
+        </button>
+      </div>
+
+      <!-- File count hint -->
+      <div id="drop-counter" class="drop-counter-badge">{t.counterZero}</div>
+    </div>
+
+    <!-- Actions row (placed above the file list) -->
+    <div id="actions-row" style="
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      padding-top: 1rem;
+      padding-bottom: 0.25rem;
+    ">
+      <button id="clear-btn" class="btn-ghost" type="button" style="display:none;">{t.clearBtn}</button>
+      <button id="process-all-btn" class="btn-accent" type="button" disabled>
+        {t.processBtn}
+      </button>
+    </div>
+
+    <!-- File list (appears after files are added) -->
+    <div id="file-list" style="display:none; margin-top: 0.75rem;" aria-live="polite">
+      <div id="file-cards"></div>
+    </div>
+
+  </div>
+</section>
+
+<script type="module">
+  import { removeMetadata, bundleAsZip, downloadBlob } from '/src/scripts/metadataRemover.js';
+
+  const heroSection    = document.getElementById('hero-section');
+  const t              = JSON.parse(heroSection?.dataset?.i18n || '{}');
+
+  const dropZone       = document.getElementById('drop-zone');
+  const fileInput      = document.getElementById('file-input');
+  const browseBtn      = document.getElementById('browse-btn');
+  const fileList       = document.getElementById('file-list');
+  const fileCards      = document.getElementById('file-cards');
+  const dropCounter    = document.getElementById('drop-counter');
+  const processAllBtn  = document.getElementById('process-all-btn');
+  const clearBtn       = document.getElementById('clear-btn');
+
+  const downloadIconSvg = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+
+  /** @type {'process' | 'download' | 'processing'} */
+  let buttonMode = 'process';
+
+  /** @type {Map<string, { file: File, status: string, result: null | { blob: Blob, filename: string } }>} */
+  const fileMap = new Map();
+
+  function fmt(b) {
+    if (b < 1024) return `${b} B`;
+    if (b < 1048576) return `${(b/1024).toFixed(1)} KB`;
+    return `${(b/1048576).toFixed(1)} MB`;
+  }
+  function ext(name) { return (name.split('.').pop() ?? '???').toUpperCase(); }
+  function genId(f)  { return `${f.name}-${f.size}-${f.lastModified}`; }
+
+  function updateMainButton() {
+    const allEntries = [...fileMap.values()];
+    const totalCount = allEntries.length;
+    const waitingCount = allEntries.filter(e => e.status === 'waiting').length;
+    const processingCount = allEntries.filter(e => e.status === 'processing').length;
+    const doneEntries = allEntries.filter(e => e.status === 'done' && e.result);
+
+    if (totalCount === 0) {
+      buttonMode = 'process';
+      processAllBtn.disabled = true;
+      processAllBtn.innerHTML = t.processBtn || 'Remover metadados';
+      clearBtn.style.display = 'none';
+      return;
+    }
+
+    clearBtn.style.display = 'inline-flex';
+
+    if (processingCount > 0) {
+      buttonMode = 'processing';
+      processAllBtn.disabled = true;
+      processAllBtn.innerHTML = `<span class="spin">↻</span> ${t.processingBtn || 'Removendo metadados...'}`;
+      return;
+    }
+
+    if (waitingCount > 0) {
+      buttonMode = 'process';
+      processAllBtn.disabled = false;
+      processAllBtn.innerHTML = t.processBtn || 'Remover metadados';
+      return;
+    }
+
+    // All files are finished — convert directly into download button with clear descriptive text!
+    if (doneEntries.length > 0) {
+      buttonMode = 'download';
+      processAllBtn.disabled = false;
+      if (doneEntries.length === 1) {
+        processAllBtn.innerHTML = `${downloadIconSvg} ${t.downloadSingle || 'Baixar arquivo limpo'}`;
+      } else {
+        processAllBtn.innerHTML = `${downloadIconSvg} ${t.downloadZip || 'Baixar todos (.zip)'}`;
+      }
+    }
+  }
+
+  function renderCards() {
+    fileCards.innerHTML = '';
+    for (const [id, entry] of fileMap) {
+      const row = document.createElement('div');
+      row.className = 'file-row';
+
+      let statusHtml = '';
+      let actionHtml = '';
+
+      if (entry.status === 'waiting') {
+        statusHtml = `<span class="file-status-text status-waiting">${t.statusWaiting || 'Aguardando'}</span>`;
+        actionHtml = `
+          <button class="btn-main process-one-btn" data-id="${id}" style="font-size:0.78rem;padding:0.35rem 0.75rem;" type="button">${t.btnRemoveOne || 'Remover'}</button>
+          <button class="btn-icon remove-btn" data-id="${id}" type="button" aria-label="Remover">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>`;
+      } else if (entry.status === 'processing') {
+        statusHtml = `<span class="file-status-text status-processing"><span class="spin">↻</span> ${t.statusProcessing || 'Processando'}</span>`;
+      } else if (entry.status === 'done') {
+        statusHtml = `<span class="file-status-text status-done">${t.statusDone || '✓ Concluído'}</span>`;
+        actionHtml = `
+          <button class="btn-accent download-one-btn" data-id="${id}" style="font-size:0.78rem;padding:0.35rem 0.75rem;" type="button">${t.btnDownloadOne || 'Baixar'}</button>
+          <button class="btn-icon remove-btn" data-id="${id}" type="button" aria-label="Remover">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>`;
+      } else if (entry.status === 'error') {
+        statusHtml = `<span class="file-status-text status-error">${t.statusError || 'Erro'}</span>`;
+        actionHtml = `
+          <button class="btn-icon remove-btn" data-id="${id}" type="button" aria-label="Remover">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>`;
+      }
+
+      row.innerHTML = `
+        <span class="file-ext">${ext(entry.file.name).slice(0,4)}</span>
+        <span class="file-name-text" title="${entry.file.name}">${entry.file.name}</span>
+        <div class="file-right-meta">
+          <span class="file-size-text">${fmt(entry.file.size)}</span>
+          ${statusHtml}
+          <span style="display:flex;align-items:center;gap:0.35rem;">${actionHtml}</span>
+        </div>
+      `;
+      fileCards.appendChild(row);
+    }
+
+    fileCards.querySelectorAll('.process-one-btn').forEach(btn =>
+      btn.addEventListener('click', e => processFile(e.currentTarget.dataset.id)));
+    fileCards.querySelectorAll('.download-one-btn').forEach(btn =>
+      btn.addEventListener('click', e => {
+        const entry = fileMap.get(e.currentTarget.dataset.id);
+        if (entry?.result) downloadBlob(entry.result.blob, entry.result.filename);
+      }));
+    fileCards.querySelectorAll('.remove-btn').forEach(btn =>
+      btn.addEventListener('click', e => { fileMap.delete(e.currentTarget.dataset.id); updateUI(); }));
+
+    const count = fileMap.size;
+    dropCounter.textContent = `${count} ${count !== 1 ? (t.pluralFiles || 'arquivos') : (t.singularFile || 'arquivo')}`;
+    updateMainButton();
+  }
+
+  function updateUI() {
+    const count = fileMap.size;
+    dropCounter.textContent = `${count} ${count !== 1 ? (t.pluralFiles || 'arquivos') : (t.singularFile || 'arquivo')}`;
+    if (count === 0) {
+      fileList.style.display = 'none';
+      updateMainButton();
+    } else {
+      fileList.style.display = 'block';
+      renderCards();
+    }
+  }
+
+  async function processFile(id) {
+    const entry = fileMap.get(id);
+    if (!entry || entry.status === 'processing' || entry.status === 'done') return;
+    entry.status = 'processing';
+    renderCards();
+    try {
+      entry.result = await removeMetadata(entry.file, () => {});
+      entry.status = 'done';
+    } catch (err) {
+      console.error(err);
+      entry.status = 'error';
+    }
+    renderCards();
+  }
+
+  async function handleMainAction() {
+    if (buttonMode === 'process') {
+      const ids = [...fileMap.keys()].filter(id => fileMap.get(id).status === 'waiting');
+      if (!ids.length) return;
+      buttonMode = 'processing';
+      processAllBtn.disabled = true;
+      processAllBtn.innerHTML = `<span class="spin">↻</span> ${t.processingBtn || 'Removendo metadados...'}`;
+      for (const id of ids) {
+        await processFile(id);
+      }
+    } else if (buttonMode === 'download') {
+      const doneEntries = [...fileMap.values()].filter(e => e.status === 'done' && e.result);
+      if (!doneEntries.length) return;
+
+      if (doneEntries.length === 1) {
+        downloadBlob(doneEntries[0].result.blob, doneEntries[0].result.filename);
+        const originalHtml = processAllBtn.innerHTML;
+        processAllBtn.innerHTML = t.downloadedSingle || `✓ Baixado`;
+        setTimeout(() => {
+          if (buttonMode === 'download') processAllBtn.innerHTML = originalHtml;
+        }, 1500);
+      } else {
+        processAllBtn.disabled = true;
+        processAllBtn.innerHTML = `<span class="spin">↻</span> ${t.generatingZip || 'Gerando ZIP...'}`;
+        try {
+          const zip = await bundleAsZip(doneEntries.map(e => e.result));
+          downloadBlob(zip, t.zipFileName || 'metadados-removidos.zip');
+          processAllBtn.innerHTML = t.downloadedZip || `✓ Baixado (.zip)`;
+        } catch (err) {
+          console.error(err);
+          processAllBtn.innerHTML = t.errorZip || `Erro ao gerar ZIP`;
+        } finally {
+          setTimeout(() => {
+            processAllBtn.disabled = false;
+            updateMainButton();
+          }, 1500);
+        }
+      }
+    }
+  }
+
+  function addFiles(files) {
+    for (const f of files) {
+      const id = genId(f);
+      if (!fileMap.has(id)) fileMap.set(id, { file: f, status: 'waiting', result: null });
+    }
+    updateUI();
+  }
+
+  browseBtn.addEventListener('click', e => { e.stopPropagation(); fileInput.click(); });
+  dropZone.addEventListener('click', e => { if (e.target.tagName !== 'BUTTON') fileInput.click(); });
+  dropZone.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
+  });
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files?.length) addFiles(Array.from(fileInput.files));
+    fileInput.value = '';
+  });
+
+  dropZone.addEventListener('dragenter', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', e => { if (!dropZone.contains(e.relatedTarget)) dropZone.classList.remove('drag-over'); });
+  dropZone.addEventListener('dragover', e => e.preventDefault());
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const files = Array.from(e.dataTransfer?.files ?? []);
+    if (files.length) addFiles(files);
+  });
+
+  processAllBtn.addEventListener('click', handleMainAction);
+
+  clearBtn.addEventListener('click', () => { fileMap.clear(); updateUI(); });
+</script>
+
+<style>
+  .formats-ticker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    padding: 0.35rem 0.85rem;
+    border-radius: 3px;
+    margin-bottom: 1.25rem;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .formats-ticker::-webkit-scrollbar {
+    display: none;
+  }
+
+  .formats-ticker-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    padding: 0.15rem 0.45rem;
+    border: 1.5px solid var(--border);
+    box-shadow: 1.5px 1.5px 0px var(--shadow-color);
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .formats-ticker-text {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .drop-zone-main {
+    padding: clamp(2.5rem, 5vh, 4.5rem) clamp(1rem, 3vw, 2rem);
+    min-height: 210px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .drop-privacy-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    box-shadow: 1.5px 1.5px 0px var(--shadow-color);
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    max-width: calc(100% - 2rem);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .drop-icon-box {
+    width: 46px;
+    height: 46px;
+    border: 2px solid var(--border);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+    background: var(--bg);
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.85rem;
+    color: var(--text);
+  }
+
+  .drop-prompt-title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.35rem;
+    letter-spacing: -0.01em;
+  }
+
+  .drop-prompt-sub {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+
+  .drop-browse-btn {
+    font-size: 0.78rem;
+    padding: 0.35rem 0.85rem;
+    cursor: pointer;
+  }
+
+  .drop-counter-badge {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.68rem;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--text);
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    box-shadow: 1.5px 1.5px 0px var(--shadow-color);
+    padding: 0.2rem 0.55rem;
+    border-radius: 2px;
+    letter-spacing: 0.03em;
+  }
+
+  .file-right-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    .formats-ticker {
+      gap: 0.45rem;
+      padding: 0.25rem 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .drop-zone-main {
+      padding: 3rem 0.85rem 2.85rem;
+      min-height: 190px;
+    }
+
+    .drop-privacy-badge {
+      top: 0.65rem;
+      left: 0.65rem;
+      font-size: 0.58rem;
+      padding: 0.2rem 0.45rem;
+      max-width: calc(100% - 1.3rem);
+    }
+
+    .drop-counter-badge {
+      bottom: 0.65rem;
+      right: 0.65rem;
+      font-size: 0.62rem;
+      padding: 0.15rem 0.45rem;
+    }
+
+    .drop-prompt-title {
+      font-size: 0.88rem;
+    }
+
+    .drop-prompt-sub {
+      font-size: 0.8rem;
+    }
+
+    .drop-browse-btn {
+      min-height: 38px;
+    }
+
+    .file-right-meta {
+      width: 100%;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding-top: 0.35rem;
+      border-top: 1px dashed var(--border);
+    }
+  }
+</style>
+

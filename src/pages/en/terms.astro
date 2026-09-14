@@ -1,0 +1,443 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const title = 'Terms of Service — Metadata Remover | User Rights & Conditions';
+const description = 'Terms of Service for Metadata Remover. Free in-browser metadata removal tool. Learn about permitted use, zero-claim intellectual property, and disclaimers.';
+const canonicalUrl = 'https://remover-metadados.com/en/terms/';
+const alternatePt = 'https://remover-metadados.com/termos/';
+const alternateEn = 'https://remover-metadados.com/en/terms/';
+const contactEmail = 'hello@remover-metadados.com';
+const lastUpdated = 'September 14, 2026';
+---
+
+<Layout
+  title={title}
+  description={description}
+  lang="en"
+  canonicalUrl={canonicalUrl}
+  alternatePt={alternatePt}
+  alternateEn={alternateEn}
+>
+  <Header lang="en" ptUrl="/termos/" enUrl="/en/terms/" isSubpage={true} />
+
+  <main class="page-wrap legal-page">
+    <!-- Breadcrumb & Back -->
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb navigation">
+      <a href="/en/" class="back-link">&larr; Back to Metadata Remover</a>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">Terms of Service</span>
+    </nav>
+
+    <!-- Header Block -->
+    <header class="legal-header">
+      <div class="legal-badge-row">
+        <span class="badge-accent">TERMS OF USE</span>
+        <span class="badge-mono">Last updated: {lastUpdated}</span>
+      </div>
+      <h1 class="legal-title">Terms of Service</h1>
+      <p class="legal-subtitle">
+        By accessing and using <strong>Metadata Remover</strong> (remover-metadados.com), you acknowledge and agree to the terms and provisions stated below.
+      </p>
+    </header>
+
+    <!-- Highlight Box -->
+    <section class="highlight-card">
+      <div class="highlight-icon" aria-hidden="true">📜</div>
+      <div>
+        <h2 class="highlight-title">Your Files Remain 100% Yours</h2>
+        <p class="highlight-desc">
+          <strong>Metadata Remover</strong> operates entirely on your local machine. <strong>We never claim any ownership, license, or copyright over any images, photos, PDFs, or documents you process.</strong> Because nothing is transmitted to our servers, you retain uninterrupted, absolute intellectual property rights over all your assets.
+        </p>
+      </div>
+    </section>
+
+    <!-- Article Content -->
+    <article class="legal-content">
+      <section class="legal-section">
+        <h2>1. Scope of Service</h2>
+        <p>
+          <strong>Metadata Remover</strong> is a free, browser-based utility that removes embedded metadata (including EXIF tags, GPS geolocations, camera serial numbers, author revisions, and C2PA Content Credentials manifests) from supported file formats (JPEG, PNG, WebP, HEIC, PDF, DOCX, XLSX, PPTX).
+        </p>
+        <p>
+          All operations execute locally via JavaScript and WebAssembly on your own device's computing hardware.
+        </p>
+      </section>
+
+      <section class="legal-section">
+        <h2>2. Permitted Use & User Obligations</h2>
+        <p>
+          By utilizing this utility, you agree that:
+        </p>
+        <ul>
+          <li>You hold the legal right, ownership, or authorized license to sanitize and export the files processed through the application.</li>
+          <li>You will not use this service to intentionally destroy evidence in pending or anticipated legal proceedings, facilitate unlawful fraud, or violate third-party rights.</li>
+          <li>You bear sole responsibility for maintaining uncorrupted original backups of your files before conducting metadata removal operations.</li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>3. Free Service with No Account Requirement</h2>
+        <p>
+          Access is provided <strong>100% free of charge</strong> without mandatory user registration, subscriptions, or credit card inputs. We reserve the right to improve, modify, or adjust client-side processing algorithms at any time.
+        </p>
+      </section>
+
+      <section class="legal-section">
+        <h2>4. Disclaimer of Warranties ("As Is")</h2>
+        <p>
+          This service is provided strictly on an <em>"as is"</em> and <em>"as available"</em> basis without warranties of any kind, whether express, implied, or statutory:
+        </p>
+        <ul>
+          <li>While we continuously refine our parsing algorithms against industry standards, proprietary camera maker notes, obscure document streams, or deeply nested metadata structures may occasionally remain unaffected.</li>
+          <li>We do not warrant uninterrupted or error-free performance across outdated, unsupported, or non-standards-compliant web browsers.</li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>5. Limitation of Liability</h2>
+        <p>
+          Under no circumstances shall <strong>Metadata Remover</strong>, its founder Dev Sharma, or its contributors be liable for any direct, indirect, incidental, special, or consequential damages resulting from:
+        </p>
+        <ul>
+          <li>Loss, alteration, or corruption of local file copies in the absence of a verified user backup.</li>
+          <li>Misapplication or reliance on sanitized outputs for regulatory, courtroom, or forensic purposes.</li>
+          <li>Local device crashes, memory exhaustion, or network disconnects during asset rendering.</li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>6. Third-Party Links & Creator Profiles</h2>
+        <p>
+          This website references developer profiles on third-party networks (X / Twitter and LinkedIn). We do not oversee the policies or data handling practices of external services and advise reviewing their terms independently.
+        </p>
+      </section>
+
+      <section class="legal-section">
+        <h2>7. Governing Law</h2>
+        <p>
+          These terms are governed by and construed in accordance with applicable internet legal standards and international consumer norms, respecting civil internet frameworks and data protection mandates.
+        </p>
+      </section>
+
+      <section class="legal-section">
+        <h2>8. Inquiries & Contact</h2>
+        <p>
+          If you have questions regarding these terms or wish to report technical issues:
+        </p>
+        <div class="contact-card-inline">
+          <div class="contact-inline-item">
+            <span class="contact-inline-label">Support Email:</span>
+            <a href={`mailto:${contactEmail}`} class="contact-email-link">{contactEmail}</a>
+          </div>
+          <div class="contact-inline-item">
+            <span class="contact-inline-label">Founder:</span>
+            <span class="contact-inline-val">Dev Sharma</span>
+          </div>
+        </div>
+      </section>
+    </article>
+
+    <!-- Bottom Actions -->
+    <div class="legal-actions">
+      <a href="/en/" class="btn-primary-action">
+        <span>&larr; Return to Metadata Remover</span>
+      </a>
+      <a href="/en/privacy/" class="btn-secondary-action">
+        <span>View Privacy Policy &rarr;</span>
+      </a>
+    </div>
+  </main>
+
+  <Footer lang="en" />
+</Layout>
+
+<style>
+  .legal-page {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    margin-bottom: 2rem;
+  }
+
+  .back-link {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .back-link:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .breadcrumb-separator,
+  .breadcrumb-current {
+    color: var(--text-muted);
+  }
+
+  .legal-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .legal-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .badge-accent {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    padding: 0.2rem 0.55rem;
+    border: 1.5px solid var(--border);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+    border-radius: 2px;
+  }
+
+  .badge-mono {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  .legal-title {
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin: 0;
+    color: var(--text);
+  }
+
+  .legal-subtitle {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .highlight-card {
+    display: flex;
+    gap: 1.25rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: 4px 4px 0px var(--shadow-color);
+    padding: 1.5rem;
+    border-radius: 4px;
+    margin-bottom: 2.5rem;
+    align-items: flex-start;
+  }
+
+  .highlight-icon {
+    font-size: 2rem;
+    background: var(--btn-accent);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--border);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .highlight-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    color: var(--text);
+  }
+
+  .highlight-desc {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .legal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .legal-section {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0px var(--shadow-color);
+    padding: 1.75rem;
+    border-radius: 4px;
+  }
+
+  .legal-section h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem;
+    color: var(--text);
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .legal-section p {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin: 0 0 1rem;
+  }
+
+  .legal-section p:last-child {
+    margin-bottom: 0;
+  }
+
+  .legal-section ul {
+    margin: 0 0 1rem;
+    padding-left: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .legal-section li {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+
+  .legal-section strong {
+    color: var(--text);
+  }
+
+  .contact-card-inline {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+    padding: 1rem 1.25rem;
+    border-radius: 3px;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .contact-inline-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+  }
+
+  .contact-inline-label {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .contact-email-link {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: underline;
+  }
+
+  .contact-email-link:hover {
+    color: var(--accent);
+  }
+
+  .contact-inline-val {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .legal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .btn-primary-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    padding: 0.75rem 1.25rem;
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0px var(--shadow-color);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .btn-primary-action:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 4.5px 4.5px 0px var(--shadow-color);
+  }
+
+  .btn-secondary-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--card-bg);
+    color: var(--text);
+    padding: 0.75rem 1.25rem;
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0px var(--shadow-color);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .btn-secondary-action:hover {
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    transform: translate(-1.5px, -1.5px);
+  }
+
+  @media (max-width: 640px) {
+    .highlight-card {
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .legal-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .btn-primary-action,
+    .btn-secondary-action {
+      justify-content: center;
+    }
+  }
+</style>

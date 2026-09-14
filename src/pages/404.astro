@@ -1,0 +1,276 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const title = '404 — Página Não Encontrada | Remover Metadados';
+const description = 'A página que você está procurando não foi encontrada ou foi movida. Retorne para a página inicial do Remover Metadados e limpe seus arquivos com privacidade total.';
+---
+
+<Layout
+  title={title}
+  description={description}
+  lang="pt-BR"
+  noindex={true}
+>
+  <Header lang="pt-BR" ptUrl="/404" enUrl="/en/404" isSubpage={true} />
+
+  <main class="page-wrap error-page">
+    <div class="error-container">
+
+      <!-- Status Code Box -->
+      <div class="error-badge-box">
+        <span class="error-code">404</span>
+        <span class="error-label">PÁGINA NÃO ENCONTRADA / NOT FOUND</span>
+      </div>
+
+      <!-- Icon / Illustration -->
+      <div class="error-illustration" aria-hidden="true">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="m15 9-6 6"/>
+          <path d="m9 9 6 6"/>
+        </svg>
+      </div>
+
+      <h1 class="error-title">Metadados não encontrados!</h1>
+      <p class="error-desc">
+        Parece que a página que você tentou acessar não existe, foi removida ou o link digitado possui algum erro. Não se preocupe, seus arquivos continuam seguros e privados no seu dispositivo.
+      </p>
+
+      <!-- Recovery Actions -->
+      <div class="error-actions">
+        <a href="/" class="btn-primary-error">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span>Ir para a Página Inicial (Brasil)</span>
+        </a>
+
+        <a href="/en/" class="btn-secondary-error">
+          <span>Go to English Tool &rarr;</span>
+        </a>
+
+        <a href="/contato/" class="btn-ghost-error">
+          <span>Avisar sobre link quebrado</span>
+        </a>
+      </div>
+
+      <!-- Quick Helpful Links -->
+      <div class="helpful-box">
+        <span class="helpful-tag">ATALHOS ÚTEIS</span>
+        <div class="helpful-links">
+          <a href="/privacidade/" class="helpful-link">Política de Privacidade</a>
+          <span class="helpful-dot">•</span>
+          <a href="/termos/" class="helpful-link">Termos de Uso</a>
+          <span class="helpful-dot">•</span>
+          <a href="/sobre/" class="helpful-link">Sobre Nós</a>
+          <span class="helpful-dot">•</span>
+          <a href="/#faq" class="helpful-link">Perguntas Frequentes (FAQ)</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <Footer lang="pt-BR" />
+</Layout>
+
+<style>
+  .error-page {
+    padding: 3rem 1rem 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 350px);
+  }
+
+  .error-container {
+    background: var(--card-bg);
+    border: 2.5px solid var(--border);
+    box-shadow: 6px 6px 0px var(--shadow-color);
+    padding: 3rem 2rem;
+    border-radius: 6px;
+    max-width: 640px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .error-badge-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .error-code {
+    font-size: clamp(3.5rem, 8vw, 5rem);
+    font-weight: 700;
+    font-family: var(--font-mono);
+    line-height: 1;
+    color: var(--btn-accent-text);
+    background: var(--btn-accent);
+    padding: 0.25rem 1.5rem;
+    border: 2.5px solid var(--border);
+    box-shadow: 3px 3px 0 var(--shadow-color);
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .error-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    margin-top: 0.5rem;
+  }
+
+  .error-illustration {
+    width: 80px;
+    height: 80px;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0 var(--shadow-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+  }
+
+  .error-title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .error-desc {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0;
+  }
+
+  .error-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .btn-primary-error {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    padding: 0.85rem 1.5rem;
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0 var(--shadow-color);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.88rem;
+    text-decoration: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .btn-primary-error:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 4.5px 4.5px 0 var(--shadow-color);
+  }
+
+  .btn-secondary-error {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--bg);
+    color: var(--text);
+    padding: 0.75rem 1.25rem;
+    border: 1.5px solid var(--border);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.82rem;
+    text-decoration: none;
+    transition: transform 0.12s ease, background 0.12s ease;
+  }
+
+  .btn-secondary-error:hover {
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    transform: translate(-1.5px, -1.5px);
+  }
+
+  .btn-ghost-error {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    text-decoration: underline;
+    transition: color 0.12s ease;
+  }
+
+  .btn-ghost-error:hover {
+    color: var(--accent);
+  }
+
+  .helpful-box {
+    padding-top: 1.5rem;
+    border-top: 2px dashed var(--border);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    align-items: center;
+  }
+
+  .helpful-tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .helpful-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 0.75rem;
+    font-size: 0.82rem;
+  }
+
+  .helpful-link {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .helpful-link:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .helpful-dot {
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 480px) {
+    .error-container {
+      padding: 2rem 1.25rem;
+    }
+  }
+</style>

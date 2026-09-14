@@ -1,0 +1,243 @@
+---
+import '../styles/global.css';
+
+import { faqs } from '../data/faqs.js';
+import { faqsEn } from '../data/faqsEn.js';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  lang?: string;
+  canonicalUrl?: string;
+  alternatePt?: string;
+  alternateEn?: string;
+  alternateXDefault?: string;
+  noindex?: boolean;
+}
+
+const currentLang = Astro.props.lang || Astro.currentLocale || 'pt-BR';
+const isEn = currentLang === 'en';
+
+const siteUrl = 'https://remover-metadados.com';
+
+const {
+  title = isEn
+    ? 'Metadata Remover — Strip EXIF, PDF, Office & AI Metadata Online Free'
+    : 'Remover Metadados — Limpar Metadados de Fotos, PDFs e Documentos Online',
+  description = isEn
+    ? 'Free, 100% private online metadata remover. Remove EXIF data, GPS location, author history, and AI provenance tags from photos, PDFs, and documents locally in your browser.'
+    : 'Removedor de metadados gratuito e 100% privado. Aprenda como remover metadados de fotos (EXIF/GPS), PDFs e arquivos Office direto no navegador, sem enviar dados a servidores.',
+  canonicalUrl,
+  alternatePt,
+  alternateEn,
+  alternateXDefault,
+  noindex = false,
+} = Astro.props;
+
+const pageUrl = canonicalUrl || (isEn ? `${siteUrl}/en/` : `${siteUrl}/`);
+const ptHreflang = alternatePt || `${siteUrl}/`;
+const enHreflang = alternateEn || `${siteUrl}/en/`;
+const xDefaultHreflang = alternateXDefault || enHreflang;
+const ogImage = `${siteUrl}/og-image.png`;
+
+const keywords = (
+  isEn
+    ? [
+        'metadata remover',
+        'remove metadata',
+        'remove exif data online free',
+        'photo metadata remover',
+        'remove metadata from pdf',
+        'clean metadata online',
+        'strip metadata',
+        'ai metadata remover',
+        'c2pa metadata remover',
+        'remove gps from photos',
+        'exif cleaner',
+        'browser metadata cleaner',
+        'free metadata cleaner',
+        'remove author from word document',
+      ]
+    : [
+        'remover metadados',
+        'metadados remover',
+        'removedor de metadados',
+        'limpar metadados',
+        'removedor metadados',
+        'remove metadados',
+        'tirar metadados',
+        'limpar meta dados',
+        'retirar metadados',
+        'apagar metadados',
+        'metadados limpar',
+        'remover exif online',
+        'como remover metadados de fotos',
+        'remover metadados pdf',
+      ]
+).join(', ');
+
+const currentFaqs = isEn ? faqsEn : faqs;
+
+const schemaData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      'url': `${siteUrl}/`,
+      'name': isEn ? 'Metadata Remover' : 'Remover Metadados',
+      'description': isEn
+        ? 'Free, 100% private online metadata remover running entirely in your browser.'
+        : 'Removedor de metadados gratuito e 100% privado direto no navegador.',
+      'inLanguage': isEn ? 'en' : 'pt-BR',
+      'publisher': {
+        '@type': 'Organization',
+        '@id': `${siteUrl}/#organization`,
+        'name': isEn ? 'Metadata Remover' : 'Remover Metadados',
+        'url': `${siteUrl}/`,
+        'logo': {
+          '@type': 'ImageObject',
+          'url': `${siteUrl}/logo.png`,
+        },
+      },
+    },
+    {
+      '@type': 'WebApplication',
+      '@id': isEn ? `${siteUrl}/en/#app` : `${siteUrl}/#app`,
+      'name': isEn ? 'Metadata Remover' : 'Remover Metadados',
+      'url': pageUrl,
+      'applicationCategory': 'SecurityApplication',
+      'operatingSystem': 'Any (Web Browser, Windows, macOS, Linux, Android, iOS)',
+      'browserRequirements': 'Requires JavaScript. Requires HTML5.',
+      'offers': {
+        '@type': 'Offer',
+        'price': '0',
+        'priceCurrency': isEn ? 'USD' : 'BRL',
+      },
+      'description': isEn
+        ? 'Free and 100% private online metadata remover. Clean EXIF data, GPS coordinates, author history, and AI credentials locally in your browser without uploading files to remote servers.'
+        : 'Removedor de metadados online gratuito e 100% privado. Permite limpar metadados de fotos, documentos, PDFs e vídeos localmente no navegador, sem envio de dados para a internet.',
+      'featureList': isEn
+        ? [
+            'Strip EXIF data and GPS geolocation from JPEG, PNG, WebP, and HEIC photos',
+            'Clean author metadata and revision history from PDF and Office files (DOCX, XLSX, PPTX)',
+            'Remove AI generation parameters and C2PA Content Credentials manifests',
+            '100% in-browser processing (zero server upload) with total privacy compliance',
+            'Single file or bulk download bundled as a clean .zip archive',
+            'Free with no registration, no subscriptions, and no file limits',
+          ]
+        : [
+            'Remoção de dados EXIF e geolocalização GPS em fotos JPEG, PNG, WebP e HEIC',
+            'Limpeza de metadados de autoria e histórico em documentos PDF e Office (DOCX, XLSX, PPTX)',
+            'Processamento 100% no navegador (sem envio a servidores) com conformidade à LGPD',
+            'Download individual ou em lote compactado em arquivo .zip',
+            'Gratuito e sem necessidade de cadastro ou instalação',
+          ],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': isEn ? `${siteUrl}/en/#faq` : `${siteUrl}/#faq`,
+      'isPartOf': {
+        '@id': `${siteUrl}/#website`,
+      },
+      'inLanguage': isEn ? 'en' : 'pt-BR',
+      'mainEntity': currentFaqs.map((faq) => ({
+        '@type': 'Question',
+        'name': faq.q,
+        'acceptedAnswer': {
+          '@type': 'Answer',
+          'text': faq.a,
+        },
+      })),
+    },
+  ],
+};
+---
+
+<!DOCTYPE html>
+<html lang={isEn ? 'en' : 'pt-BR'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta
+      name="robots"
+      content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}
+    />
+    <meta name="author" content={isEn ? 'Metadata Remover' : 'Remover Metadados'} />
+    <meta name="theme-color" content="#111010" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f2f0ed" media="(prefers-color-scheme: light)" />
+
+    <!-- Favicon & App Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={pageUrl} />
+
+    <!-- Multilingual Hreflang Tags for SEO -->
+    <link rel="alternate" hreflang="pt-BR" href={ptHreflang} />
+    <link rel="alternate" hreflang="en" href={enHreflang} />
+    <link rel="alternate" hreflang="x-default" href={xDefaultHreflang} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:site_name" content={isEn ? 'Metadata Remover' : 'Remover Metadados'} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content={isEn ? 'en_US' : 'pt_BR'} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content={
+        isEn
+          ? 'Metadata Remover — Free, private online tool to strip file metadata'
+          : 'Remover Metadados — Ferramenta gratuita e privada para limpar metadados'
+      }
+    />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={pageUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Structured Data: WebApplication + FAQPage JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+
+    <!-- Preload local client-side ZIP engine -->
+    <script is:inline src="/vendor/jszip.min.js" defer></script>
+
+    <!-- Theme initialization: prevent flash of unstyled theme -->
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (stored === 'dark' || (!stored && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

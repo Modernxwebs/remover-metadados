@@ -1,0 +1,289 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const title = '500 — Erro Inesperado | Remover Metadados';
+const description = 'Ocorreu uma instabilidade inesperada. Como o processamento é 100% local no seu navegador, verifique as dicas de solução rápida para voltar a usar o Remover Metadados.';
+const email = 'hello@remover-metadados.com';
+---
+
+<Layout
+  title={title}
+  description={description}
+  lang="pt-BR"
+  noindex={true}
+>
+  <Header lang="pt-BR" isSubpage={true} />
+
+  <main class="page-wrap error-page">
+    <div class="error-container">
+
+      <!-- Status Code Box -->
+      <div class="error-badge-box">
+        <span class="error-code">500</span>
+        <span class="error-label">ERRO INESPERADO / INTERNAL ERROR</span>
+      </div>
+
+      <!-- Icon / Illustration -->
+      <div class="error-illustration" aria-hidden="true">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+
+      <h1 class="error-title">Algo inesperado aconteceu!</h1>
+      <p class="error-desc">
+        Ocorreu uma falha temporária durante o carregamento ou processamento. Como o <strong>Remover Metadados</strong> executa <strong>100% no seu navegador</strong> (sem servidores), seus arquivos nunca foram expostos e continuam intactos no seu dispositivo.
+      </p>
+
+      <!-- Diagnostic Checklist -->
+      <div class="diagnostic-box">
+        <h2 class="diagnostic-title">🛠️ Como resolver rapidamente:</h2>
+        <ul class="diagnostic-list">
+          <li><strong>Recarregue a página:</strong> Clique no botão abaixo ou pressione <kbd>Ctrl+F5</kbd> para limpar o cache local de scripts.</li>
+          <li><strong>Lotes muito pesados:</strong> Se estava processando dezenas de arquivos pesados de uma só vez, experimente processar em lotes menores para liberar memória RAM.</li>
+          <li><strong>Extensões de terceiros:</strong> Alguns bloqueadores de conteúdo restritivos podem interferir na execução da HTML5 Canvas API ou WebAssembly.</li>
+          <li><strong>Arquivo corrompido:</strong> Verifique se o arquivo original abre normalmente no visualizador padrão do seu computador ou celular.</li>
+        </ul>
+      </div>
+
+      <!-- Recovery Actions -->
+      <div class="error-actions">
+        <button id="reload-btn" class="btn-primary-error">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+            <path d="M21 3v5h-5"/>
+            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+            <path d="M8 16H3v5"/>
+          </svg>
+          <span>Recarregar Página Agora</span>
+        </button>
+
+        <a href="/" class="btn-secondary-error">
+          <span>&larr; Voltar para a Página Inicial</span>
+        </a>
+
+        <a href={`mailto:${email}?subject=Relato%20de%20Erro%20500`} class="btn-ghost-error">
+          Avisar o desenvolvedor Dev Sharma ({email})
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <Footer lang="pt-BR" />
+</Layout>
+
+<style>
+  .error-page {
+    padding: 3rem 1rem 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 350px);
+  }
+
+  .error-container {
+    background: var(--card-bg);
+    border: 2.5px solid var(--border);
+    box-shadow: 6px 6px 0px var(--shadow-color);
+    padding: 3rem 2rem;
+    border-radius: 6px;
+    max-width: 680px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .error-badge-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .error-code {
+    font-size: clamp(3.5rem, 8vw, 5rem);
+    font-weight: 700;
+    font-family: var(--font-mono);
+    line-height: 1;
+    color: var(--btn-accent-text);
+    background: var(--btn-accent);
+    padding: 0.25rem 1.5rem;
+    border: 2.5px solid var(--border);
+    box-shadow: 3px 3px 0 var(--shadow-color);
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .error-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    margin-top: 0.5rem;
+  }
+
+  .error-illustration {
+    width: 80px;
+    height: 80px;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0 var(--shadow-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ef4444;
+  }
+
+  .error-title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .error-desc {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin: 0;
+  }
+
+  /* Diagnostic Box */
+  .diagnostic-box {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+    padding: 1.25rem 1.5rem;
+    border-radius: 4px;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .diagnostic-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.75rem;
+  }
+
+  .diagnostic-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .diagnostic-list li {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .diagnostic-list strong {
+    color: var(--text);
+  }
+
+  kbd {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    box-shadow: 1px 1px 0 var(--shadow-color);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.1rem 0.35rem;
+  }
+
+  /* Recovery Actions */
+  .error-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .btn-primary-error {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    padding: 0.85rem 1.5rem;
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0 var(--shadow-color);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .btn-primary-error:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 4.5px 4.5px 0 var(--shadow-color);
+  }
+
+  .btn-secondary-error {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--bg);
+    color: var(--text);
+    padding: 0.75rem 1.25rem;
+    border: 1.5px solid var(--border);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.82rem;
+    text-decoration: none;
+    transition: transform 0.12s ease, background 0.12s ease;
+  }
+
+  .btn-secondary-error:hover {
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    transform: translate(-1.5px, -1.5px);
+  }
+
+  .btn-ghost-error {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    text-decoration: underline;
+    transition: color 0.12s ease;
+  }
+
+  .btn-ghost-error:hover {
+    color: var(--accent);
+  }
+
+  @media (max-width: 480px) {
+    .error-container {
+      padding: 2rem 1.25rem;
+    }
+  }
+</style>
+
+<script>
+  document.getElementById('reload-btn')?.addEventListener('click', () => {
+    window.location.reload();
+  });
+</script>

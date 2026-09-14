@@ -1,0 +1,278 @@
+---
+// SEO Content Guide — In-depth educational guide for On-Page SEO (English Version)
+---
+
+<section id="privacy-guide" style="padding: 4rem 0; border-top: 2px solid var(--border);">
+  <div class="page-wrap" style="text-align: left;">
+
+    <div class="seo-header" style="text-align: center; margin-bottom: 3rem;">
+      <h2 style="margin-bottom: 0.75rem;">Comprehensive Privacy Guide</h2>
+      <p style="font-family: var(--font-heading); font-size: clamp(1.4rem, 2.5vw, 1.85rem); font-weight: 700; color: var(--text); letter-spacing: -0.02em; line-height: 1.3;">
+        Why strip hidden metadata from photos, PDFs, and files before sharing?
+      </p>
+      <p style="font-size: 0.95rem; font-weight: 400; color: var(--text-muted); max-width: 800px; margin: 0.75rem auto 0; line-height: 1.65;">
+        Discover what hidden file metadata is, the privacy risks of files containing hidden metadata, and how our client-side <strong>metadata remover</strong> sanitizes your photos, PDFs, and documents with zero server exposure.
+      </p>
+    </div>
+
+    <div class="seo-grid">
+      <!-- Block 1: What is metadata & EXIF -->
+      <article class="seo-article">
+        <h3 class="seo-title">What is file metadata, and what hidden details stay stored in your files?</h3>
+        <p class="seo-text">
+          Every time you snap a photograph on your smartphone, export a PDF report, or save a Word document, software automatically injects invisible technical tags known as <strong>metadata</strong>. In digital images, this data is formatted across EXIF (Exchangeable Image File Format), IPTC, and XMP headers, recording:
+        </p>
+        <ul class="seo-list">
+          <li><strong>Pinpoint GPS coordinates</strong> revealing your home, office, child's school, or private travel spots within meters.</li>
+          <li><strong>Camera and smartphone serial numbers</strong>, maker, model, lens parameters, and operating system build.</li>
+          <li><strong>Exact date, time stamps, and time zones</strong> of capture, export, and latest edit.</li>
+          <li><strong>Camera exposure settings</strong> such as aperture, shutter speed, ISO, focal length, and editing software history.</li>
+        </ul>
+        <p class="seo-text" style="margin-top: 1rem;">
+          In office documents and PDFs, metadata embeds the <strong>author's full name</strong>, corporate email, company entity, total editing time, deleted revision drafts, hidden comments, and internal directory filepaths from your hard drive.
+        </p>
+      </article>
+
+      <!-- Block 2: Privacy risks, Doxxing, and AI metadata (C2PA) -->
+      <article class="seo-article">
+        <h3 class="seo-title">Why use a metadata remover before uploading to social media or the web?</h3>
+        <p class="seo-text">
+          Posting uncleaned photos to social media, forums, dating apps, or classified listings leaves your physical location exposed. Cyberstalkers and bad actors routinely perform <em>OSINT</em> and doxxing attacks by extracting EXIF GPS coordinates from innocent photos.
+        </p>
+        <p class="seo-text" style="margin-top: 1rem;">
+          Furthermore, emerging <strong>AI metadata and C2PA Content Credentials</strong> (embedded by tools like Midjourney, DALL-E, ChatGPT, Adobe Firefly, and Stable Diffusion) attach prompt details, generation seeds, user IDs, and machine-learning provenance tags directly to output images. Using a dedicated <strong>AI metadata remover</strong> strips these signatures so your creative assets remain private.
+        </p>
+        <p class="seo-text" style="margin-top: 1rem;">
+          For attorneys, journalists, researchers, and enterprise teams, using a reliable <strong>PDF metadata remover</strong> is critical for GDPR, CCPA, and attorney-client confidentiality compliance, preventing accidental leaks of confidential clients or draft redactions.
+        </p>
+      </article>
+    </div>
+
+    <!-- Block 3: How our in-browser metadata remover works -->
+    <div class="seo-feature-box">
+      <div style="display: inline-flex; align-items: center; gap: 0.45rem; background: var(--btn-accent); color: var(--btn-accent-text); border: 1.5px solid var(--border); box-shadow: 1.5px 1.5px 0px var(--shadow-color); padding: 0.2rem 0.55rem; border-radius: 2px; font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700; margin-bottom: 0.85rem;">
+        100% IN-BROWSER PROCESSING · ZERO CLOUD STORAGE
+      </div>
+      <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 0.85rem; line-height: 1.35;">
+        A free metadata remover built with true client-side security
+      </h3>
+      <p class="seo-text">
+        Most online tools claiming to <strong>remove metadata from photos or PDFs</strong> force you to upload confidential files to third-party cloud servers. This introduces substantial security vulnerabilities: you cannot verify who inspects the server, where files are stored, or whether permanent copies are retained for surveillance or ad targeting.
+      </p>
+      <p class="seo-text" style="margin-top: 0.85rem;">
+        Our <strong>metadata remover</strong> operates on an entirely different privacy paradigm. Utilizing high-performance client-side Web APIs (HTML5 Canvas pixel sanitization and in-memory binary sanitization), all EXIF stripping, PDF trailer reconstruction, and document sanitization executes <strong>100% locally inside your browser</strong>. Your files never leave your device, never transmit across external networks, and work completely offline once the page is loaded.
+      </p>
+    </div>
+
+    <!-- Block 4: Confidential data categories table -->
+    <div style="margin-top: 3.5rem;">
+      <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 1.25rem;">
+        Confidential data permanently sanitized by our metadata remover
+      </h3>
+
+      <div class="formats-seo-grid">
+        <div class="format-seo-card">
+          <div class="format-seo-tag">Geolocation</div>
+          <h4 class="format-seo-heading">GPS & Location Tracking</h4>
+          <p class="format-seo-desc">
+            Exact latitude, longitude, altitude, compass orientation, and location tags recorded by iPhone, Android, and DSLR camera sensors whenever you take photos.
+          </p>
+        </div>
+
+        <div class="format-seo-card">
+          <div class="format-seo-tag">Identity & Device</div>
+          <h4 class="format-seo-heading">Authorship & Hardware</h4>
+          <p class="format-seo-desc">
+            Registered author name, operating system username, organization identity, camera body serial numbers, and device fingerprints linking files to your person.
+          </p>
+        </div>
+
+        <div class="format-seo-card">
+          <div class="format-seo-tag">History & AI</div>
+          <h4 class="format-seo-heading">Revisions & AI Credentials</h4>
+          <p class="format-seo-desc">
+            Draft revision histories, deleted comments, internal drive paths, and embedded C2PA Content Credentials or AI generation prompts (Midjourney/DALL-E).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 5: Step-by-step batch guide -->
+    <div class="seo-steps-box">
+      <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 0.85rem;">
+        Step-by-step: how to remove metadata in bulk online for free
+      </h3>
+      <p class="seo-text" style="margin-bottom: 1.25rem;">
+        Whether you need to <strong>remove EXIF data</strong> from a single smartphone photo or clean hundreds of corporate PDFs at once, follow these three simple steps:
+      </p>
+      <ol style="padding-left: 1.25rem; color: var(--text-muted); font-size: 0.88rem; line-height: 1.7; margin: 0;">
+        <li style="margin-bottom: 0.65rem;">
+          <strong style="color: var(--text);">1. Drag & drop your files:</strong> Drop photos (JPEG, PNG, WebP, HEIC), documents (PDF, DOCX, XLSX, PPTX), or media directly into the drop zone above. There are no file count limits or hidden quotas.
+        </li>
+        <li style="margin-bottom: 0.65rem;">
+          <strong style="color: var(--text);">2. Instant local processing:</strong> The tool immediately analyzes binary headers in your browser memory and removes all EXIF, XMP, GPS, and author metadata without quality loss.
+        </li>
+        <li>
+          <strong style="color: var(--text);">3. Download your clean files:</strong> Save sanitized files one-by-one or click <em>Download all (.zip)</em> to receive a single, thoroughly sanitized ZIP archive ready for secure sharing.
+        </li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .seo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .seo-article {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 4px;
+    padding: clamp(1.35rem, 3vw, 2rem) clamp(1.1rem, 3vw, 2rem);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .seo-article:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--neo-shadow-lg);
+  }
+
+  .seo-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.85rem;
+    line-height: 1.35;
+  }
+
+  .seo-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .seo-text strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .seo-list {
+    margin: 0.85rem 0 0 0;
+    padding-left: 1.25rem;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    line-height: 1.7;
+  }
+
+  .seo-list strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .seo-feature-box {
+    padding: clamp(1.35rem, 3.5vw, 2.25rem) clamp(1.1rem, 3.5vw, 2rem);
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 4px;
+    margin-top: 1rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .seo-feature-box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--neo-shadow-lg);
+  }
+
+  .seo-steps-box {
+    margin-top: 3rem;
+    padding: clamp(1.35rem, 3.5vw, 2.25rem) clamp(1.1rem, 3.5vw, 2rem);
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 4px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .formats-seo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .format-seo-card {
+    padding: clamp(1.25rem, 2.5vw, 1.75rem) clamp(1.1rem, 2.5vw, 1.5rem);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    background: var(--card-bg);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .format-seo-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .format-seo-tag {
+    display: inline-block;
+    width: fit-content;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--btn-accent-text);
+    background: var(--btn-accent);
+    border: 1.5px solid var(--border);
+    box-shadow: 1.5px 1.5px 0px var(--shadow-color);
+    border-radius: 2px;
+    padding: 0.2rem 0.5rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .format-seo-heading {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .format-seo-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  @media (max-width: 860px) {
+    .seo-grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    .formats-seo-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .seo-title {
+      font-size: 1.05rem;
+    }
+    .seo-text {
+      font-size: 0.86rem;
+    }
+  }
+</style>
