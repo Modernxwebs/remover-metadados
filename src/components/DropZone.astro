@@ -5,6 +5,16 @@
 <section id="ferramenta" style="padding: 2rem 0 4rem;">
   <div class="container-wide">
 
+    <!-- Hidden file input -->
+    <input
+      type="file"
+      id="file-input"
+      multiple
+      accept="image/*,.pdf,.docx,.xlsx,.pptx,.odt,.ods,.odp,.mp3,.mp4,.m4v,.mov,.svg,.heic,.heif,.tif,.tiff"
+      style="display: none;"
+      aria-hidden="true"
+    />
+
     <!-- ── Drop Zone ─────────────────────────────────────── -->
     <div
       id="drop-zone"
@@ -17,15 +27,6 @@
         user-select: none;
       "
     >
-      <!-- Hidden file input -->
-      <input
-        type="file"
-        id="file-input"
-        multiple
-        accept="image/*,.pdf,.docx,.xlsx,.pptx,.odt,.ods,.odp,.mp3,.mp4,.m4v,.mov,.svg,.heic,.heif,.tif,.tiff"
-        style="display: none;"
-        aria-hidden="true"
-      />
 
       <!-- Upload icon -->
       <div style="
@@ -83,18 +84,25 @@
         flex-wrap: wrap;
         gap: 0.75rem;
       ">
-        <div>
-          <h2 style="font-size: 1rem; font-weight: 700; color: var(--color-text); margin-bottom: 0.15rem;">
-            Arquivos selecionados
-          </h2>
-          <p id="file-count-label" style="font-size: 0.8rem; color: var(--color-muted);">0 arquivos</p>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <button id="add-more-btn-dz" class="btn btn-primary" type="button" style="font-size: 0.85rem;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Adicionar mais
+          </button>
+          <span id="file-count-label" style="font-size: 0.8rem; color: var(--color-muted);">0 arquivos</span>
         </div>
         <div style="display: flex; gap: 0.625rem; flex-wrap: wrap;">
+          <button id="clear-btn" class="btn btn-ghost" type="button" style="font-size: 0.85rem;">
+            Limpar
+          </button>
           <button id="process-all-btn" class="btn btn-primary" type="button" style="font-size: 0.85rem;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polygon points="5 3 19 12 5 21 5 3"/>
             </svg>
-            Remover Todos
+            Remover metadados
           </button>
           <button id="download-all-btn" class="btn btn-outline" type="button" style="font-size: 0.85rem; display: none;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -103,9 +111,6 @@
               <line x1="12" y1="15" x2="12" y2="3"/>
             </svg>
             Baixar Tudo (.zip)
-          </button>
-          <button id="clear-btn" class="btn btn-ghost" type="button" style="font-size: 0.85rem;">
-            Limpar
           </button>
         </div>
       </div>
@@ -185,6 +190,7 @@
   const dropZone = document.getElementById('drop-zone');
   const fileInput = document.getElementById('file-input');
   const browseBtn = document.getElementById('browse-btn');
+  const addMoreBtnDz = document.getElementById('add-more-btn-dz');
   const fileList = document.getElementById('file-list');
   const fileCards = document.getElementById('file-cards');
   const fileCountLabel = document.getElementById('file-count-label');
@@ -324,8 +330,10 @@
   function updateUI() {
     const count = fileMap.size;
     if (count === 0) {
+      dropZone.style.display = '';
       fileList.style.display = 'none';
     } else {
+      dropZone.style.display = 'none';
       fileList.style.display = 'block';
       fileCountLabel.textContent = `${count} arquivo${count !== 1 ? 's' : ''}`;
       renderCards();
@@ -382,6 +390,7 @@
 
   // ── Event: browse ─────────────────────────────────────────
   browseBtn.addEventListener('click', () => fileInput.click());
+  addMoreBtnDz?.addEventListener('click', () => fileInput.click());
   dropZone.addEventListener('click', (e) => {
     if (e.target === dropZone || e.target.closest('#drop-zone') === dropZone) {
       if (e.target.tagName !== 'BUTTON') fileInput.click();

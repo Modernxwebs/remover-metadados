@@ -18,6 +18,7 @@ const t = isEn
       dropOr: "or",
       browseBtn: "select from device",
       counterZero: "0 files",
+      addMoreBtn: "Add more",
       clearBtn: "Clear all",
       processBtn: "Remove metadata",
       processingBtn: "Removing metadata...",
@@ -48,6 +49,7 @@ const t = isEn
       dropOr: "ou",
       browseBtn: "selecionar do dispositivo",
       counterZero: "0 arquivos",
+      addMoreBtn: "Adicionar mais",
       clearBtn: "Limpar tudo",
       processBtn: "Remover metadados",
       processingBtn: "Removendo metadados...",
@@ -102,6 +104,16 @@ const t = isEn
       </p>
     </div>
 
+    <!-- Hidden file input accessible to both dropzone & add-more button -->
+    <input
+      type="file"
+      id="file-input"
+      multiple
+      accept="image/*,.pdf,.docx,.xlsx,.pptx,.odt,.ods,.odp,.mp3,.mp4,.m4v,.mov,.svg,.heic,.heif,.tif,.tiff"
+      style="display:none;"
+      aria-hidden="true"
+    />
+
     <!-- Drop Zone -->
     <div
       id="drop-zone"
@@ -110,15 +122,6 @@ const t = isEn
       tabindex="0"
       aria-label={t.dropAria}
     >
-      <input
-        type="file"
-        id="file-input"
-        multiple
-        accept="image/*,.pdf,.docx,.xlsx,.pptx,.odt,.ods,.odp,.mp3,.mp4,.m4v,.mov,.svg,.heic,.heif,.tif,.tiff"
-        style="display:none;"
-        aria-hidden="true"
-      />
-
       <!-- Animated moving dashed border -->
       <svg
         class="drop-border-svg"
@@ -156,23 +159,27 @@ const t = isEn
       <div id="drop-counter" class="drop-counter-badge">{t.counterZero}</div>
     </div>
 
-    <!-- Actions row (placed above the file list) -->
-    <div id="actions-row" style="
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 0.75rem;
-      padding-top: 1rem;
-      padding-bottom: 0.25rem;
-    ">
-      <button id="clear-btn" class="btn-ghost" type="button" style="display:none;">{t.clearBtn}</button>
-      <button id="process-all-btn" class="btn-accent" type="button" disabled>
-        {t.processBtn}
-      </button>
+    <!-- Actions row (appears above the file list when files are added) -->
+    <div id="actions-row" class="actions-toolbar" style="display:none;">
+      <div class="actions-left">
+        <button id="add-more-btn" class="btn-main add-more-btn" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          <span>{t.addMoreBtn}</span>
+        </button>
+      </div>
+      <div class="actions-right">
+        <button id="clear-btn" class="btn-ghost" type="button">{t.clearBtn}</button>
+        <button id="process-all-btn" class="btn-accent" type="button" disabled>
+          {t.processBtn}
+        </button>
+      </div>
     </div>
 
     <!-- File list (appears after files are added) -->
-    <div id="file-list" style="display:none; margin-top: 0.75rem;" aria-live="polite">
+    <div id="file-list" style="display:none; margin-top: 0.5rem;" aria-live="polite">
       <div id="file-cards"></div>
     </div>
 
@@ -188,6 +195,8 @@ const t = isEn
   const dropZone       = document.getElementById('drop-zone');
   const fileInput      = document.getElementById('file-input');
   const browseBtn      = document.getElementById('browse-btn');
+  const addMoreBtn     = document.getElementById('add-more-btn');
+  const actionsRow     = document.getElementById('actions-row');
   const fileList       = document.getElementById('file-list');
   const fileCards      = document.getElementById('file-cards');
   const dropCounter    = document.getElementById('drop-counter');
@@ -226,11 +235,8 @@ const t = isEn
       buttonMode = 'process';
       processAllBtn.disabled = true;
       processAllBtn.innerHTML = t.processBtn || 'Remover metadados';
-      clearBtn.style.display = 'none';
       return;
     }
-
-    clearBtn.style.display = 'inline-flex';
 
     if (processingCount > 0) {
       buttonMode = 'processing';
@@ -322,9 +328,13 @@ const t = isEn
     const count = fileMap.size;
     dropCounter.textContent = `${count} ${count !== 1 ? (t.pluralFiles || 'arquivos') : (t.singularFile || 'arquivo')}`;
     if (count === 0) {
+      dropZone.style.display = '';
+      actionsRow.style.display = 'none';
       fileList.style.display = 'none';
       updateMainButton();
     } else {
+      dropZone.style.display = 'none';
+      actionsRow.style.display = 'flex';
       fileList.style.display = 'block';
       renderCards();
     }
@@ -424,6 +434,7 @@ const t = isEn
   }
 
   browseBtn.addEventListener('click', e => { e.stopPropagation(); fileInput.click(); });
+  addMoreBtn.addEventListener('click', e => { e.stopPropagation(); fileInput.click(); });
   dropZone.addEventListener('click', e => { if (e.target.tagName !== 'BUTTON') fileInput.click(); });
   dropZone.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
@@ -439,6 +450,15 @@ const t = isEn
   dropZone.addEventListener('drop', e => {
     e.preventDefault();
     dropZone.classList.remove('drag-over');
+    const files = Array.from(e.dataTransfer?.files ?? []);
+    if (files.length) addFiles(files);
+  });
+
+  // Allow dropping files anywhere in hero section even when drop-zone is hidden
+  heroSection.addEventListener('dragover', e => e.preventDefault());
+  heroSection.addEventListener('drop', e => {
+    e.preventDefault();
+    if (dropZone.classList.contains('drag-over')) dropZone.classList.remove('drag-over');
     const files = Array.from(e.dataTransfer?.files ?? []);
     if (files.length) addFiles(files);
   });
@@ -666,6 +686,90 @@ const t = isEn
       gap: 0.5rem;
       padding-top: 0.35rem;
       border-top: 1px dashed var(--border);
+    }
+  }
+
+  .actions-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 0.75rem;
+    padding: 0.5rem 0 0.35rem;
+  }
+
+  .actions-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .actions-right {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .add-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 0.65rem 1.15rem;
+    cursor: pointer;
+  }
+
+  @media (max-width: 640px) {
+    .actions-toolbar {
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      padding: 0.25rem 0;
+    }
+
+    .actions-left, .actions-right {
+      gap: 0.5rem;
+    }
+
+    .add-more-btn {
+      font-size: 0.78rem;
+      padding: 0.5rem 0.85rem;
+      min-height: 38px;
+    }
+
+    .actions-right button {
+      min-height: 38px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .actions-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.65rem;
+    }
+
+    .actions-left {
+      width: 100%;
+    }
+
+    .actions-right {
+      width: 100%;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .add-more-btn {
+      width: 100%;
+      justify-content: center;
+      min-height: 42px;
+    }
+
+    .actions-right button {
+      flex: 1;
+      justify-content: center;
+      min-height: 42px;
+      font-size: 0.78rem;
     }
   }
 </style>
