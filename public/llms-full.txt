@@ -1,0 +1,105 @@
+# Remover Metadados — Full LLM Documentation
+
+## Overview
+
+**Remover Metadados** (Portuguese) / **Metadata Remover** (English) is a free, open-source, browser-based tool that lets users permanently strip metadata from their files without ever uploading them to a server.
+
+The site serves two audiences:
+1. **Brazilian users** at `https://remover-metadados.com/` (Portuguese, pt-BR)
+2. **International / English-speaking users** at `https://remover-metadados.com/en/`
+
+---
+
+## What is Metadata?
+
+Metadata is hidden information embedded inside files that can expose sensitive details:
+
+- **EXIF data in photos**: GPS coordinates (exact location where the photo was taken), camera model, serial number, date and time, lens settings (f-stop, shutter speed, ISO), software used to edit the image.
+- **IPTC/XMP in images**: Author name, copyright notice, caption, keywords.
+- **PDF metadata**: Author name, organization/company, creation software, creation and modification dates, document title, subject, producer application.
+- **Office document metadata (DOCX/XLSX/PPTX)**: Author name, revision history, company name, comments, tracked changes, last modified by.
+
+---
+
+## How It Works (Technical)
+
+All processing runs exclusively in the user's browser. No files are transmitted to any server.
+
+### Image Processing (JPEG/PNG/WebP/GIF)
+- JPEG: Uses `piexifjs` to parse and zero-out all EXIF IFD blocks, then re-encodes using HTML5 Canvas `toBlob()` API.
+- PNG: Re-drawn on Canvas without any tEXt, iTXt, or zTXt chunks.
+- WebP/GIF: Processed via Canvas redraw to strip embedded metadata.
+
+### PDF Processing
+- Uses `pdf-lib` (WebAssembly-based) to load the PDF, clear `PDFDocument.setTitle('')`, `setAuthor('')`, `setSubject('')`, `setKeywords([])`, `setProducer('')`, `setCreator('')`, and save a fresh copy.
+
+### Office Documents (DOCX, XLSX, PPTX)
+- Uses `jszip` to unzip the Open XML container, locate `docProps/core.xml` and `docProps/app.xml`, strip all metadata fields, and re-zip the file for download.
+
+---
+
+## Privacy Guarantee
+
+- **No server uploads**: Files are processed in-memory using browser JavaScript APIs.
+- **No cookies** for tracking or profiling.
+- **No analytics** that identify individual users.
+- **No accounts** required.
+- Files are automatically garbage-collected by the browser when the tab is closed.
+
+---
+
+## SEO Keywords
+
+### Portuguese (pt-BR)
+remover metadados, remover metadados de fotos, remover EXIF, remover localização de foto, limpar metadados PDF, remover metadados de documentos, remover metadados online grátis, ferramenta de privacidade, dados EXIF câmera, GPS foto remover
+
+### English
+metadata remover, remove metadata from photos, remove EXIF data, strip GPS from image, clean PDF metadata, remove document metadata, online metadata remover free, EXIF remover, photo privacy tool, image metadata cleaner, AI metadata scrubber, remove hidden data from files
+
+---
+
+## Site Structure
+
+```
+remover-metadados.com/
+├── /                        # PT-BR homepage + tool
+├── /sobre                   # About us (PT-BR)
+├── /privacidade             # Privacy policy (PT-BR)
+├── /termos                  # Terms of service (PT-BR)
+├── /contato                 # Contact (PT-BR)
+├── /en/                     # EN homepage + tool
+├── /en/about                # About us (EN)
+├── /en/privacy              # Privacy policy (EN)
+├── /en/terms                # Terms of service (EN)
+├── /en/contact              # Contact (EN)
+├── /sitemap-index.xml       # Sitemap index
+├── /robots.txt              # Crawler directives
+├── /llms.txt                # LLM summary
+└── /llms-full.txt           # This file
+```
+
+---
+
+## Technology Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Astro 7 (static site generation) |
+| Styling | Tailwind CSS v4 |
+| Image metadata | piexifjs |
+| PDF processing | pdf-lib |
+| Office doc processing | jszip |
+| Hosting target | Static CDN (Cloudflare Pages / Vercel / Netlify) |
+| Languages | Portuguese (pt-BR), English (en) |
+
+---
+
+## Contact
+
+- Email: hello@remover-metadados.com
+- X (Twitter): https://x.com/DevSharmaBuilds
+- LinkedIn: https://www.linkedin.com/in/dev000111/
+
+---
+
+*Last updated: September 2026*

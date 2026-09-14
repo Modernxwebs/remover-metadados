@@ -1,0 +1,17 @@
+# robots.txt — remover-metadados.com
+# Generated for production deployment
+
+# ─── Allow all crawlers ───────────────────────────────────────────────────────
+User-agent: *
+Allow: /
+
+# ─── Block internal / build artefacts ────────────────────────────────────────
+Disallow: /_astro/
+Disallow: /vendor/
+Disallow: /node_modules/
+
+# ─── Sitemap ──────────────────────────────────────────────────────────────────
+Sitemap: https://remover-metadados.com/sitemap-index.xml
+
+# ─── Crawl-delay hint (optional, ignored by Google) ──────────────────────────
+Crawl-delay: 10

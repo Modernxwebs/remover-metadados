@@ -1,0 +1,28 @@
+# Remover Metadados / Metadata Remover
+
+> A free, 100% client-side online tool to permanently remove metadata (EXIF, IPTC, XMP) from photos, PDFs, and documents — directly in your browser. No uploads, no servers, no data leaves your device.
+
+## Key Facts
+
+- **Primary Language**: Portuguese (Brazil) — `https://remover-metadados.com/`
+- **English Version**: `https://remover-metadados.com/en/`
+- **Processing**: Entirely client-side using HTML5 Canvas, WebAssembly, jszip, pdf-lib, and piexifjs
+- **Privacy**: Zero data transmission — files never leave the user's browser
+- **Supported Formats**: JPEG, PNG, WebP, GIF (images) · PDF · DOCX, XLSX, PPTX (Office documents)
+
+## Pages
+
+- [Home (PT-BR)](https://remover-metadados.com/): Main tool — Portuguese metadata remover
+- [Home (EN)](https://remover-metadados.com/en/): Main tool — English metadata remover
+- [About (PT-BR)](https://remover-metadados.com/sobre): About us in Portuguese
+- [About (EN)](https://remover-metadados.com/en/about): About us in English
+- [Privacy Policy (PT-BR)](https://remover-metadados.com/privacidade): Privacy policy in Portuguese
+- [Privacy Policy (EN)](https://remover-metadados.com/en/privacy): Privacy policy in English
+- [Terms of Service (PT-BR)](https://remover-metadados.com/termos): Terms of service in Portuguese
+- [Terms of Service (EN)](https://remover-metadados.com/en/terms): Terms of service in English
+- [Contact (PT-BR)](https://remover-metadados.com/contato): Contact page in Portuguese
+- [Contact (EN)](https://remover-metadados.com/en/contact): Contact page in English
+
+## Optional
+
+- [llms-full.txt](https://remover-metadados.com/llms-full.txt): Full documentation for LLM consumption
