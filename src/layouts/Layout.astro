@@ -236,12 +236,11 @@ const schemaData = {
     <!-- Preload local client-side ZIP engine -->
     <script is:inline src="/vendor/jszip.min.js" defer></script>
 
-    <!-- Theme initialization: prevent flash of unstyled theme -->
+    <!-- Theme initialization: default is light mode; dark only if user explicitly toggled -->
     <script is:inline>
       (function () {
         const stored = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (stored === 'dark' || (!stored && prefersDark)) {
+        if (stored === 'dark') {
           document.documentElement.classList.add('dark');
         }
       })();
