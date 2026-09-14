@@ -9,8 +9,8 @@ const isEn = currentLocale === 'en';
 
 const t = isEn
   ? {
-      titleLine1: "Remove EXIF, GPS & AI Metadata",
-      titleLine2: "from Photos, PDFs and Documents",
+      titleLine1: "Metadata Remover",
+      titleLine2: "Remove EXIF, GPS & AI from Photos",
       subtitle: "Free, instant, and 100% private. Clean hidden location, camera details, and author history directly in your browser — nothing ever leaves your device.",
       formatsTag: "FORMATS",
       badgePrivacy: "100% PRIVATE · NOTHING LEAVES YOUR DEVICE",
@@ -39,8 +39,8 @@ const t = isEn
       dropAria: "Drag files here or click to select from device",
     }
   : {
-      titleLine1: "Remova Metadados, GPS e EXIF",
-      titleLine2: "de Fotos, PDFs e Documentos",
+      titleLine1: "Remover Metadados",
+      titleLine2: "Apague GPS, EXIF e Dados Ocultos",
       subtitle: "Grátis, instantâneo e 100% privado. Apague localização, dados de câmera e autoria ocultos direto no navegador — nada sai do seu dispositivo.",
       formatsTag: "FORMATOS",
       badgePrivacy: "100% PRIVADO · NADA SAI DO SEU DISPOSITIVO",
@@ -74,8 +74,8 @@ const t = isEn
   id="hero-section"
   data-i18n={JSON.stringify(t)}
   style="
-    min-height: calc(100vh - var(--header-h, 70px));
-    min-height: calc(100dvh - var(--header-h, 70px));
+    min-height: calc(100vh - var(--header-h, 77px));
+    min-height: calc(100dvh - var(--header-h, 77px));
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -87,7 +87,8 @@ const t = isEn
 
     <!-- Headline & Sentence -->
     <h1 class="hero-title" style="margin-bottom: 1.25rem;">
-      {t.titleLine1}{' '}<br class="hero-br" />{t.titleLine2}
+      <span class="hero-line">{t.titleLine1}</span>
+      <span class="hero-line">{t.titleLine2}</span>
     </h1>
     <p class="hero-subtitle">
       {t.subtitle}
@@ -420,13 +421,17 @@ const t = isEn
     letter-spacing: -0.035em;
   }
 
+  .hero-line {
+    display: block;
+  }
+
   .hero-subtitle {
     font-family: var(--font-heading);
     font-size: clamp(0.95rem, 1.8vw, 1.1rem);
     font-weight: 450;
     line-height: 1.65;
     color: var(--text-muted);
-    max-width: 680px;
+    max-width: 750px;
     margin: 0 auto 1.75rem auto;
     text-wrap: balance;
   }
@@ -475,8 +480,8 @@ const t = isEn
   }
 
   .drop-zone-main {
-    padding: clamp(2.5rem, 5vh, 4.5rem) clamp(1rem, 3vw, 2rem);
-    min-height: 210px;
+    padding: clamp(2.75rem, 5.5vh, 4.95rem) clamp(1.1rem, 3.3vw, 2.2rem);
+    min-height: 231px; /* 210px * 1.1 */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -510,8 +515,8 @@ const t = isEn
   }
 
   .drop-icon-box {
-    width: 46px;
-    height: 46px;
+    width: 50px;
+    height: 50px;
     border: 2px solid var(--border);
     box-shadow: 2px 2px 0px var(--shadow-color);
     background: var(--bg);
@@ -584,8 +589,8 @@ const t = isEn
     }
 
     .drop-zone-main {
-      padding: 3rem 0.85rem 2.85rem;
-      min-height: 190px;
+      padding: 3.3rem 0.935rem 3.135rem;
+      min-height: 209px; /* 190px * 1.1 */
     }
 
     .drop-privacy-badge {

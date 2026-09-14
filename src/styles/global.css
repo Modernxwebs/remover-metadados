@@ -9,11 +9,20 @@
 /* ── Reset ─────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 button, input, select, textarea { font-family: inherit; }
-html { scroll-behavior: smooth; }
+html {
+  font-size: 110%; /* scales all rem units by 10% across the whole website */
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 640px) {
+  html {
+    font-size: 100%;
+  }
+}
 
 /* ── Light mode ─────────────────────────────────────────── */
 :root {
-  --header-h:     70px;
+  --header-h:     77px;      /* 70px * 1.1 */
   --bg:           #f4f1ea;   /* warm neo-brutalist off-white */
   --text:         #121110;
   --text-muted:   #5c5955;
@@ -27,9 +36,9 @@ html { scroll-behavior: smooth; }
   --drop-border:  #121110;
   --card-bg:      #ffffff;
   --shadow-color: #121110;
-  --neo-shadow:    4px 4px 0px var(--shadow-color);
-  --neo-shadow-sm: 2px 2px 0px var(--shadow-color);
-  --neo-shadow-lg: 6px 6px 0px var(--shadow-color);
+  --neo-shadow:    4.5px 4.5px 0px var(--shadow-color);
+  --neo-shadow-sm: 2.2px 2.2px 0px var(--shadow-color);
+  --neo-shadow-lg: 6.6px 6.6px 0px var(--shadow-color);
   --badge-bg:     #eae6dc;
   --badge-text:   #121110;
   --btn-accent:   #fde047;
@@ -52,9 +61,9 @@ html.dark {
   --drop-border:  #f2efe9;
   --card-bg:      #181818;
   --shadow-color: #f2efe9;
-  --neo-shadow:    4px 4px 0px var(--shadow-color);
-  --neo-shadow-sm: 2px 2px 0px var(--shadow-color);
-  --neo-shadow-lg: 6px 6px 0px var(--shadow-color);
+  --neo-shadow:    4.5px 4.5px 0px var(--shadow-color);
+  --neo-shadow-sm: 2.2px 2.2px 0px var(--shadow-color);
+  --neo-shadow-lg: 6.6px 6.6px 0px var(--shadow-color);
   --badge-bg:     #252525;
   --badge-text:   #f2efe9;
   --btn-accent:   #fde047;
@@ -83,9 +92,9 @@ body {
 
 /* ── Layout ─────────────────────────────────────────────── */
 .page-wrap {
-  max-width: 1100px;
+  max-width: 1210px; /* 1100px * 1.1 */
   margin-inline: auto;
-  padding-inline: clamp(1rem, 3.5vw, 2rem);
+  padding-inline: clamp(1rem, 3.5vw, 2.25rem);
   text-align: center;
 }
 
@@ -104,16 +113,12 @@ h1 {
   line-height: 1.25;
   letter-spacing: -0.03em;
   color: var(--text);
-  max-width: 900px;
+  max-width: 990px; /* 900px * 1.1 */
   margin-inline: auto;
   text-wrap: balance;
 }
 
-@media (max-width: 640px) {
-  .hero-br {
-    display: none;
-  }
-}
+
 
 h2 {
   font-family: var(--font-mono);
