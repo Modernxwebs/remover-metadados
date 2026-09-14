@@ -17,7 +17,7 @@ export const faqs = [
   },
   {
     q: "Como retirar metadados de vários arquivos em lote?",
-    a: "Você pode selecionar dezenas de arquivos simultaneamente na área de seleção. Nosso removedor de metadados processa cada arquivo em paralelo direto na memória do seu navegador. Ao final, você pode baixar cada item individualmente ou clicar em 'Baixar todos (.zip)' para salvar tudo em um único arquivo compactado e higienizado.",
+    a: "Você pode selecionar dezenas de arquivos simultaneamente na área de seleção. Nosso removedor de metadados processa cada arquivo em paralelo direto na memória do seu navegador. Ao final, você pode baixar cada item individualmente ou clicar em 'Baixar todos (.zip)' para salvar tudo em um único arquivo compactado e limpo.",
   },
   {
     q: "É seguro usar este removedor de metadados para documentos confidenciais?",

@@ -9,7 +9,7 @@ export const faqsEn = [
   },
   {
     q: "How do I remove metadata from photos on iPhone, Android, or PC?",
-    a: "To remove metadata from photos, open this website in any modern browser (Chrome, Safari, Edge, Firefox) on your phone or computer, drag and drop or select your photos, and click 'Remove metadata'. In seconds, GPS coordinates, camera serial numbers, and timestamps are permanently erased, allowing you to download a sanitized copy.",
+    a: "To remove metadata from photos, open this website in any modern browser (Chrome, Safari, Edge, Firefox) on your phone or computer, drag and drop or select your photos, and click 'Remove metadata'. In seconds, GPS coordinates, camera serial numbers, and timestamps are permanently erased, and you can download a clean copy.",
   },
   {
     q: "Does removing EXIF metadata reduce photo or video quality?",
