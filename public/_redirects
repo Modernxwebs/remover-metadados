@@ -1,3 +1,0 @@
-# Redirect the Cloudflare Pages subdomain to the canonical custom domain
-# This prevents duplicate content indexing on pages.dev
-https://remover-metadados.pages.dev/* https://remover-metadados.com/:splat 301
