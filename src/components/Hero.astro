@@ -32,7 +32,7 @@ const t = isEn
       btnRemoveOne: "Clean",
       removeFileAria: "Remove file from list",
       btnDownloadOne: "Download",
-      zipFileName: "cleaned-metadata.zip",
+      zipFileName: "remover-metadados-cleaned.zip",
       generatingZip: "Creating ZIP...",
       downloadedZip: "✓ Downloaded (.zip)",
       errorZip: "Error creating ZIP",
@@ -65,7 +65,7 @@ const t = isEn
       btnRemoveOne: "Limpar",
       removeFileAria: "Remover arquivo da lista",
       btnDownloadOne: "Baixar",
-      zipFileName: "metadados-removidos.zip",
+      zipFileName: "remover-metadados-limpos.zip",
       generatingZip: "Gerando ZIP...",
       downloadedZip: "✓ Baixado (.zip)",
       errorZip: "Erro ao gerar ZIP",
@@ -324,10 +324,28 @@ const t = isEn
     fileCards.querySelectorAll('.download-one-btn').forEach(btn =>
       btn.addEventListener('click', e => {
         const entry = fileMap.get(e.currentTarget.dataset.id);
-        if (entry?.result) downloadBlob(entry.result.blob, entry.result.filename);
+        if (entry?.result) {
+          downloadBlob(entry.result.blob, entry.result.filename);
+          track('file_downloaded', {
+            file_type: entry.file?.name.split('.').pop()?.toLowerCase() || 'unknown',
+            file_size_kb: Math.round(entry.file?.size / 1024),
+            source: 'card_button',
+          });
+        }
       }));
     fileCards.querySelectorAll('.remove-btn').forEach(btn =>
-      btn.addEventListener('click', e => { fileMap.delete(e.currentTarget.dataset.id); updateUI(); }));
+      btn.addEventListener('click', e => {
+        const id = e.currentTarget.dataset.id;
+        const entry = fileMap.get(id);
+        if (entry) {
+          track('file_removed', {
+            file_type: entry.file?.name.split('.').pop()?.toLowerCase() || 'unknown',
+            status_at_removal: entry.status,
+          });
+        }
+        fileMap.delete(id);
+        updateUI();
+      }));
 
     const count = fileMap.size;
     dropCounter.textContent = `${count} ${count !== 1 ? (t.pluralFiles || 'arquivos') : (t.singularFile || 'arquivo')}`;
@@ -369,6 +387,7 @@ const t = isEn
       // ⚠️ Event: processing error
       track('metadata_error', {
         file_type: entry.file.name.split('.').pop()?.toLowerCase() || 'unknown',
+        error_message: err?.message || 'unknown_error',
       });
     }
     renderCards();
@@ -378,6 +397,9 @@ const t = isEn
     if (buttonMode === 'process') {
       const ids = [...fileMap.keys()].filter(id => fileMap.get(id).status === 'waiting');
       if (!ids.length) return;
+      track('process_all_started', {
+        file_count: ids.length,
+      });
       buttonMode = 'processing';
       processAllBtn.disabled = true;
       processAllBtn.innerHTML = `<span class="spin">↻</span> ${t.processingBtn || 'Removendo metadados...'}`;
@@ -405,7 +427,7 @@ const t = isEn
         processAllBtn.innerHTML = `<span class="spin">↻</span> ${t.generatingZip || 'Gerando ZIP...'}`;
         try {
           const zip = await bundleAsZip(doneEntries.map(e => e.result));
-          downloadBlob(zip, t.zipFileName || 'metadados-removidos.zip');
+          downloadBlob(zip, t.zipFileName || 'remover-metadados-limpos.zip');
           // ✅ Event: ZIP bundle downloaded
           track('zip_downloaded', { file_count: doneEntries.length });
           processAllBtn.innerHTML = t.downloadedZip || `✓ Baixado (.zip)`;
