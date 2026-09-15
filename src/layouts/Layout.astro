@@ -22,11 +22,11 @@ const siteUrl = 'https://remover-metadados.com';
 
 const {
   title = isEn
-    ? 'Metadata Remover — Remove EXIF, GPS & AI Metadata from Photos, PDFs Free'
-    : 'Remover Metadados — Remova GPS, EXIF e Dados Ocultos de Fotos, PDFs e Documentos Grátis',
+    ? 'Metadata Remover — Remove EXIF Data & GPS from Photos Free'
+    : 'Remover Metadados Online — Limpe EXIF e GPS de Fotos e PDFs',
   description = isEn
-    ? 'Metadata Remover: free, 100% private, no uploads. Remove EXIF data, GPS location, camera info, and AI tags from photos, PDFs, and documents instantly in your browser.'
-    : 'Remover Metadados online, grátis e 100% privado. Apague GPS, EXIF, autoria e dados ocultos de fotos, PDFs e documentos direto no navegador — nenhum arquivo sai do seu dispositivo.',
+    ? 'Remove metadata from photos, PDFs, and documents online free. Remove EXIF data, GPS location, and author info locally in your browser with 100% privacy.'
+    : 'Remova metadados de fotos, PDFs e documentos online e grátis. Apague GPS, dados EXIF e autoria direto no navegador com 100% de privacidade (sem uploads).',
   canonicalUrl,
   alternatePt,
   alternateEn,
@@ -159,6 +159,65 @@ const schemaData = {
           'text': faq.a,
         },
       })),
+    },
+    {
+      '@type': 'HowTo',
+      '@id': isEn ? `${siteUrl}/en/#howto` : `${siteUrl}/#howto`,
+      'name': isEn
+        ? 'How to Remove Metadata from Photos, PDFs, and Documents Online'
+        : 'Como Remover Metadados de Fotos, PDFs e Documentos Online',
+      'description': isEn
+        ? 'Learn how to remove EXIF data, GPS coordinates, camera specs, and author history from files locally in your browser.'
+        : 'Aprenda como limpar dados EXIF, coordenadas GPS, dados de câmera e histórico de autoria de arquivos direto no navegador.',
+      'inLanguage': isEn ? 'en' : 'pt-BR',
+      'totalTime': 'PT10S',
+      'step': isEn
+        ? [
+            {
+              '@type': 'HowToStep',
+              'position': 1,
+              'name': 'Select or Drop Files',
+              'text': 'Drag and drop your photos, PDFs, or documents into the clean zone, or click to choose files from your device.',
+              'url': `${siteUrl}/en/#hero-section`,
+            },
+            {
+              '@type': 'HowToStep',
+              'position': 2,
+              'name': 'Instant In-Browser Sanitization',
+              'text': 'The tool removes EXIF tags, GPS location, and author data completely inside your browser without uploading files to remote servers.',
+              'url': `${siteUrl}/en/#how-it-works`,
+            },
+            {
+              '@type': 'HowToStep',
+              'position': 3,
+              'name': 'Download Clean Files',
+              'text': 'Download each sanitized file individually or download all cleaned files bundled together in a ZIP archive.',
+              'url': `${siteUrl}/en/#hero-section`,
+            },
+          ]
+        : [
+            {
+              '@type': 'HowToStep',
+              'position': 1,
+              'name': 'Selecione ou Arraste os Arquivos',
+              'text': 'Arraste suas fotos, PDFs ou documentos para a área de limpeza ou clique para escolher arquivos do seu dispositivo.',
+              'url': `${siteUrl}/#hero-section`,
+            },
+            {
+              '@type': 'HowToStep',
+              'position': 2,
+              'name': 'Limpeza Automática no Navegador',
+              'text': 'A ferramenta apaga dados EXIF, GPS e histórico de autoria diretamente no seu navegador, sem envio para servidores externos.',
+              'url': `${siteUrl}/#como-funciona`,
+            },
+            {
+              '@type': 'HowToStep',
+              'position': 3,
+              'name': 'Baixe os Arquivos Higienizados',
+              'text': 'Faça o download de cada arquivo limpo individualmente ou baixe todos reunidos em um arquivo ZIP protegido.',
+              'url': `${siteUrl}/#hero-section`,
+            },
+          ],
     },
   ],
 };
