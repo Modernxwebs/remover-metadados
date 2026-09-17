@@ -12,6 +12,7 @@ const isEn = currentLocale === 'en';
 const isSubpage = Astro.props.isSubpage || false;
 const ptSwitchUrl = Astro.props.ptUrl || '/';
 const enSwitchUrl = Astro.props.enUrl || '/en/';
+const currentPath = Astro.url.pathname;
 
 const homeUrl = isEn ? '/en/' : '/';
 const brandName = isEn ? 'Metadata Remover' : 'Remover Metadados';
@@ -25,7 +26,7 @@ const navLinks = isEn
   : [
       { href: isSubpage ? '/#como-funciona' : '#como-funciona', label: 'Como funciona' },
       { href: isSubpage ? '/#formatos' : '#formatos', label: 'Formatos' },
-      { href: isSubpage ? '/#guia-metadados' : '#guia-metadados', label: 'Guia' },
+      { href: '/guias/', label: 'Guias' },
       { href: isSubpage ? '/#faq' : '#faq', label: 'FAQ' },
     ];
 ---
@@ -50,9 +51,18 @@ const navLinks = isEn
     <div class="header-right">
       <!-- Desktop nav -->
       <nav class="desktop-nav" aria-label={isEn ? "Main navigation" : "Navegação principal"}>
-        {navLinks.map((item) => (
-          <a href={item.href} class="nav-link">{item.label}</a>
-        ))}
+        {navLinks.map((item) => {
+          const isActive = item.href === '/guias/' && currentPath.startsWith('/guias');
+          return (
+            <a
+              href={item.href}
+              class:list={['nav-link', { active: isActive }]}
+              aria-current={isActive ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          );
+        })}
       </nav>
 
       <!-- Language switcher -->
@@ -112,12 +122,19 @@ const navLinks = isEn
   <!-- Mobile Dropdown Navigation Drawer -->
   <div id="mobile-nav-panel" class="mobile-nav-panel">
     <nav class="mobile-nav-links" aria-label={isEn ? "Mobile navigation" : "Navegação mobile"}>
-      {navLinks.map((item) => (
-        <a href={item.href} class="mobile-nav-link">
-          <span>{item.label}</span>
-          <span class="mobile-nav-arrow" aria-hidden="true">&rarr;</span>
-        </a>
-      ))}
+      {navLinks.map((item) => {
+        const isActive = item.href === '/guias/' && currentPath.startsWith('/guias');
+        return (
+          <a
+            href={item.href}
+            class:list={['mobile-nav-link', { active: isActive }]}
+            aria-current={isActive ? 'page' : undefined}
+          >
+            <span>{item.label}</span>
+            <span class="mobile-nav-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        );
+      })}
     </nav>
   </div>
 </header>
@@ -183,6 +200,12 @@ const navLinks = isEn
     display: flex;
     align-items: center;
     gap: 1rem;
+  }
+
+  .nav-link.active {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 
   .lang-switcher {
@@ -263,7 +286,8 @@ const navLinks = isEn
   }
 
   .mobile-nav-link:active,
-  .mobile-nav-link:hover {
+  .mobile-nav-link:hover,
+  .mobile-nav-link.active {
     background: var(--btn-accent);
     color: var(--btn-accent-text);
     transform: translate(-1px, -1px);

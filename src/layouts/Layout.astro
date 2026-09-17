@@ -13,6 +13,7 @@ export interface Props {
   alternatePt?: string;
   alternateEn?: string;
   alternateXDefault?: string;
+  includeHreflang?: boolean;
   noindex?: boolean;
 }
 
@@ -32,6 +33,7 @@ const {
   alternatePt,
   alternateEn,
   alternateXDefault,
+  includeHreflang = true,
   noindex = false,
 } = Astro.props;
 
@@ -89,7 +91,7 @@ const keywords = (
 
 const currentFaqs = isEn ? faqsEn : faqs;
 
-const schemaData = {
+const schemaData: any = {
   '@context': 'https://schema.org',
   '@graph': [
     {
@@ -222,6 +224,15 @@ const schemaData = {
     },
   ],
 };
+
+// FAQPage and HowTo describe the homepage sections only. Keep those entities
+// off utility and guide pages so their structured data matches visible content.
+const isHomepage = pageUrl === `${siteUrl}/` || pageUrl === `${siteUrl}/en/`;
+if (!isHomepage) {
+  schemaData['@graph'] = schemaData['@graph'].filter(
+    (entity: { '@type': string }) => entity['@type'] !== 'FAQPage' && entity['@type'] !== 'HowTo',
+  );
+}
 ---
 
 <!DOCTYPE html>
@@ -251,10 +262,11 @@ const schemaData = {
     <!-- Canonical URL -->
     <link rel="canonical" href={pageUrl} />
 
-    <!-- Multilingual Hreflang Tags for SEO -->
-    <link rel="alternate" hreflang="pt-BR" href={ptHreflang} />
-    <link rel="alternate" hreflang="en" href={enHreflang} />
-    <link rel="alternate" hreflang="x-default" href={xDefaultHreflang} />
+    {includeHreflang && <>
+      <link rel="alternate" hreflang="pt-BR" href={ptHreflang} />
+      <link rel="alternate" hreflang="en" href={enHreflang} />
+      <link rel="alternate" hreflang="x-default" href={xDefaultHreflang} />
+    </>}
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />

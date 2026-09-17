@@ -6,6 +6,9 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://remover-metadados.com',
+  redirects: {
+    '/remover-metadados-de-video/': '/guias/remover-metadados-de-video/',
+  },
   vite: {
     plugins: [tailwindcss()]
   },
@@ -20,7 +23,6 @@ export default defineConfig({
       },
       changefreq: 'weekly',
       priority: 0.7,
-      lastmod: new Date(),
     }),
   ],
   i18n: {

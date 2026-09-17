@@ -1,0 +1,1395 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const title = 'Guias para Remover Metadados | Fotos, Vídeos e PDFs';
+const description = 'Aprenda a remover metadados de vídeos (MP4, MOV), imagens (EXIF, GPS) e PDFs online. Guias práticos com limpeza 100% no navegador e total privacidade.';
+const canonicalUrl = 'https://remover-metadados.com/guias/';
+
+const guides = [
+  {
+    id: 'imagem',
+    category: 'Fotos & Imagens',
+    categorySlug: 'imagem',
+    typeTag: 'EXIF · GPS · IPTC',
+    title: 'Remover metadados de imagem e foto',
+    slug: '/guias/remover-metadados-de-imagem/',
+    readTime: '4 min de leitura',
+    icon: 'image',
+    badge: 'Mais Acessado',
+    summary: 'Veja quais dados EXIF fotos de celular e câmeras carregam e aprenda a criar cópias 100% limpas sem expor a localização da sua casa ou trabalho.',
+    highlights: [
+      'Apaga geolocalização exata (latitude, longitude, altitude)',
+      'Remove modelo da câmera, número de série, lente e ISO',
+      'Suporte para limpeza em lote com download em arquivo ZIP',
+    ],
+    formats: ['JPEG', 'PNG', 'WEBP', 'HEIC', 'GIF'],
+  },
+  {
+    id: 'video',
+    category: 'Áudio & Vídeo',
+    categorySlug: 'video',
+    typeTag: 'MP4 · MOV · M4V',
+    title: 'Remover metadados de vídeo online',
+    slug: '/guias/remover-metadados-de-video/',
+    readTime: '3 min de leitura',
+    icon: 'video',
+    badge: 'Essencial',
+    summary: 'Aprenda a limpar localização, dados do dispositivo de gravação e tags ocultas antes de compartilhar ou publicar vídeos na internet.',
+    highlights: [
+      'Elimina tags de GPS gravadas pelo smartphone ou drone',
+      'Remove informações do gravador, software e usuário',
+      'Processamento nativo sem perda de resolução visual',
+    ],
+    formats: ['MP4', 'MOV', 'M4V', 'MP3'],
+  },
+  {
+    id: 'pdf',
+    category: 'Documentos',
+    categorySlug: 'pdf',
+    typeTag: 'PDF · XMP · OFFICE',
+    title: 'Remover metadados de PDF e Documentos',
+    slug: '/guias/remover-metadados-pdf/',
+    readTime: '3 min de leitura',
+    icon: 'pdf',
+    badge: 'LGPD & Compliance',
+    summary: 'Remova autor, título, aplicativo criador, histórico de revisões e fluxos XMP de contratos, petições, relatórios e currículos.',
+    highlights: [
+      'Exclui nome do autor, empresa e pastas do computador',
+      'Higieniza histórico de edições e comentários excluídos',
+      'Preserva a formatação, páginas e o layout do PDF intactos',
+    ],
+    formats: ['PDF', 'DOCX', 'XLSX', 'PPTX'],
+  },
+];
+
+const faqs = [
+  {
+    q: 'O que são metadados e por que devo removê-los?',
+    a: 'Metadados são informações ocultas gravadas automaticamente quando você tira uma foto, grava um vídeo ou salva um documento. Podem incluir coordenadas exatas de GPS de onde você estava, modelo e número de série do seu aparelho, nome completo de quem editou o arquivo e datas exatas. Remover esses dados antes de enviar ou publicar evita riscos de doxxing, vazamento corporativo e perseguição.',
+  },
+  {
+    q: 'A ferramenta reduz a qualidade da imagem ou do vídeo ao limpar?',
+    a: 'Não. A ferramenta remove exclusivamente os cabeçalhos de metadados embutidos nos contêineres do arquivo (como blocos EXIF, XMP e átomos MP4). A renderização gráfica, pixels e streams de áudio são preservados com a mais alta fidelidade.',
+  },
+  {
+    q: 'Por que o processamento local no navegador é mais seguro que outros sites?',
+    a: 'Removedores tradicionais exigem que você faça upload do arquivo para um servidor remoto, criando cópias e brechas de segurança. Nossa tecnologia utiliza APIs HTML5 e manipulação binária no próprio navegador: seus arquivos nunca trafegam pela internet e não saem do seu computador ou celular.',
+  },
+  {
+    q: 'Como verificar se os metadados foram realmente excluídos?',
+    a: 'Após baixar o arquivo limpo, você pode inspecionar as propriedades no seu sistema operacional (botão direito > Propriedades > Detalhes no Windows, ou Obter Informações no Mac) ou reabrir o arquivo em qualquer leitor de EXIF para constatar que os campos foram zerados.',
+  },
+];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  'itemListElement': [
+    {
+      '@type': 'ListItem',
+      'position': 1,
+      'name': 'Início',
+      'item': 'https://remover-metadados.com/',
+    },
+    {
+      '@type': 'ListItem',
+      'position': 2,
+      'name': 'Guias',
+      'item': 'https://remover-metadados.com/guias/',
+    },
+  ],
+};
+
+const collectionSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': 'https://remover-metadados.com/guias/#collection',
+  'url': 'https://remover-metadados.com/guias/',
+  'name': 'Guias Práticos para Remover Metadados | Remover Metadados',
+  'description': description,
+  'inLanguage': 'pt-BR',
+  'mainEntity': {
+    '@type': 'ItemList',
+    'itemListElement': guides.map((guide, idx) => ({
+      '@type': 'ListItem',
+      'position': idx + 1,
+      'url': `https://remover-metadados.com${guide.slug}`,
+      'name': guide.title,
+      'description': guide.summary,
+    })),
+  },
+};
+---
+
+<Layout
+  title={title}
+  description={description}
+  lang="pt-BR"
+  canonicalUrl={canonicalUrl}
+  includeHreflang={false}
+>
+  <!-- Schema.org Rich Structured Data for Guide Hub Collection -->
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(collectionSchema)} />
+
+  <Header lang="pt-BR" ptUrl="/guias/" enUrl="/en/" isSubpage={true} />
+
+  <main class="guides-main">
+    <div class="page-wrap guides-container">
+
+      <!-- Breadcrumbs -->
+      <nav class="guides-breadcrumb" aria-label="Navegação estrutural">
+        <a href="/">Remover Metadados</a>
+        <span class="crumb-separator" aria-hidden="true">/</span>
+        <span class="crumb-active" aria-current="page">Guias</span>
+      </nav>
+
+      <!-- Hero Header -->
+      <header class="guides-hero">
+        <div class="kicker-wrap">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span class="guides-kicker">CENTRAL DE PRIVACIDADE & GUIAS TÉCNICOS</span>
+        </div>
+
+        <h1 class="guides-hero-title">Guias Práticos para Remover Metadados com Segurança</h1>
+
+        <p class="guides-hero-lead">
+          Fotos, vídeos e documentos carregam dados invisíveis que não aparecem na tela: <strong>coordenadas de GPS</strong>, aparelho utilizado, autoria e histórico de edições. Explore nossos tutoriais passo a passo para higienizar seus arquivos localmente no navegador, com total sigilo e sem uploads para servidores.
+        </p>
+
+        <!-- Technical Trust Chips -->
+        <div class="tech-metrics-bar">
+          <div class="metric-item">
+            <span class="metric-icon" aria-hidden="true">🔒</span>
+            <span class="metric-text"><strong>100% Local</strong> (Zero Uploads)</span>
+          </div>
+          <div class="metric-divider" aria-hidden="true"></div>
+          <div class="metric-item">
+            <span class="metric-icon" aria-hidden="true">⚡</span>
+            <span class="metric-text"><strong>Limpeza Instantânea</strong> no Navegador</span>
+          </div>
+          <div class="metric-divider" aria-hidden="true"></div>
+          <div class="metric-item">
+            <span class="metric-icon" aria-hidden="true">🛡️</span>
+            <span class="metric-text"><strong>Conforme LGPD</strong> & Privacidade Absoluta</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Category Filter Bar -->
+      <section class="guides-filter-section" aria-label="Filtrar guias por formato">
+        <div class="filter-header">
+          <span class="filter-label">ESCOLHA UMA CATEGORIA:</span>
+          <span class="guides-count-pill">3 GUIAS DISPONÍVEIS</span>
+        </div>
+        <div class="filter-pills" role="tablist" id="filter-pills">
+          <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">
+            <span class="filter-name">Todos os Guias</span>
+            <span class="filter-badge">3</span>
+          </button>
+          <button class="filter-btn" data-filter="imagem" role="tab" aria-selected="false">
+            <span class="filter-name">Fotos & Imagens</span>
+            <span class="filter-badge">EXIF</span>
+          </button>
+          <button class="filter-btn" data-filter="video" role="tab" aria-selected="false">
+            <span class="filter-name">Áudio & Vídeo</span>
+            <span class="filter-badge">MP4</span>
+          </button>
+          <button class="filter-btn" data-filter="pdf" role="tab" aria-selected="false">
+            <span class="filter-name">Documentos</span>
+            <span class="filter-badge">PDF</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Guides Bento Grid -->
+      <section class="guides-grid-section" aria-labelledby="section-guides-title">
+        <h2 id="section-guides-title" class="sr-only">Tutoriais Disponíveis</h2>
+
+        <div class="guides-grid" id="guides-container">
+          {guides.map((guide) => (
+            <article class="guide-card" data-category={guide.categorySlug}>
+              <!-- Top Metadata Strip -->
+              <div class="guide-card-top">
+                <div class="guide-card-header-left">
+                  <div class="guide-icon-box" aria-hidden="true">
+                    {guide.icon === 'image' && (
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                        <circle cx="9" cy="9" r="2"/>
+                        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+                      </svg>
+                    )}
+                    {guide.icon === 'video' && (
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m22 8-6 4 6 4V8Z"/>
+                        <rect width="14" height="12" x="2" y="6" rx="2" ry="2"/>
+                      </svg>
+                    )}
+                    {guide.icon === 'pdf' && (
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <line x1="10" y1="9" x2="8" y2="9"/>
+                      </svg>
+                    )}
+                  </div>
+                  <div class="guide-category-meta">
+                    <span class="guide-cat-text">{guide.category}</span>
+                    <span class="guide-type-pill">{guide.typeTag}</span>
+                  </div>
+                </div>
+
+                <div class="guide-card-header-right">
+                  <span class="guide-badge-pill">{guide.badge}</span>
+                </div>
+              </div>
+
+              <!-- Main Title & Summary -->
+              <div class="guide-card-content">
+                <h3 class="guide-title">
+                  <a href={guide.slug} class="guide-title-link">
+                    {guide.title}
+                  </a>
+                </h3>
+
+                <p class="guide-desc">{guide.summary}</p>
+
+                <!-- What you will learn checklist -->
+                <div class="guide-highlights-box">
+                  <div class="highlights-heading">O QUE VOCÊ APRENDE A LIMPAR:</div>
+                  <ul class="highlights-list">
+                    {guide.highlights.map((item) => (
+                      <li>
+                        <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Bottom Bar: Formats & Action CTA -->
+              <div class="guide-card-footer">
+                <div class="formats-tags">
+                  {guide.formats.map((fmt) => (
+                    <span class="fmt-tag">{fmt}</span>
+                  ))}
+                  <span class="read-time-tag">⏱️ {guide.readTime}</span>
+                </div>
+
+                <a href={guide.slug} class="guide-action-btn">
+                  <span>Ler o Guia Completo</span>
+                  <span class="btn-arrow" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- Knowledge Spotlight Section: Por que limpar metadados? -->
+      <section class="knowledge-section" aria-labelledby="knowledge-heading">
+        <div class="knowledge-header">
+          <div class="kicker-wrap-sm">
+            <span class="guides-kicker">SEGURANÇA DA INFORMAÇÃO</span>
+          </div>
+          <h2 id="knowledge-heading" class="knowledge-title">Por que você deve remover metadados antes de compartilhar?</h2>
+          <p class="knowledge-subtitle">Entenda os três principais riscos de expor metadados em arquivos digitais no seu dia a dia.</p>
+        </div>
+
+        <div class="knowledge-grid">
+          <div class="knowledge-card">
+            <div class="knowledge-card-badge">01 · GEOLOCALIZAÇÃO</div>
+            <h3 class="knowledge-card-title">Coordenadas de GPS Exatas</h3>
+            <p class="knowledge-card-text">
+              Smartphones e câmeras gravam latitude e longitude exatas de onde você tirou a foto ou gravou o vídeo. Ao postar em redes sociais ou fóruns, criminosos virtuais e stalkers podem descobrir seu endereço residencial ou rotina.
+            </p>
+          </div>
+
+          <div class="knowledge-card">
+            <div class="knowledge-card-badge">02 · IDENTIDADE & LGPD</div>
+            <h3 class="knowledge-card-title">Autoria e Dados Corporativos</h3>
+            <p class="knowledge-card-text">
+              Arquivos PDF, DOCX e planilhas gravam nome completo do usuário, razão social da empresa, comentários internos deletados e caminhos de pastas confidenciais no seu computador ou servidor de rede.
+            </p>
+          </div>
+
+          <div class="knowledge-card">
+            <div class="knowledge-card-badge">03 · PRIVACIDADE REAL</div>
+            <h3 class="knowledge-card-title">Processamento 100% no Dispositivo</h3>
+            <p class="knowledge-card-text">
+              A maioria dos sites envia seus arquivos confidenciais para servidores remotos na nuvem. Nossa ferramenta higieniza os arquivos no seu próprio dispositivo, garantindo que nada saia da sua máquina.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="guides-faq-section" aria-labelledby="faq-section-title">
+        <div class="knowledge-header">
+          <div class="kicker-wrap-sm">
+            <span class="guides-kicker">DÚVIDAS FREQUENTES</span>
+          </div>
+          <h2 id="faq-section-title" class="knowledge-title">Perguntas Frequentes sobre Metadados</h2>
+        </div>
+
+        <div class="faq-accordion">
+          {faqs.map((faq) => (
+            <details class="faq-item">
+              <summary class="faq-summary">
+                <span class="faq-question">{faq.q}</span>
+                <span class="faq-icon" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+              </summary>
+              <div class="faq-answer">
+                <p>{faq.a}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <!-- High-Conversion Neo-Brutalist CTA Banner -->
+      <section class="guides-cta-banner" aria-labelledby="cta-banner-title">
+        <div class="cta-badge">
+          <span class="cta-pulse" aria-hidden="true">●</span>
+          <span>FERRAMENTA GRATUITA & ILIMITADA</span>
+        </div>
+
+        <h2 id="cta-banner-title" class="cta-title">
+          Pronto para higienizar seus arquivos agora?
+        </h2>
+
+        <p class="cta-desc">
+          Arraste suas fotos, vídeos ou PDFs diretamente para a nossa ferramenta online. A limpeza acontece em segundos, no seu navegador, sem envio a servidores e com conformidade total à LGPD.
+        </p>
+
+        <div class="cta-actions">
+          <a href="/#hero-section" class="btn-cta-primary">
+            <span>Abrir Removedor de Metadados</span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <a href="/#formatos" class="btn-cta-secondary">
+            <span>Ver Todos os Formatos</span>
+          </a>
+        </div>
+
+        <div class="cta-trust-bar">
+          <span>✓ Sem Uploads para a Nuvem</span>
+          <span>✓ 100% Gratuito</span>
+          <span>✓ Sem Cadastro ou Login</span>
+          <span>✓ Sem Perda de Qualidade</span>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer lang="pt-BR" />
+</Layout>
+
+<!-- Client-side Interactive Filter Script -->
+<script is:inline>
+  (function () {
+    const filterButtons = document.querySelectorAll('#filter-pills .filter-btn');
+    const cards = document.querySelectorAll('#guides-container .guide-card');
+
+    if (!filterButtons.length || !cards.length) return;
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-filter');
+
+        // Update button states
+        filterButtons.forEach((b) => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+
+        // Filter cards smoothly
+        cards.forEach((card) => {
+          const category = card.getAttribute('data-category');
+          if (filter === 'all' || category === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Smooth Web Animations API for FAQ Accordion
+    class FaqAccordion {
+      constructor(el) {
+        this.el = el;
+        this.summary = el.querySelector('summary');
+        this.content = el.querySelector('.faq-answer');
+        this.animation = null;
+        this.isClosing = false;
+        this.isExpanding = false;
+        this.summary?.addEventListener('click', (e) => this.onClick(e));
+      }
+
+      onClick(e) {
+        e.preventDefault();
+        this.el.style.overflow = 'hidden';
+        if (this.isClosing || !this.el.open) {
+          this.open();
+        } else if (this.isExpanding || this.el.open) {
+          this.shrink();
+        }
+      }
+
+      shrink() {
+        this.isClosing = true;
+        const startHeight = `${this.el.offsetHeight}px`;
+        const endHeight = `${this.summary.offsetHeight}px`;
+
+        if (this.animation) this.animation.cancel();
+
+        this.animation = this.el.animate({
+          height: [startHeight, endHeight]
+        }, {
+          duration: 250,
+          easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
+        });
+
+        this.content?.animate({
+          opacity: [1, 0],
+          transform: ['translateY(0px)', 'translateY(-6px)']
+        }, {
+          duration: 200,
+          easing: 'ease-out'
+        });
+
+        this.animation.onfinish = () => this.onAnimationFinish(false);
+        this.animation.oncancel = () => (this.isClosing = false);
+      }
+
+      open() {
+        this.el.style.height = `${this.el.offsetHeight}px`;
+        this.el.open = true;
+        window.requestAnimationFrame(() => this.expand());
+      }
+
+      expand() {
+        this.isExpanding = true;
+        const startHeight = `${this.el.offsetHeight}px`;
+        const endHeight = `${this.summary.offsetHeight + (this.content?.offsetHeight || 0)}px`;
+
+        if (this.animation) this.animation.cancel();
+
+        this.animation = this.el.animate({
+          height: [startHeight, endHeight]
+        }, {
+          duration: 280,
+          easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
+        });
+
+        this.content?.animate({
+          opacity: [0, 1],
+          transform: ['translateY(-6px)', 'translateY(0px)']
+        }, {
+          duration: 260,
+          easing: 'ease-out'
+        });
+
+        this.animation.onfinish = () => this.onAnimationFinish(true);
+        this.animation.oncancel = () => (this.isExpanding = false);
+      }
+
+      onAnimationFinish(open) {
+        this.el.open = open;
+        this.animation = null;
+        this.isClosing = false;
+        this.isExpanding = false;
+        this.el.style.height = '';
+        this.el.style.overflow = '';
+      }
+    }
+
+    document.querySelectorAll('details.faq-item').forEach((el) => {
+      new FaqAccordion(el);
+    });
+  })();
+</script>
+
+<style>
+  /* ── Layout & Base ───────────────────────────────────────── */
+  .guides-main {
+    min-height: 70vh;
+    padding: 1.5rem 0 6rem;
+  }
+
+  .guides-container {
+    text-align: left;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* ── Breadcrumb ─────────────────────────────────────────── */
+  .guides-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0.5rem 0 2.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: left;
+  }
+
+  .guides-breadcrumb a {
+    color: var(--text);
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .guides-breadcrumb a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .crumb-separator {
+    color: var(--text-faint);
+  }
+
+  .crumb-active {
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  /* ── Hero Header ────────────────────────────────────────── */
+  .guides-hero {
+    max-width: 880px;
+    margin: 0 auto 3.5rem;
+    text-align: center;
+  }
+
+  .kicker-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    padding: 0.35rem 0.85rem;
+    border-radius: 3px;
+    margin-bottom: 1.25rem;
+  }
+
+  .kicker-wrap-sm {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981; /* bright emerald */
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+    animation: pulseGlow 2s infinite ease-in-out;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.25); opacity: 0.65; }
+  }
+
+  .guides-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    text-transform: uppercase;
+  }
+
+  .guides-hero-title {
+    margin: 0 auto 1.25rem;
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+    color: var(--text);
+    text-align: center;
+  }
+
+  .guides-hero-lead {
+    font-size: clamp(0.98rem, 2vw, 1.12rem);
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 760px;
+    margin: 0 auto 2rem;
+    text-align: center;
+  }
+
+  .guides-hero-lead strong {
+    color: var(--text);
+  }
+
+  /* ── Technical Metrics Strip ────────────────────────────── */
+  .tech-metrics-bar {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem 1.5rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    padding: 0.75rem 1.25rem;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    margin: 0 auto;
+  }
+
+  .metric-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--text-muted);
+  }
+
+  .metric-item strong {
+    color: var(--text);
+  }
+
+  .metric-icon {
+    font-size: 0.95rem;
+  }
+
+  .metric-divider {
+    width: 1px;
+    height: 16px;
+    background: var(--border-light);
+  }
+
+  /* ── Category Filter Bar ────────────────────────────────── */
+  .guides-filter-section {
+    margin-bottom: 2.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .filter-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.85rem;
+  }
+
+  .filter-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .guides-count-pill {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--btn-accent-text);
+    background: var(--btn-accent);
+    border: 1.5px solid var(--border);
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  .filter-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.55rem 0.95rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--text);
+    cursor: pointer;
+    transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.12s ease;
+  }
+
+  .filter-btn:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .filter-btn.active {
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .filter-badge {
+    font-size: 0.65rem;
+    padding: 0.1rem 0.4rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--text);
+    margin-left: 0.2rem;
+  }
+
+  .filter-btn.active .filter-badge {
+    background: #121110;
+    color: #ffffff;
+    border-color: #121110;
+  }
+
+  /* ── Guides Bento Grid ──────────────────────────────────── */
+  .guides-grid-section {
+    margin-bottom: 5rem;
+  }
+
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    text-align: left;
+  }
+
+  .guide-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--card-bg);
+    border: 2.5px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 4px;
+    padding: 1.5rem;
+    text-align: left;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .guide-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--neo-shadow-lg);
+  }
+
+  .guide-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1.5px solid var(--border-light);
+    text-align: left;
+  }
+
+  .guide-card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: left;
+  }
+
+  .guide-icon-box {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .guide-category-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    text-align: left;
+  }
+
+  .guide-cat-text {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: left;
+  }
+
+  .guide-type-pill {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-align: left;
+  }
+
+  .guide-badge-pill {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--badge-text);
+    background: var(--badge-bg);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.45rem;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .guide-card-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .guide-title {
+    font-family: var(--font-heading);
+    font-size: 1.32rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.85rem;
+    text-align: left;
+  }
+
+  .guide-title-link {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .guide-card:hover .guide-title-link {
+    color: var(--link-color);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .guide-desc {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.65;
+    margin: 0 0 1.25rem;
+    flex-grow: 1;
+    text-align: left;
+  }
+
+  .guide-highlights-box {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    box-shadow: 1.5px 1.5px 0 var(--shadow-color);
+    padding: 0.85rem;
+    border-radius: 3px;
+    margin-bottom: 1.5rem;
+    text-align: left;
+  }
+
+  .highlights-heading {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    margin-bottom: 0.55rem;
+    text-align: left;
+  }
+
+  .highlights-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    text-align: left;
+  }
+
+  .highlights-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+    text-align: left;
+  }
+
+  .check-icon {
+    color: #10b981;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  .guide-card-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.95rem;
+    padding-top: 1.15rem;
+    border-top: 1.5px solid var(--border-light);
+    margin-top: auto;
+    text-align: left;
+  }
+
+  .formats-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+    text-align: left;
+  }
+
+  .fmt-tag {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+  }
+
+  .read-time-tag {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  .guide-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding: 0.75rem 1rem;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border: 2px solid var(--border);
+    box-shadow: 2.5px 2.5px 0 var(--shadow-color);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.12s ease, background 0.15s ease, color 0.15s ease, box-shadow 0.12s ease;
+  }
+
+  .guide-card:hover .guide-action-btn {
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 4px 4px 0 var(--shadow-color);
+  }
+
+  .btn-arrow {
+    transition: transform 0.15s ease;
+  }
+
+  .guide-card:hover .btn-arrow {
+    transform: translateX(4px);
+  }
+
+  /* ── Knowledge Section ──────────────────────────────────── */
+  .knowledge-section {
+    padding: 3.5rem 0;
+    border-top: 2px solid var(--border);
+    margin-bottom: 4rem;
+    text-align: left;
+  }
+
+  .knowledge-header {
+    text-align: center;
+    max-width: 780px;
+    margin: 0 auto 2.75rem;
+  }
+
+  .knowledge-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.4rem, 3.5vw, 2.1rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    margin: 0 0 0.85rem;
+    text-align: center;
+  }
+
+  .knowledge-subtitle {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+    text-align: center;
+  }
+
+  .knowledge-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    text-align: left;
+  }
+
+  .knowledge-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 3px;
+    padding: 1.5rem;
+    text-align: left;
+  }
+
+  .knowledge-card-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--btn-accent-text);
+    background: var(--btn-accent);
+    border: 1px solid var(--border);
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+    margin-bottom: 0.95rem;
+    text-align: left;
+  }
+
+  .knowledge-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.65rem;
+    line-height: 1.3;
+    text-align: left;
+  }
+
+  .knowledge-card-text {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0;
+    text-align: left;
+  }
+
+  /* ── FAQ Section ────────────────────────────────────────── */
+  .guides-faq-section {
+    padding: 3.5rem 0;
+    border-top: 2px solid var(--border);
+    margin-bottom: 4rem;
+    text-align: left;
+  }
+
+  .faq-accordion {
+    max-width: 840px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: left;
+  }
+
+  .faq-item {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    border-radius: 4px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    overflow: hidden;
+    text-align: left;
+  }
+
+  .faq-item:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .faq-item[open] {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .faq-summary {
+    padding: 1.25rem 1.4rem;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    color: var(--text);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    user-select: none;
+    border-bottom: 2px solid transparent;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    text-align: left;
+  }
+
+  .faq-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item[open] .faq-summary {
+    border-bottom: 2px solid var(--border);
+    background: var(--bg);
+  }
+
+  .faq-question {
+    flex: 1;
+    line-height: 1.4;
+    text-align: left;
+  }
+
+  .faq-icon {
+    width: 26px;
+    height: 26px;
+    border: 1.5px solid var(--border);
+    box-shadow: 1.5px 1.5px 0px var(--shadow-color);
+    background: var(--card-bg);
+    border-radius: 2px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+  }
+
+  .faq-item[open] .faq-icon {
+    transform: rotate(180deg);
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+  }
+
+  .faq-answer {
+    padding: 1.25rem 1.4rem;
+    text-align: left;
+  }
+
+  .faq-answer p {
+    font-size: 0.88rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
+    text-align: left;
+  }
+
+  /* ── High-Conversion CTA Banner ─────────────────────────── */
+  .guides-cta-banner {
+    background: var(--card-bg);
+    border: 3px solid var(--border);
+    box-shadow: var(--neo-shadow-lg);
+    border-radius: 6px;
+    padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 4vw, 3rem);
+    text-align: center;
+    margin: 3rem auto 0;
+    max-width: 960px;
+    position: relative;
+  }
+
+  .cta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 1.5px solid var(--border);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 0.35rem 0.85rem;
+    border-radius: 3px;
+    margin-bottom: 1.25rem;
+  }
+
+  .cta-pulse {
+    color: #10b981;
+    font-size: 0.85rem;
+  }
+
+  .cta-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin: 0 auto 1rem;
+    max-width: 720px;
+    text-align: center;
+  }
+
+  .cta-desc {
+    color: var(--text-muted);
+    font-size: clamp(0.92rem, 2vw, 1.05rem);
+    line-height: 1.7;
+    max-width: 680px;
+    margin: 0 auto 2rem;
+    text-align: center;
+  }
+
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .btn-cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0 var(--shadow-color);
+    padding: 0.85rem 1.6rem;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.12s ease;
+  }
+
+  .btn-cta-primary:hover {
+    background: var(--btn-accent-hover);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--shadow-color);
+  }
+
+  .btn-cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: var(--bg);
+    color: var(--text);
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0 var(--shadow-color);
+    padding: 0.85rem 1.4rem;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.12s ease;
+  }
+
+  .btn-cta-secondary:hover {
+    background: var(--card-bg);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--shadow-color);
+  }
+
+  .cta-trust-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    padding-top: 1.25rem;
+    border-top: 1.5px solid var(--border-light);
+  }
+
+  /* ── Responsive Breakpoints ─────────────────────────────── */
+  @media (max-width: 1024px) {
+    .guides-grid {
+      grid-template-columns: 1fr;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .knowledge-grid {
+      grid-template-columns: 1fr;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .guides-main {
+      padding: 1rem 0 4rem;
+    }
+
+    .tech-metrics-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.65rem;
+      width: 100%;
+    }
+
+    .metric-divider {
+      display: none;
+    }
+
+    .filter-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.45rem;
+    }
+
+    .cta-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .btn-cta-primary,
+    .btn-cta-secondary {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .cta-trust-bar {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
+    }
+  }
+</style>

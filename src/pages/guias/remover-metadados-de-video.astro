@@ -1,0 +1,1570 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const title = 'Como Remover Metadados de Vídeo Online Grátis | MP4 e MOV';
+const description = 'Aprenda a remover localização de GPS, dispositivo e tags ocultas de vídeos MP4 e MOV no navegador. Sem upload para servidores, 100% privado e gratuito.';
+const canonicalUrl = 'https://remover-metadados.com/guias/remover-metadados-de-video/';
+
+const faqItems = [
+  {
+    question: 'Quais metadados de vídeo são removidos?',
+    answer: 'A ferramenta remove os metadados compatíveis com o contêiner do arquivo, incluindo coordenadas de geolocalização GPS, modelo e número de série da câmera ou smartphone, nome do software de edição, datas de criação e tags de usuário embutidas.',
+  },
+  {
+    question: 'A ferramenta aceita arquivos MP4 e MOV gravados em celulares?',
+    answer: 'Sim. O removedor foi otimizado para processar arquivos MP4, M4V e MOV gravados em smartphones (iPhone e Android), câmeras digitais e drones diretamente no navegador.',
+  },
+  {
+    question: 'O vídeo perde resolução ou qualidade após a higienização?',
+    answer: 'Não. A limpeza atua especificamente nos cabeçalhos e caixas de metadados do contêiner (átomos moov/udta/meta). As faixas de vídeo e áudio não sofrem recompressão destrutiva, preservando a nitidez original.',
+  },
+  {
+    question: 'Meus vídeos são enviados para servidores externos?',
+    answer: 'Absolutamente não. Todo o processamento é executado localmente na memória do seu navegador através de APIs modernas do HTML5. Seu arquivo nunca sai do seu computador ou smartphone.',
+  },
+  {
+    question: 'Remover metadados apaga marca d’água ou legendas gravadas no vídeo?',
+    answer: 'Não. Metadados são informações descritivas anexadas ao contêiner. Marcas d’água visíveis, legendas queimadas nos pixels ou vinhetas fazem parte do fluxo de vídeo e não são alteradas por removedores de metadados.',
+  },
+];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  'itemListElement': [
+    { '@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': 'https://remover-metadados.com/' },
+    { '@type': 'ListItem', 'position': 2, 'name': 'Guias', 'item': 'https://remover-metadados.com/guias/' },
+    { '@type': 'ListItem', 'position': 3, 'name': 'Vídeo', 'item': canonicalUrl },
+  ],
+};
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  'headline': title,
+  'description': description,
+  'url': canonicalUrl,
+  'inLanguage': 'pt-BR',
+  'author': {
+    '@type': 'Organization',
+    'name': 'Remover Metadados',
+    'url': 'https://remover-metadados.com/',
+  },
+  'publisher': {
+    '@type': 'Organization',
+    'name': 'Remover Metadados',
+    'url': 'https://remover-metadados.com/',
+    'logo': {
+      '@type': 'ImageObject',
+      'url': 'https://remover-metadados.com/logo.png',
+    },
+  },
+};
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  'name': 'Como Remover Metadados de Vídeo Online',
+  'description': 'Passo a passo simples para higienizar vídeos MP4 e MOV no navegador sem upload.',
+  'totalTime': 'PT1M',
+  'step': [
+    {
+      '@type': 'HowToStep',
+      'position': 1,
+      'name': 'Acesse a ferramenta gratuita',
+      'text': 'Abra a página inicial do Removedor de Metadados no seu navegador.',
+      'url': 'https://remover-metadados.com/#hero-section',
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 2,
+      'name': 'Selecione seu arquivo de vídeo',
+      'text': 'Arraste o arquivo MP4, MOV ou M4V para a área de limpeza ou clique para selecionar do dispositivo.',
+      'url': 'https://remover-metadados.com/#hero-section',
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 3,
+      'name': 'Higienização automática local',
+      'text': 'A ferramenta apaga dados de localização GPS, identificação do gravador e tags técnicas na memória do dispositivo.',
+      'url': 'https://remover-metadados.com/#como-funciona',
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 4,
+      'name': 'Baixe seu vídeo protegido',
+      'text': 'Clique para baixar o arquivo higienizado pronto para postar ou compartilhar com total privacidade.',
+      'url': 'https://remover-metadados.com/#hero-section',
+    },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  'mainEntity': faqItems.map((item) => ({
+    '@type': 'Question',
+    'name': item.question,
+    'acceptedAnswer': {
+      '@type': 'Answer',
+      'text': item.answer,
+    },
+  })),
+};
+---
+
+<Layout
+  title={title}
+  description={description}
+  lang="pt-BR"
+  canonicalUrl={canonicalUrl}
+  includeHreflang={false}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <Header lang="pt-BR" ptUrl="/guias/remover-metadados-de-video/" enUrl="/en/" isSubpage={true} />
+
+  <main class="guide-main">
+    <div class="page-wrap guide-container">
+
+      <!-- Breadcrumbs -->
+      <nav class="guide-breadcrumb" aria-label="Navegação estrutural">
+        <a href="/">Remover Metadados</a>
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        <a href="/guias/">Guias</a>
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        <span class="crumb-current" aria-current="page">Vídeo</span>
+      </nav>
+
+      <!-- Hero Header -->
+      <header class="guide-hero">
+        <div class="guide-kicker-badge">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span>GUIA PRÁTICO · MP4, MOV & M4V</span>
+        </div>
+
+        <h1 class="guide-hero-h1">Como Remover Metadados de Vídeo Online</h1>
+
+        <p class="guide-hero-lead">
+          Quando você grava um vídeo com seu smartphone ou câmera, dezenas de informações invisíveis são gravadas junto: <strong>coordenadas exatas de GPS</strong>, número de série do aparelho e software de edição. Aprenda a higienizar seus arquivos MP4 e MOV direto no navegador, sem enviar nada para servidores externos.
+        </p>
+
+        <!-- Quick Specs Strip -->
+        <div class="guide-specs-strip">
+          <div class="spec-pill">
+            <span class="spec-label">FORMATOS:</span>
+            <span class="spec-val">MP4, MOV, M4V</span>
+          </div>
+          <div class="spec-divider" aria-hidden="true"></div>
+          <div class="spec-pill">
+            <span class="spec-label">PRIVACIDADE:</span>
+            <span class="spec-val">100% Local (Zero Upload)</span>
+          </div>
+          <div class="spec-divider" aria-hidden="true"></div>
+          <div class="spec-pill">
+            <span class="spec-label">TEMPO ESTIMADO:</span>
+            <span class="spec-val">~30 segundos</span>
+          </div>
+          <div class="spec-divider" aria-hidden="true"></div>
+          <div class="spec-pill">
+            <span class="spec-label">CUSTO:</span>
+            <span class="spec-val">Gratuito</span>
+          </div>
+        </div>
+
+        <div class="hero-cta-wrap">
+          <a class="hero-cta-btn" href="/#hero-section">
+            <span class="cta-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m22 8-6 4 6 4V8Z"/>
+                <rect width="14" height="12" x="2" y="6" rx="2" ry="2"/>
+              </svg>
+            </span>
+            <span>Remover Metadados do Meu Vídeo Agora</span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <p class="hero-cta-trust">✓ Processamento instantâneo no navegador · Sem uploads · Sem cadastro</p>
+        </div>
+      </header>
+
+      <!-- Main Two-Column Layout -->
+      <div class="guide-layout">
+        
+        <!-- Left Content Column -->
+        <article class="guide-article">
+
+          <!-- Before vs After Terminal Box -->
+          <section class="guide-section" aria-labelledby="heading-inspecao">
+            <div class="section-title-wrap">
+              <span class="section-kicker">DEMONSTRAÇÃO REAL</span>
+              <h2 id="heading-inspecao">O que está oculto dentro do seu vídeo?</h2>
+            </div>
+            <p>
+              Ao apertar o play, você vê apenas a gravação. No entanto, os contêineres MP4 e QuickTime MOV guardam blocos de metadados como <code>udta</code>, <code>meta</code> e átomos de localização gravados pelo iOS, Android ou softwares como Premiere e Final Cut:
+            </p>
+
+            <div class="terminal-comparison">
+              <div class="terminal-box terminal-danger">
+                <div class="terminal-header">
+                  <span class="term-dot dot-red" aria-hidden="true"></span>
+                  <span class="term-dot dot-yellow" aria-hidden="true"></span>
+                  <span class="term-dot dot-green" aria-hidden="true"></span>
+                  <span class="term-title">arquivo_original.mp4 [EXPOSTO]</span>
+                </div>
+                <div class="terminal-body">
+                  <div class="term-line danger-line"><span>GPS Coordenadas:</span> -23.55052, -46.633308</div>
+                  <div class="term-line danger-line"><span>Localização:</span> São Paulo, SP, Brasil</div>
+                  <div class="term-line danger-line"><span>Dispositivo:</span> Apple iPhone 15 Pro Max</div>
+                  <div class="term-line danger-line"><span>Software:</span> iOS 17.4.1 Camera App</div>
+                  <div class="term-line danger-line"><span>Data & Hora:</span> 2026-03-12 18:42:09 UTC</div>
+                  <div class="term-line danger-line"><span>Identificador Único:</span> UUID-9f4a-81c2-bc04</div>
+                </div>
+              </div>
+
+              <div class="terminal-arrow" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"/>
+                  <polyline points="19 12 12 19 5 12"/>
+                </svg>
+              </div>
+
+              <div class="terminal-box terminal-safe">
+                <div class="terminal-header">
+                  <span class="term-dot dot-green" aria-hidden="true"></span>
+                  <span class="term-title">arquivo_higienizado.mp4 [LIMPO]</span>
+                  <span class="term-badge-ok">100% PROTEGIDO</span>
+                </div>
+                <div class="terminal-body">
+                  <div class="term-line safe-line"><span>GPS Coordenadas:</span> [REMOVIDO COM SUCESSO]</div>
+                  <div class="term-line safe-line"><span>Localização:</span> [NENHUM RASTRO ENCONTRADO]</div>
+                  <div class="term-line safe-line"><span>Dispositivo:</span> [HIGIENIZADO]</div>
+                  <div class="term-line safe-line"><span>Software:</span> [HIGIENIZADO]</div>
+                  <div class="term-line safe-line"><span>Tags de Usuário:</span> [ZERADAS]</div>
+                  <div class="term-line safe-line"><span>Vídeo & Áudio:</span> 100% Fidelidade e Resolução Preservadas</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Why clean metadata -->
+          <section class="guide-section" aria-labelledby="heading-por-que">
+            <div class="section-title-wrap">
+              <span class="section-kicker">MOTIVOS CRÍTICOS</span>
+              <h2 id="heading-por-que">Por que você deve limpar metadados de vídeo antes de compartilhar?</h2>
+            </div>
+            <p>
+              Vídeos enviados via Telegram, Discord, AirDrop, e-mail ou compartilhados em redes sociais e plataformas de armazenamento em nuvem frequentemente mantêm os metadados intactos. Existem três perigos imediatos:
+            </p>
+
+            <div class="risks-grid">
+              <div class="risk-card">
+                <div class="risk-badge">PERIGO 01</div>
+                <h3>Rastreamento Residencial e Rotina</h3>
+                <p>
+                  Vídeos gravados em casa ou na vizinhança registram as coordenadas de GPS. Pessoas mal-intencionadas podem extrair os dados e descobrir exatamente onde você mora ou estuda.
+                </p>
+              </div>
+
+              <div class="risk-card">
+                <div class="risk-badge">PERIGO 02</div>
+                <h3>Exposição de Equipamento Profissional</h3>
+                <p>
+                  Criadores de conteúdo e videomakers podem expor números de série de câmeras caras, lentes e configurações de estúdio em arquivos brutos entregues a clientes.
+                </p>
+              </div>
+
+              <div class="risk-card">
+                <div class="risk-badge">PERIGO 03</div>
+                <h3>Vazamento de Fluxo Editorial</h3>
+                <p>
+                  Softwares de edição como Adobe Premiere, DaVinci Resolve e Final Cut salvam histórico de edições, nomes de editores e versões internas no cabeçalho do arquivo.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Step-by-Step Guide -->
+          <section class="guide-section" aria-labelledby="heading-passos">
+            <div class="section-title-wrap">
+              <span class="section-kicker">TUTORIAL PASSO A PASSO</span>
+              <h2 id="heading-passos">Como remover metadados de vídeos no navegador (Sem Instalação)</h2>
+            </div>
+            <p>
+              Siga estas instruções simples para limpar seu arquivo em poucos segundos:
+            </p>
+
+            <div class="steps-flow">
+              <div class="step-card">
+                <div class="step-number">01</div>
+                <div class="step-info">
+                  <h3>Acesse o Removedor de Metadados</h3>
+                  <p>
+                    Abra o <a href="/#hero-section">Removedor de Metadados</a> no seu computador ou smartphone. Não é necessário criar conta, assinar plano ou instalar plugins.
+                  </p>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-number">02</div>
+                <div class="step-info">
+                  <h3>Arraste ou Escolha seu Vídeo</h3>
+                  <p>
+                    Arraste um ou mais arquivos <strong>MP4, MOV ou M4V</strong> para a caixa de upload. Você também pode clicar no botão para selecionar os vídeos da galeria do seu dispositivo.
+                  </p>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-number">03</div>
+                <div class="step-info">
+                  <h3>Limpeza Binária Instantânea</h3>
+                  <p>
+                    A ferramenta lê a estrutura de átomos do contêiner e descarta as caixas de localização GPS, dispositivo e autoria. Todo o processo acontece na memória local da sua máquina.
+                  </p>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-number">04</div>
+                <div class="step-info">
+                  <h3>Baixe a Cópia Higienizada</h3>
+                  <p>
+                    Clique em <strong>Baixar</strong> individualmente ou em <strong>Baixar Todos (.zip)</strong> para receber seus arquivos seguros e livres de qualquer vestígio de rastreamento.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Format Compatibility Table -->
+          <section class="guide-section" aria-labelledby="heading-formatos">
+            <div class="section-title-wrap">
+              <span class="section-kicker">TABELA TÉCNICA</span>
+              <h2 id="heading-formatos">Compatibilidade de Formatos de Vídeo</h2>
+            </div>
+            <p>
+              Confira os formatos de vídeo suportados para processamento nativo e os metadados eliminados:
+            </p>
+
+            <div class="table-container">
+              <table class="specs-table">
+                <thead>
+                  <tr>
+                    <th>Formato</th>
+                    <th>Extensão</th>
+                    <th>Metadados Eliminados</th>
+                    <th>Processamento</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>MPEG-4 Part 14</strong></td>
+                    <td><code>.mp4</code></td>
+                    <td>GPS, Câmera, Software, UserData, moov/udta</td>
+                    <td><span class="table-badge-ok">100% Local</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Apple QuickTime</strong></td>
+                    <td><code>.mov</code></td>
+                    <td>Localização iOS, Modelo iPhone, Tags de Usuário</td>
+                    <td><span class="table-badge-ok">100% Local</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>MPEG-4 Video</strong></td>
+                    <td><code>.m4v</code></td>
+                    <td>Metadados de autoria e timestamps</td>
+                    <td><span class="table-badge-ok">100% Local</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Áudio MPEG</strong></td>
+                    <td><code>.mp3</code></td>
+                    <td>Tags ID3v1/ID3v2, artista, álbum, gravador</td>
+                    <td><span class="table-badge-ok">100% Local</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- FAQ Accordion -->
+          <section class="guide-section" aria-labelledby="heading-faq">
+            <div class="section-title-wrap">
+              <span class="section-kicker">DÚVIDAS FREQUENTES</span>
+              <h2 id="heading-faq">Perguntas Frequentes sobre Metadados de Vídeo</h2>
+            </div>
+
+            <div class="guide-faq-list">
+              {faqItems.map((item) => (
+                <details class="guide-faq-item">
+                  <summary class="faq-summary">
+                    <span class="faq-question">{item.question}</span>
+                    <span class="faq-icon" aria-hidden="true">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </span>
+                  </summary>
+                  <div class="faq-answer">
+                    <p>{item.answer}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </section>
+
+          <!-- Related Guides Navigation -->
+          <section class="guide-section" aria-labelledby="heading-relacionados">
+            <div class="section-title-wrap">
+              <span class="section-kicker">CONTINUE APRENDENDO</span>
+              <h2 id="heading-relacionados">Outros Guias de Limpeza de Metadados</h2>
+            </div>
+
+            <div class="related-cards-grid">
+              <a href="/guias/remover-metadados-de-imagem/" class="related-card">
+                <div class="rel-icon-box" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                    <circle cx="9" cy="9" r="2"/>
+                    <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+                  </svg>
+                </div>
+                <div class="rel-card-info">
+                  <span class="rel-tag">FOTOS & EXIF</span>
+                  <h3 class="rel-title">Remover metadados de imagem e foto</h3>
+                  <p class="rel-desc">Aprenda a limpar dados EXIF e localização GPS de fotos JPEG, PNG, WebP e HEIC.</p>
+                </div>
+              </a>
+
+              <a href="/guias/remover-metadados-pdf/" class="related-card">
+                <div class="rel-icon-box" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                  </svg>
+                </div>
+                <div class="rel-card-info">
+                  <span class="rel-tag">DOCUMENTOS & PDF</span>
+                  <h3 class="rel-title">Remover metadados de PDF</h3>
+                  <p class="rel-desc">Elimine nomes de autores, histórico de revisões e dados de empresas em documentos PDF.</p>
+                </div>
+              </a>
+            </div>
+          </section>
+
+        </article>
+
+        <!-- Right Sticky Sidebar -->
+        <aside class="guide-sidebar" aria-label="Painel de ações do guia">
+          <div class="sidebar-sticky-card">
+            <div class="sidebar-header">
+              <span class="sidebar-badge">RESUMO RÁPIDO</span>
+              <h2 class="sidebar-title">Higienização de Vídeo</h2>
+            </div>
+
+            <ul class="sidebar-checklist">
+              <li>
+                <span class="check-mark">✓</span>
+                <span>Suporta MP4, MOV e M4V</span>
+              </li>
+              <li>
+                <span class="check-mark">✓</span>
+                <span>Apaga GPS e dispositivo</span>
+              </li>
+              <li>
+                <span class="check-mark">✓</span>
+                <span>Sem compressão destrutiva</span>
+              </li>
+              <li>
+                <span class="check-mark">✓</span>
+                <span>Processamento 100% no navegador</span>
+              </li>
+              <li>
+                <span class="check-mark">✓</span>
+                <span>Gratuito e sem limites</span>
+              </li>
+            </ul>
+
+            <div class="sidebar-action-box">
+              <a href="/#hero-section" class="sidebar-cta-btn">
+                <span>Limpar Meu Vídeo Agora</span>
+                <span aria-hidden="true">→</span>
+              </a>
+              <p class="sidebar-subtext">Não requer cadastro ou instalação</p>
+            </div>
+
+            <div class="sidebar-help">
+              <span class="help-title">Precisa de outro formato?</span>
+              <a href="/#formatos" class="help-link">Ver lista de formatos suportados →</a>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+
+      <!-- Bottom High-Impact Callout -->
+      <section class="guide-bottom-cta">
+        <div class="bottom-cta-badge">100% SEGURO & CONFIDENCIAL</div>
+        <h2>Pronto para compartilhar seus vídeos sem expor sua privacidade?</h2>
+        <p>Experimente nosso removedor local gratuito. Seus dados nunca saem da sua máquina.</p>
+        <div class="bottom-cta-btns">
+          <a href="/#hero-section" class="btn-cta-primary">
+            <span>Abrir Removedor de Metadados</span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <a href="/guias/" class="btn-cta-secondary">
+            <span>Voltar para a Central de Guias</span>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer lang="pt-BR" />
+</Layout>
+
+<style>
+  /* ── Layout & Typography ─────────────────────────────────── */
+  .guide-main {
+    min-height: 70vh;
+    padding: 1.5rem 0 6rem;
+  }
+
+  .guide-container {
+    text-align: left;
+  }
+
+  /* ── Breadcrumb ─────────────────────────────────────────── */
+  .guide-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0.5rem 0 2.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .guide-breadcrumb a {
+    color: var(--text);
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .guide-breadcrumb a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .crumb-sep {
+    color: var(--text-faint);
+  }
+
+  .crumb-current {
+    color: var(--text-muted);
+  }
+
+  /* ── Hero Header ────────────────────────────────────────── */
+  .guide-hero {
+    max-width: 920px;
+    margin: 0 auto 3.5rem;
+    text-align: center;
+  }
+
+  .guide-kicker-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    padding: 0.35rem 0.85rem;
+    border-radius: 3px;
+    margin-bottom: 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    text-transform: uppercase;
+  }
+
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+    animation: pulse 2s infinite ease-in-out;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.25); opacity: 0.65; }
+  }
+
+  .guide-hero-h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4.5vw, 3.3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    color: var(--text);
+    margin: 0 auto 1.25rem;
+    text-wrap: balance;
+  }
+
+  .guide-hero-lead {
+    font-size: clamp(0.98rem, 2vw, 1.12rem);
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 780px;
+    margin: 0 auto 2rem;
+  }
+
+  .guide-hero-lead strong {
+    color: var(--text);
+  }
+
+  .guide-specs-strip {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem 1.25rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    padding: 0.65rem 1.25rem;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    margin-bottom: 2rem;
+  }
+
+  .spec-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .spec-label {
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .spec-val {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .spec-divider {
+    width: 1px;
+    height: 14px;
+    background: var(--border-light);
+  }
+
+  .hero-cta-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2.5px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    padding: 0.9rem 1.75rem;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.12s ease;
+  }
+
+  .hero-cta-btn:hover {
+    background: var(--btn-accent-hover);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--neo-shadow-lg);
+  }
+
+  .hero-cta-trust {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* ── Two Column Layout ──────────────────────────────────── */
+  .guide-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 3rem;
+    max-width: 1180px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .guide-article {
+    min-width: 0;
+    text-align: left;
+  }
+
+  .guide-section {
+    margin-bottom: 3.5rem;
+    text-align: left;
+  }
+
+  .section-title-wrap {
+    margin-bottom: 1.25rem;
+  }
+
+  .section-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--btn-accent-text);
+    background: var(--btn-accent);
+    border: 1px solid var(--border);
+    display: inline-block;
+    padding: 0.15rem 0.45rem;
+    border-radius: 2px;
+    margin-bottom: 0.65rem;
+  }
+
+  .guide-section h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    margin: 0;
+    text-transform: none;
+  }
+
+  .guide-section p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin: 0 0 1.25rem;
+  }
+
+  .guide-section p strong {
+    color: var(--text);
+  }
+
+  .guide-section code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 0.15rem 0.35rem;
+    border-radius: 2px;
+    color: var(--text);
+  }
+
+  /* ── Terminal Inspection Box ────────────────────────────── */
+  .terminal-comparison {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .terminal-box {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.85rem;
+    border-bottom: 1.5px solid var(--border);
+    background: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .term-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+  }
+
+  .dot-red { background: #ef4444; }
+  .dot-yellow { background: #eab308; }
+  .dot-green { background: #10b981; }
+
+  .term-title {
+    color: var(--text);
+    margin-left: 0.25rem;
+  }
+
+  .term-badge-ok {
+    margin-left: auto;
+    background: #10b981;
+    color: #ffffff;
+    font-size: 0.6rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+  }
+
+  .terminal-body {
+    padding: 0.85rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.8;
+  }
+
+  .term-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .danger-line span {
+    color: var(--text-muted);
+  }
+
+  .danger-line {
+    color: #ef4444;
+  }
+
+  .safe-line span {
+    color: var(--text-muted);
+  }
+
+  .safe-line {
+    color: #10b981;
+    font-weight: 700;
+  }
+
+  .terminal-arrow {
+    display: flex;
+    justify-content: center;
+    color: var(--text-muted);
+  }
+
+  /* ── Risks Grid ─────────────────────────────────────────── */
+  .risks-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .risk-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    padding: 1.25rem;
+    border-radius: 3px;
+  }
+
+  .risk-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: inline-block;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    margin-bottom: 0.75rem;
+  }
+
+  .risk-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.55rem;
+    line-height: 1.3;
+  }
+
+  .risk-card p {
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ── Steps Flow ─────────────────────────────────────────── */
+  .steps-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .step-card {
+    display: flex;
+    gap: 1.25rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    padding: 1.25rem 1.5rem;
+    border-radius: 3px;
+    align-items: flex-start;
+  }
+
+  .step-number {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    font-weight: 700;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .step-info {
+    flex: 1 1 auto;
+  }
+
+  .step-info h3 {
+    font-family: var(--font-heading);
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.45rem;
+  }
+
+  .step-info p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .step-info a {
+    color: var(--text);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* ── Table Container ────────────────────────────────────── */
+  .table-container {
+    overflow-x: auto;
+    margin: 1.5rem 0 2rem;
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 3px;
+    background: var(--card-bg);
+  }
+
+  .specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+    text-align: left;
+  }
+
+  .specs-table th {
+    background: var(--bg);
+    padding: 0.85rem 1rem;
+    border-bottom: 2px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .specs-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-muted);
+  }
+
+  .specs-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .table-badge-ok {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid #10b981;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  /* ── FAQ ────────────────────────────────────────────────── */
+  .guide-faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .guide-faq-item {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    border-radius: 4px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    overflow: hidden;
+    text-align: left;
+  }
+
+  .guide-faq-item:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .guide-faq-item[open] {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .faq-summary {
+    padding: 1.25rem 1.4rem;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    color: var(--text);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    user-select: none;
+    border-bottom: 2px solid transparent;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    text-align: left;
+  }
+
+  .faq-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .guide-faq-item[open] .faq-summary {
+    border-bottom: 2px solid var(--border);
+    background: var(--bg);
+  }
+
+  .faq-question {
+    flex: 1;
+    line-height: 1.4;
+    text-align: left;
+  }
+
+  .faq-icon {
+    width: 26px;
+    height: 26px;
+    border: 1.5px solid var(--border);
+    box-shadow: 1.5px 1.5px 0px var(--shadow-color);
+    background: var(--card-bg);
+    border-radius: 2px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+  }
+
+  .guide-faq-item[open] .faq-icon {
+    transform: rotate(180deg);
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+  }
+
+  .faq-answer {
+    padding: 1.25rem 1.4rem;
+    text-align: left;
+  }
+
+  .faq-answer p {
+    font-size: 0.88rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
+    text-align: left;
+  }
+
+  /* ── Related Guides ─────────────────────────────────────── */
+  .related-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .related-card {
+    display: flex;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 3px;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .related-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--neo-shadow-lg);
+  }
+
+  .rel-icon-box {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .rel-card-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rel-tag {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 0.35rem;
+  }
+
+  .rel-title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.45rem;
+    line-height: 1.3;
+  }
+
+  .related-card:hover .rel-title {
+    color: var(--link-color);
+    text-decoration: underline;
+  }
+
+  .rel-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ── Right Sticky Sidebar ───────────────────────────────── */
+  .guide-sidebar {
+    position: sticky;
+    top: 1.5rem;
+    align-self: start;
+  }
+
+  .sidebar-sticky-card {
+    background: var(--card-bg);
+    border: 2.5px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 4px;
+    padding: 1.5rem;
+  }
+
+  .sidebar-header {
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.95rem;
+    border-bottom: 1.5px solid var(--border-light);
+  }
+
+  .sidebar-badge {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--btn-accent-text);
+    background: var(--btn-accent);
+    border: 1px solid var(--border);
+    padding: 0.15rem 0.45rem;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+
+  .sidebar-title {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.25;
+    text-transform: none;
+  }
+
+  .sidebar-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .sidebar-checklist li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .check-mark {
+    color: #10b981;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .sidebar-action-box {
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1.5px solid var(--border-light);
+  }
+
+  .sidebar-cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    box-shadow: 2.5px 2.5px 0 var(--shadow-color);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.12s ease;
+  }
+
+  .sidebar-cta-btn:hover {
+    background: var(--btn-accent-hover);
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 4px 4px 0 var(--shadow-color);
+  }
+
+  .sidebar-subtext {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-faint);
+    text-align: center;
+    margin: 0.55rem 0 0;
+  }
+
+  .sidebar-help {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .help-title {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .help-link {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* ── Bottom Callout Banner ──────────────────────────────── */
+  .guide-bottom-cta {
+    background: var(--card-bg);
+    border: 3px solid var(--border);
+    box-shadow: var(--neo-shadow-lg);
+    border-radius: 6px;
+    padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 4vw, 3rem);
+    text-align: center;
+    margin: 4rem auto 0;
+    max-width: 960px;
+  }
+
+  .bottom-cta-badge {
+    display: inline-block;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 1.5px solid var(--border);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 0.25rem 0.75rem;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+  }
+
+  .guide-bottom-cta h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 3.5vw, 2.3rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    margin: 0 auto 0.85rem;
+    max-width: 700px;
+    text-align: center;
+    text-transform: none;
+  }
+
+  .guide-bottom-cta p {
+    color: var(--text-muted);
+    font-size: clamp(0.9rem, 2vw, 1.05rem);
+    line-height: 1.7;
+    max-width: 650px;
+    margin: 0 auto 1.75rem;
+    text-align: center;
+  }
+
+  .bottom-cta-btns {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .btn-cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0 var(--shadow-color);
+    padding: 0.85rem 1.6rem;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.12s ease;
+  }
+
+  .btn-cta-primary:hover {
+    background: var(--btn-accent-hover);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--shadow-color);
+  }
+
+  .btn-cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: var(--bg);
+    color: var(--text);
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0 var(--shadow-color);
+    padding: 0.85rem 1.4rem;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.12s ease;
+  }
+
+  .btn-cta-secondary:hover {
+    background: var(--card-bg);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--shadow-color);
+  }
+
+  /* ── Responsive Breakpoints ─────────────────────────────── */
+  @media (max-width: 960px) {
+    .guide-layout {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .guide-sidebar {
+      position: static;
+      order: 2;
+    }
+
+    .risks-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .related-cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .guide-main {
+      padding: 1rem 0 4rem;
+    }
+
+    .guide-specs-strip {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.55rem;
+      width: 100%;
+    }
+
+    .spec-divider {
+      display: none;
+    }
+
+    .step-card {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .hero-cta-btn,
+    .btn-cta-primary,
+    .btn-cta-secondary {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<script>
+  class FaqAccordion {
+    constructor(el) {
+      this.el = el;
+      this.summary = el.querySelector('summary');
+      this.content = el.querySelector('.faq-answer');
+      this.animation = null;
+      this.isClosing = false;
+      this.isExpanding = false;
+      this.summary?.addEventListener('click', (e) => this.onClick(e));
+    }
+
+    onClick(e) {
+      e.preventDefault();
+      this.el.style.overflow = 'hidden';
+      if (this.isClosing || !this.el.open) {
+        this.open();
+      } else if (this.isExpanding || this.el.open) {
+        this.shrink();
+      }
+    }
+
+    shrink() {
+      this.isClosing = true;
+      const startHeight = `${this.el.offsetHeight}px`;
+      const endHeight = `${this.summary.offsetHeight}px`;
+
+      if (this.animation) this.animation.cancel();
+
+      this.animation = this.el.animate({
+        height: [startHeight, endHeight]
+      }, {
+        duration: 250,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
+      });
+
+      this.content?.animate({
+        opacity: [1, 0],
+        transform: ['translateY(0px)', 'translateY(-6px)']
+      }, {
+        duration: 200,
+        easing: 'ease-out'
+      });
+
+      this.animation.onfinish = () => this.onAnimationFinish(false);
+      this.animation.oncancel = () => (this.isClosing = false);
+    }
+
+    open() {
+      this.el.style.height = `${this.el.offsetHeight}px`;
+      this.el.open = true;
+      window.requestAnimationFrame(() => this.expand());
+    }
+
+    expand() {
+      this.isExpanding = true;
+      const startHeight = `${this.el.offsetHeight}px`;
+      const endHeight = `${this.summary.offsetHeight + (this.content?.offsetHeight || 0)}px`;
+
+      if (this.animation) this.animation.cancel();
+
+      this.animation = this.el.animate({
+        height: [startHeight, endHeight]
+      }, {
+        duration: 280,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
+      });
+
+      this.content?.animate({
+        opacity: [0, 1],
+        transform: ['translateY(-6px)', 'translateY(0px)']
+      }, {
+        duration: 260,
+        easing: 'ease-out'
+      });
+
+      this.animation.onfinish = () => this.onAnimationFinish(true);
+      this.animation.oncancel = () => (this.isExpanding = false);
+    }
+
+    onAnimationFinish(open) {
+      this.el.open = open;
+      this.animation = null;
+      this.isClosing = false;
+      this.isExpanding = false;
+      this.el.style.height = '';
+      this.el.style.overflow = '';
+    }
+  }
+
+  document.querySelectorAll('details.guide-faq-item').forEach((el) => {
+    new FaqAccordion(el);
+  });
+</script>

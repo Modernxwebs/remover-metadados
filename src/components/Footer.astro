@@ -61,6 +61,7 @@ const contactUrl = isEn ? '/en/contact/' : '/contato/';
           <li><a href={isEn ? '/en/#how-it-works' : '/#como-funciona'} class="footer-link">{isEn ? 'How It Works' : 'Como Funciona'}</a></li>
           <li><a href={isEn ? '/en/#formats' : '/#formatos'} class="footer-link">{isEn ? 'Supported Formats' : 'Formatos Suportados'}</a></li>
           <li><a href={isEn ? '/en/#privacy-guide' : '/#guia-metadados'} class="footer-link">{isEn ? 'Privacy Guide' : 'Guia de Metadados'}</a></li>
+          {!isEn && <li><a href="/guias/" class="footer-link">Guias de privacidade</a></li>}
           <li><a href={isEn ? '/en/#faq' : '/#faq'} class="footer-link">{isEn ? 'Frequently Asked' : 'Perguntas Frequentes'}</a></li>
         </ul>
       </div>

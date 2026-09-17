@@ -1,0 +1,1575 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const title = 'Como Remover Metadados de PDF Online Grátis | Autor e Datas';
+const description = 'Remova nomes de autores, título, datas de criação e histórico XMP de documentos PDF no navegador. 100% privado, sem upload para servidores e grátis.';
+const canonicalUrl = 'https://remover-metadados.com/guias/remover-metadados-pdf/';
+
+const faqItems = [
+  {
+    question: 'Quais metadados estão embutidos em um arquivo PDF?',
+    answer: 'Um documento PDF exportado pelo Word, LibreOffice, Canva ou Acrobat pode armazenar o nome completo do autor, empresa, título, assunto, palavras-chave, software criador, versão do sistema operacional, datas exatas de criação e modificação, além de fluxos XMP com histórico editorial.',
+  },
+  {
+    question: 'A ferramenta apaga o texto, tabelas ou páginas do documento?',
+    answer: 'Não. O processo remove exclusivamente as propriedades e tabelas de metadados binários (como Info Dictionaries e XMP Metadata Streams). O texto legível, fontes, imagens, vetores, páginas e o layout visual permanecem 100% idênticos ao original.',
+  },
+  {
+    question: 'Posso higienizar um PDF assinado digitalmente (com certificado ICP-Brasil)?',
+    answer: 'Recomendamos cautela redobrada. Qualquer alteração na estrutura binária de um PDF assinado pode invalidar a assinatura digital criptográfica. Se o documento exigir validade jurídica da assinatura, mantenha o original intacto e gere uma versão higienizada apenas quando a assinatura não for necessária.',
+  },
+  {
+    question: 'Documentos protegidos por senha de abertura podem ser limpos?',
+    answer: 'A ferramenta aceita PDFs desprotegidos. Se o documento tiver senha de abertura ou restrição de leitura, remova a senha no aplicativo de origem antes de processar o arquivo no navegador.',
+  },
+  {
+    question: 'Meu documento confidencial é enviado para algum servidor?',
+    answer: 'Não. Todo o processamento ocorre 100% localmente no seu navegador através de bibliotecas WebAssembly e manipulação binária de arquivos. Seu PDF nunca é transmitido para servidores remotos nem armazenado na internet, garantindo sigilo absoluto e conformidade com a LGPD.',
+  },
+];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  'itemListElement': [
+    { '@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': 'https://remover-metadados.com/' },
+    { '@type': 'ListItem', 'position': 2, 'name': 'Guias', 'item': 'https://remover-metadados.com/guias/' },
+    { '@type': 'ListItem', 'position': 3, 'name': 'PDF', 'item': canonicalUrl },
+  ],
+};
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  'headline': title,
+  'description': description,
+  'url': canonicalUrl,
+  'inLanguage': 'pt-BR',
+  'author': {
+    '@type': 'Organization',
+    'name': 'Remover Metadados',
+    'url': 'https://remover-metadados.com/',
+  },
+  'publisher': {
+    '@type': 'Organization',
+    'name': 'Remover Metadados',
+    'url': 'https://remover-metadados.com/',
+    'logo': {
+      '@type': 'ImageObject',
+      'url': 'https://remover-metadados.com/logo.png',
+    },
+  },
+};
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  'name': 'Como Remover Metadados de PDF Online',
+  'description': 'Passo a passo para apagar autores, empresa e datas de criação de PDFs no navegador.',
+  'totalTime': 'PT1M',
+  'step': [
+    {
+      '@type': 'HowToStep',
+      'position': 1,
+      'name': 'Abra a ferramenta gratuita',
+      'text': 'Acesse o Removedor de Metadados diretamente no seu navegador.',
+      'url': 'https://remover-metadados.com/#hero-section',
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 2,
+      'name': 'Selecione seu documento PDF',
+      'text': 'Arraste uma cópia do seu arquivo PDF para a área de limpeza ou clique para carregar.',
+      'url': 'https://remover-metadados.com/#hero-section',
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 3,
+      'name': 'Higienização binária local',
+      'text': 'O navegador descarta blocos de autoria, software gerador e registros XMP na memória RAM.',
+      'url': 'https://remover-metadados.com/#como-funciona',
+    },
+    {
+      '@type': 'HowToStep',
+      'position': 4,
+      'name': 'Baixe o PDF protegido',
+      'text': 'Faça o download do PDF pronto para envio com segurança e conformidade à LGPD.',
+      'url': 'https://remover-metadados.com/#hero-section',
+    },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  'mainEntity': faqItems.map((item) => ({
+    '@type': 'Question',
+    'name': item.question,
+    'acceptedAnswer': {
+      '@type': 'Answer',
+      'text': item.answer,
+    },
+  })),
+};
+---
+
+<Layout
+  title={title}
+  description={description}
+  lang="pt-BR"
+  canonicalUrl={canonicalUrl}
+  includeHreflang={false}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <Header lang="pt-BR" ptUrl="/guias/remover-metadados-pdf/" enUrl="/en/" isSubpage={true} />
+
+  <main class="guide-main">
+    <div class="page-wrap guide-container">
+
+      <!-- Breadcrumbs -->
+      <nav class="guide-breadcrumb" aria-label="Navegação estrutural">
+        <a href="/">Remover Metadados</a>
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        <a href="/guias/">Guias</a>
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        <span class="crumb-current" aria-current="page">PDF</span>
+      </nav>
+
+      <!-- Hero Header -->
+      <header class="guide-hero">
+        <div class="guide-kicker-badge">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span>GUIA PRÁTICO · PDF, XMP & OFFICE</span>
+        </div>
+
+        <h1 class="guide-hero-h1">Como Remover Metadados de PDF Online</h1>
+
+        <p class="guide-hero-lead">
+          Antes de enviar um contrato, petição jurídica, proposta comercial ou currículo, verifique se o seu PDF não está expondo <strong>nomes de autores, razão social da empresa, histórico de edições e versões anteriores</strong>. Aprenda a higienizar seus documentos direto no navegador, com total privacidade e sem uploads.
+        </p>
+
+        <!-- Quick Specs Strip -->
+        <div class="guide-specs-strip">
+          <div class="spec-pill">
+            <span class="spec-label">DOCUMENTOS:</span>
+            <span class="spec-val">PDF, DOCX, XLSX, PPTX</span>
+          </div>
+          <div class="spec-divider" aria-hidden="true"></div>
+          <div class="spec-pill">
+            <span class="spec-label">PRIVACIDADE:</span>
+            <span class="spec-val">100% Local (Conforme LGPD)</span>
+          </div>
+          <div class="spec-divider" aria-hidden="true"></div>
+          <div class="spec-pill">
+            <span class="spec-label">VELOCIDADE:</span>
+            <span class="spec-val">Instantâneo (&lt; 2 seg)</span>
+          </div>
+          <div class="spec-divider" aria-hidden="true"></div>
+          <div class="spec-pill">
+            <span class="spec-label">INTEGRIDADE:</span>
+            <span class="spec-val">Texto & Layout Intactos</span>
+          </div>
+        </div>
+
+        <div class="hero-cta-wrap">
+          <a class="hero-cta-btn" href="/#hero-section">
+            <span class="cta-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <line x1="10" y1="9" x2="8" y2="9"/>
+              </svg>
+            </span>
+            <span>Remover Metadados do Meu PDF Agora</span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <p class="hero-cta-trust">✓ Processamento seguro no navegador · Sem uploads · Total conformidade LGPD</p>
+        </div>
+      </header>
+
+      <!-- Main Two-Column Layout -->
+      <div class="guide-layout">
+        
+        <!-- Left Content Column -->
+        <article class="guide-article">
+
+          <!-- Before vs After Terminal Box -->
+          <section class="guide-section" aria-labelledby="heading-pdf-demo">
+            <div class="section-title-wrap">
+              <span class="section-kicker">INSPEÇÃO REAL</span>
+              <h2 id="heading-pdf-demo">Quais informações ocultas seu PDF carrega?</h2>
+            </div>
+            <p>
+              Mesmo que você exporte um documento em PDF pronto para leitura, programas como Microsoft Word, Excel e Canva salvam dados de auditoria interna nas propriedades do arquivo:
+            </p>
+
+            <div class="terminal-comparison">
+              <div class="terminal-box terminal-danger">
+                <div class="terminal-header">
+                  <span class="term-dot dot-red" aria-hidden="true"></span>
+                  <span class="term-dot dot-yellow" aria-hidden="true"></span>
+                  <span class="term-dot dot-green" aria-hidden="true"></span>
+                  <span class="term-title">contrato_proposta.pdf [EXPOSTO]</span>
+                </div>
+                <div class="terminal-body">
+                  <div class="term-line danger-line"><span>Autor / Criador:</span> Dr. Roberto Silva (Advocacia Corporativa)</div>
+                  <div class="term-line danger-line"><span>Empresa / Razão Social:</span> Silva &amp; Associados Consultoria S/A</div>
+                  <div class="term-line danger-line"><span>Título do Documento:</span> Minuta_Fusao_Empresarial_v4_Final.docx</div>
+                  <div class="term-line danger-line"><span>Aplicativo Gerador:</span> Microsoft Word para Office 365</div>
+                  <div class="term-line danger-line"><span>Produtor do PDF:</span> macOS Version 14.3.1 Quartz PDFContext</div>
+                  <div class="term-line danger-line"><span>Data de Criação:</span> 2026-02-14 09:12:44 -03:00</div>
+                  <div class="term-line danger-line"><span>Metadados XMP:</span> Registros de 6 revisores anteriores detectados</div>
+                </div>
+              </div>
+
+              <div class="terminal-arrow" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"/>
+                  <polyline points="19 12 12 19 5 12"/>
+                </svg>
+              </div>
+
+              <div class="terminal-box terminal-safe">
+                <div class="terminal-header">
+                  <span class="term-dot dot-green" aria-hidden="true"></span>
+                  <span class="term-title">contrato_proposta_limpo.pdf [HIGIENIZADO]</span>
+                  <span class="term-badge-ok">100% PROTEGIDO</span>
+                </div>
+                <div class="terminal-body">
+                  <div class="term-line safe-line"><span>Autor / Criador:</span> [REMOVIDO COMPLETAMENTE]</div>
+                  <div class="term-line safe-line"><span>Empresa / Organização:</span> [NENHUM RASTRO ENCONTRADO]</div>
+                  <div class="term-line safe-line"><span>Título / Assunto:</span> [HIGIENIZADO]</div>
+                  <div class="term-line safe-line"><span>Aplicativo &amp; Produtor:</span> [APAGADOS]</div>
+                  <div class="term-line safe-line"><span>Datas e Histórico:</span> [ZERADOS]</div>
+                  <div class="term-line safe-line"><span>Fluxos XMP:</span> [DESCARTE TOTAL DE REVISÕES]</div>
+                  <div class="term-line safe-line"><span>Conteúdo Visual:</span> 100% Páginas, Textos e Imagens Preservados</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Why clean PDF metadata -->
+          <section class="guide-section" aria-labelledby="heading-por-que-pdf">
+            <div class="section-title-wrap">
+              <span class="section-kicker">CONFORMIDADE & SIGILO</span>
+              <h2 id="heading-por-que-pdf">Por que advogados, empresas e profissionais devem limpar PDFs?</h2>
+            </div>
+            <p>
+              No meio corporativo e jurídico, o envio acidental de metadados pode violar acordos de confidencialidade (NDA), comprometer negociações estratégicas e desrespeitar a <strong>Lei Geral de Proteção de Dados (LGPD)</strong>:
+            </p>
+
+            <div class="risks-grid">
+              <div class="risk-card">
+                <div class="risk-badge">SIGILO 01</div>
+                <h3>Identidade de Redatores e Fontes</h3>
+                <p>
+                  Petições judiciais e relatórios periciais podem expor estagiários, sócios ou consultores externos que redigiram o rascunho inicial do documento.
+                </p>
+              </div>
+
+              <div class="risk-card">
+                <div class="risk-badge">SIGILO 02</div>
+                <h3>Estratégias e Valores Anteriores</h3>
+                <p>
+                  O título original de um arquivo exportado pode revelar termos como <code>Proposta_Desconto_50_porcento.docx</code>, enfraquecendo sua negociação comercial.
+                </p>
+              </div>
+
+              <div class="risk-card">
+                <div class="risk-badge">SIGILO 03</div>
+                <h3>Pastas e Estrutura de Redes</h3>
+                <p>
+                  Alguns aplicativos salvam o caminho de pastas local (ex: <code>C:\Users\roberto\Clientes\Caso_Confidencial\</code>), expondo sua infraestrutura de TI.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Step-by-Step Flow -->
+          <section class="guide-section" aria-labelledby="heading-passos-pdf">
+            <div class="section-title-wrap">
+              <span class="section-kicker">TUTORIAL PASSO A PASSO</span>
+              <h2 id="heading-passos-pdf">Como higienizar metadados de PDF no navegador (Sem Upload)</h2>
+            </div>
+            <p>
+              Siga estas instruções simples para limpar seu PDF antes de enviar por e-mail ou anexar em processos:
+            </p>
+
+            <div class="steps-flow">
+              <div class="step-card">
+                <div class="step-number">01</div>
+                <div class="step-info">
+                  <h3>Acesse o Removedor Local</h3>
+                  <p>
+                    Abra o <a href="/#hero-section">Removedor de Metadados</a> no seu navegador. Como o processamento é 100% client-side, seus contratos confidenciais nunca saem do seu computador.
+                  </p>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-number">02</div>
+                <div class="step-info">
+                  <h3>Selecione uma Cópia do PDF</h3>
+                  <p>
+                    Arraste o arquivo <strong>PDF, DOCX, XLSX ou PPTX</strong> para a área de limpeza. Dica: sempre guarde seu documento original de edição em pasta segura.
+                  </p>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-number">03</div>
+                <div class="step-info">
+                  <h3>Limpeza Binária de Propriedades</h3>
+                  <p>
+                    A ferramenta manipula a árvore de objetos do PDF e descarta o dicionário de informações (<code>/Info</code>) e o fluxo XML de metadados (<code>/Metadata</code>).
+                  </p>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-number">04</div>
+                <div class="step-info">
+                  <h3>Baixe o PDF Higienizado</h3>
+                  <p>
+                    Faça o download do PDF limpo. Você pode abrir as propriedades do arquivo no Adobe Acrobat ou no navegador para confirmar que todos os campos de autor foram removidos.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Format Compatibility Table -->
+          <section class="guide-section" aria-labelledby="heading-formatos-pdf">
+            <div class="section-title-wrap">
+              <span class="section-kicker">TABELA TÉCNICA</span>
+              <h2 id="heading-formatos-pdf">Metadados Removidos em Documentos</h2>
+            </div>
+            <p>
+              Veja quais campos e propriedades são higienizados pela nossa ferramenta em PDFs e pacotes Office:
+            </p>
+
+            <div class="table-container">
+              <table class="specs-table">
+                <thead>
+                  <tr>
+                    <th>Tipo de Arquivo</th>
+                    <th>Extensão</th>
+                    <th>Campos Eliminados</th>
+                    <th>Conformidade LGPD</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Documento PDF</strong></td>
+                    <td><code>.pdf</code></td>
+                    <td>Autor, Criador, Produtor, Título, Assunto, Datas, XMP</td>
+                    <td><span class="table-badge-ok">Totalmente Conforme</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Microsoft Word</strong></td>
+                    <td><code>.docx</code></td>
+                    <td>Autor, Último Salvo Por, Tempo de Edição, Comentários ocultos</td>
+                    <td><span class="table-badge-ok">Totalmente Conforme</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Microsoft Excel</strong></td>
+                    <td><code>.xlsx</code></td>
+                    <td>Nome da Empresa, Gerente, Histórico de Revisões</td>
+                    <td><span class="table-badge-ok">Totalmente Conforme</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>PowerPoint</strong></td>
+                    <td><code>.pptx</code></td>
+                    <td>Propriedades da apresentação e notas do apresentador</td>
+                    <td><span class="table-badge-ok">Totalmente Conforme</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- FAQ Accordion -->
+          <section class="guide-section" aria-labelledby="heading-faq-pdf">
+            <div class="section-title-wrap">
+              <span class="section-kicker">DÚVIDAS FREQUENTES</span>
+              <h2 id="heading-faq-pdf">Perguntas Frequentes sobre Metadados de PDF</h2>
+            </div>
+
+            <div class="guide-faq-list">
+              {faqItems.map((item) => (
+                <details class="guide-faq-item">
+                  <summary class="faq-summary">
+                    <span class="faq-question">{item.question}</span>
+                    <span class="faq-icon" aria-hidden="true">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </span>
+                  </summary>
+                  <div class="faq-answer">
+                    <p>{item.answer}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </section>
+
+          <!-- Related Guides Navigation -->
+          <section class="guide-section" aria-labelledby="heading-relacionados-pdf">
+            <div class="section-title-wrap">
+              <span class="section-kicker">CONTINUE APRENDENDO</span>
+              <h2 id="heading-relacionados-pdf">Outros Guias de Limpeza de Metadados</h2>
+            </div>
+
+            <div class="related-cards-grid">
+              <a href="/guias/remover-metadados-de-imagem/" class="related-card">
+                <div class="rel-icon-box" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                    <circle cx="9" cy="9" r="2"/>
+                    <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+                  </svg>
+                </div>
+                <div class="rel-card-info">
+                  <span class="rel-tag">FOTOS & EXIF</span>
+                  <h3 class="rel-title">Remover metadados de imagem e foto</h3>
+                  <p class="rel-desc">Aprenda a limpar dados EXIF e localização GPS de fotos JPEG, PNG, WebP e HEIC.</p>
+                </div>
+              </a>
+
+              <a href="/guias/remover-metadados-de-video/" class="related-card">
+                <div class="rel-icon-box" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m22 8-6 4 6 4V8Z"/>
+                    <rect width="14" height="12" x="2" y="6" rx="2" ry="2"/>
+                  </svg>
+                </div>
+                <div class="rel-card-info">
+                  <span class="rel-tag">ÁUDIO & VÍDEO</span>
+                  <h3 class="rel-title">Remover metadados de vídeo online</h3>
+                  <p class="rel-desc">Aprenda a limpar localização e dados do dispositivo de vídeos MP4 e MOV.</p>
+                </div>
+              </a>
+            </div>
+          </section>
+
+        </article>
+
+        <!-- Right Sticky Sidebar -->
+        <aside class="guide-sidebar" aria-label="Painel de ações do guia">
+          <div class="sidebar-sticky-card">
+            <div class="sidebar-header">
+              <span class="sidebar-badge">RESUMO RÁPIDO</span>
+              <h2 class="sidebar-title">Higienização de PDF</h2>
+            </div>
+
+            <ul class="sidebar-checklist">
+              <li>
+                <span class="check-mark">✓</span>
+                <span>Remove nome do autor e empresa</span>
+              </li>
+              <li>
+                <span class="check-mark">✓</span>
+                <span>Descarta datas e software gerador</span>
+              </li>
+              <li>
+                <span class="check-mark">✓</span>
+                <span>Elimina fluxos de revisão XMP</span>
+              </li>
+              <li>
+                <span class="check-mark">✓</span>
+                <span>Mantém páginas e texto 100% intactos</span>
+              </li>
+              <li>
+                <span class="check-mark">✓</span>
+                <span>Totalmente compatível com a LGPD</span>
+              </li>
+            </ul>
+
+            <div class="sidebar-action-box">
+              <a href="/#hero-section" class="sidebar-cta-btn">
+                <span>Limpar Meu PDF Agora</span>
+                <span aria-hidden="true">→</span>
+              </a>
+              <p class="sidebar-subtext">Sem uploads · Sem cadastro · 100% privado</p>
+            </div>
+
+            <div class="sidebar-help">
+              <span class="help-title">Precisa de outro formato?</span>
+              <a href="/#formatos" class="help-link">Ver lista de formatos suportados →</a>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+
+      <!-- Bottom High-Impact Callout -->
+      <section class="guide-bottom-cta">
+        <div class="bottom-cta-badge">CONFORMIDADE JURÍDICA & LGPD</div>
+        <h2>Pronto para enviar seus documentos com sigilo absoluto?</h2>
+        <p>Higienize contratos, petições e currículos em segundos diretamente no seu navegador.</p>
+        <div class="bottom-cta-btns">
+          <a href="/#hero-section" class="btn-cta-primary">
+            <span>Abrir Removedor de PDFs</span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <a href="/guias/" class="btn-cta-secondary">
+            <span>Voltar para a Central de Guias</span>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer lang="pt-BR" />
+</Layout>
+
+<style>
+  /* ── Layout & Typography ─────────────────────────────────── */
+  .guide-main {
+    min-height: 70vh;
+    padding: 1.5rem 0 6rem;
+  }
+
+  .guide-container {
+    text-align: left;
+  }
+
+  /* ── Breadcrumb ─────────────────────────────────────────── */
+  .guide-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0.5rem 0 2.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .guide-breadcrumb a {
+    color: var(--text);
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .guide-breadcrumb a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .crumb-sep {
+    color: var(--text-faint);
+  }
+
+  .crumb-current {
+    color: var(--text-muted);
+  }
+
+  /* ── Hero Header ────────────────────────────────────────── */
+  .guide-hero {
+    max-width: 920px;
+    margin: 0 auto 3.5rem;
+    text-align: center;
+  }
+
+  .guide-kicker-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    padding: 0.35rem 0.85rem;
+    border-radius: 3px;
+    margin-bottom: 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    text-transform: uppercase;
+  }
+
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+    animation: pulse 2s infinite ease-in-out;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.25); opacity: 0.65; }
+  }
+
+  .guide-hero-h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4.5vw, 3.3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    color: var(--text);
+    margin: 0 auto 1.25rem;
+    text-wrap: balance;
+  }
+
+  .guide-hero-lead {
+    font-size: clamp(0.98rem, 2vw, 1.12rem);
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 780px;
+    margin: 0 auto 2rem;
+  }
+
+  .guide-hero-lead strong {
+    color: var(--text);
+  }
+
+  .guide-specs-strip {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem 1.25rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    padding: 0.65rem 1.25rem;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    margin-bottom: 2rem;
+  }
+
+  .spec-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .spec-label {
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .spec-val {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .spec-divider {
+    width: 1px;
+    height: 14px;
+    background: var(--border-light);
+  }
+
+  .hero-cta-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2.5px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    padding: 0.9rem 1.75rem;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.12s ease;
+  }
+
+  .hero-cta-btn:hover {
+    background: var(--btn-accent-hover);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--neo-shadow-lg);
+  }
+
+  .hero-cta-trust {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* ── Two Column Layout ──────────────────────────────────── */
+  .guide-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 3rem;
+    max-width: 1180px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .guide-article {
+    min-width: 0;
+    text-align: left;
+  }
+
+  .guide-section {
+    margin-bottom: 3.5rem;
+    text-align: left;
+  }
+
+  .section-title-wrap {
+    margin-bottom: 1.25rem;
+  }
+
+  .section-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--btn-accent-text);
+    background: var(--btn-accent);
+    border: 1px solid var(--border);
+    display: inline-block;
+    padding: 0.15rem 0.45rem;
+    border-radius: 2px;
+    margin-bottom: 0.65rem;
+  }
+
+  .guide-section h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    margin: 0;
+    text-transform: none;
+  }
+
+  .guide-section p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin: 0 0 1.25rem;
+  }
+
+  .guide-section p strong {
+    color: var(--text);
+  }
+
+  .guide-section code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 0.15rem 0.35rem;
+    border-radius: 2px;
+    color: var(--text);
+  }
+
+  /* ── Terminal Inspection Box ────────────────────────────── */
+  .terminal-comparison {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .terminal-box {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.85rem;
+    border-bottom: 1.5px solid var(--border);
+    background: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .term-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+  }
+
+  .dot-red { background: #ef4444; }
+  .dot-yellow { background: #eab308; }
+  .dot-green { background: #10b981; }
+
+  .term-title {
+    color: var(--text);
+    margin-left: 0.25rem;
+  }
+
+  .term-badge-ok {
+    margin-left: auto;
+    background: #10b981;
+    color: #ffffff;
+    font-size: 0.6rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+  }
+
+  .terminal-body {
+    padding: 0.85rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.8;
+  }
+
+  .term-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .danger-line span {
+    color: var(--text-muted);
+  }
+
+  .danger-line {
+    color: #ef4444;
+  }
+
+  .safe-line span {
+    color: var(--text-muted);
+  }
+
+  .safe-line {
+    color: #10b981;
+    font-weight: 700;
+  }
+
+  .terminal-arrow {
+    display: flex;
+    justify-content: center;
+    color: var(--text-muted);
+  }
+
+  /* ── Risks Grid ─────────────────────────────────────────── */
+  .risks-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .risk-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    padding: 1.25rem;
+    border-radius: 3px;
+  }
+
+  .risk-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: inline-block;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    margin-bottom: 0.75rem;
+  }
+
+  .risk-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.55rem;
+    line-height: 1.3;
+  }
+
+  .risk-card p {
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ── Steps Flow ─────────────────────────────────────────── */
+  .steps-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .step-card {
+    display: flex;
+    gap: 1.25rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    padding: 1.25rem 1.5rem;
+    border-radius: 3px;
+    align-items: flex-start;
+  }
+
+  .step-number {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    font-weight: 700;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .step-info {
+    flex: 1 1 auto;
+  }
+
+  .step-info h3 {
+    font-family: var(--font-heading);
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.45rem;
+  }
+
+  .step-info p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .step-info a {
+    color: var(--text);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* ── Table Container ────────────────────────────────────── */
+  .table-container {
+    overflow-x: auto;
+    margin: 1.5rem 0 2rem;
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 3px;
+    background: var(--card-bg);
+  }
+
+  .specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+    text-align: left;
+  }
+
+  .specs-table th {
+    background: var(--bg);
+    padding: 0.85rem 1rem;
+    border-bottom: 2px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .specs-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-muted);
+  }
+
+  .specs-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .table-badge-ok {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid #10b981;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  /* ── FAQ ────────────────────────────────────────────────── */
+  .guide-faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .guide-faq-item {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    border-radius: 4px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    overflow: hidden;
+    text-align: left;
+  }
+
+  .guide-faq-item:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .guide-faq-item[open] {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .faq-summary {
+    padding: 1.25rem 1.4rem;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    color: var(--text);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    user-select: none;
+    border-bottom: 2px solid transparent;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    text-align: left;
+  }
+
+  .faq-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .guide-faq-item[open] .faq-summary {
+    border-bottom: 2px solid var(--border);
+    background: var(--bg);
+  }
+
+  .faq-question {
+    flex: 1;
+    line-height: 1.4;
+    text-align: left;
+  }
+
+  .faq-icon {
+    width: 26px;
+    height: 26px;
+    border: 1.5px solid var(--border);
+    box-shadow: 1.5px 1.5px 0px var(--shadow-color);
+    background: var(--card-bg);
+    border-radius: 2px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+  }
+
+  .guide-faq-item[open] .faq-icon {
+    transform: rotate(180deg);
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+  }
+
+  .faq-answer {
+    padding: 1.25rem 1.4rem;
+    text-align: left;
+  }
+
+  .faq-answer p {
+    font-size: 0.88rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
+    text-align: left;
+  }
+
+  /* ── Related Guides ─────────────────────────────────────── */
+  .related-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .related-card {
+    display: flex;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 3px;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .related-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--neo-shadow-lg);
+  }
+
+  .rel-icon-box {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .rel-card-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rel-tag {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 0.35rem;
+  }
+
+  .rel-title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.45rem;
+    line-height: 1.3;
+  }
+
+  .related-card:hover .rel-title {
+    color: var(--link-color);
+    text-decoration: underline;
+  }
+
+  .rel-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ── Right Sticky Sidebar ───────────────────────────────── */
+  .guide-sidebar {
+    position: sticky;
+    top: 1.5rem;
+    align-self: start;
+  }
+
+  .sidebar-sticky-card {
+    background: var(--card-bg);
+    border: 2.5px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 4px;
+    padding: 1.5rem;
+  }
+
+  .sidebar-header {
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.95rem;
+    border-bottom: 1.5px solid var(--border-light);
+  }
+
+  .sidebar-badge {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--btn-accent-text);
+    background: var(--btn-accent);
+    border: 1px solid var(--border);
+    padding: 0.15rem 0.45rem;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+
+  .sidebar-title {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.25;
+    text-transform: none;
+  }
+
+  .sidebar-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .sidebar-checklist li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .check-mark {
+    color: #10b981;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .sidebar-action-box {
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1.5px solid var(--border-light);
+  }
+
+  .sidebar-cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    box-shadow: 2.5px 2.5px 0 var(--shadow-color);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.12s ease;
+  }
+
+  .sidebar-cta-btn:hover {
+    background: var(--btn-accent-hover);
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 4px 4px 0 var(--shadow-color);
+  }
+
+  .sidebar-subtext {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-faint);
+    text-align: center;
+    margin: 0.55rem 0 0;
+  }
+
+  .sidebar-help {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .help-title {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .help-link {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* ── Bottom Callout Banner ──────────────────────────────── */
+  .guide-bottom-cta {
+    background: var(--card-bg);
+    border: 3px solid var(--border);
+    box-shadow: var(--neo-shadow-lg);
+    border-radius: 6px;
+    padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 4vw, 3rem);
+    text-align: center;
+    margin: 4rem auto 0;
+    max-width: 960px;
+  }
+
+  .bottom-cta-badge {
+    display: inline-block;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 1.5px solid var(--border);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 0.25rem 0.75rem;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+  }
+
+  .guide-bottom-cta h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 3.5vw, 2.3rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    margin: 0 auto 0.85rem;
+    max-width: 700px;
+    text-align: center;
+    text-transform: none;
+  }
+
+  .guide-bottom-cta p {
+    color: var(--text-muted);
+    font-size: clamp(0.9rem, 2vw, 1.05rem);
+    line-height: 1.7;
+    max-width: 650px;
+    margin: 0 auto 1.75rem;
+    text-align: center;
+  }
+
+  .bottom-cta-btns {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .btn-cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0 var(--shadow-color);
+    padding: 0.85rem 1.6rem;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.12s ease;
+  }
+
+  .btn-cta-primary:hover {
+    background: var(--btn-accent-hover);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--shadow-color);
+  }
+
+  .btn-cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: var(--bg);
+    color: var(--text);
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0 var(--shadow-color);
+    padding: 0.85rem 1.4rem;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.12s ease;
+  }
+
+  .btn-cta-secondary:hover {
+    background: var(--card-bg);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--shadow-color);
+  }
+
+  /* ── Responsive Breakpoints ─────────────────────────────── */
+  @media (max-width: 960px) {
+    .guide-layout {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .guide-sidebar {
+      position: static;
+      order: 2;
+    }
+
+    .risks-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .related-cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .guide-main {
+      padding: 1rem 0 4rem;
+    }
+
+    .guide-specs-strip {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.55rem;
+      width: 100%;
+    }
+
+    .spec-divider {
+      display: none;
+    }
+
+    .step-card {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .hero-cta-btn,
+    .btn-cta-primary,
+    .btn-cta-secondary {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<script>
+  class FaqAccordion {
+    constructor(el) {
+      this.el = el;
+      this.summary = el.querySelector('summary');
+      this.content = el.querySelector('.faq-answer');
+      this.animation = null;
+      this.isClosing = false;
+      this.isExpanding = false;
+      this.summary?.addEventListener('click', (e) => this.onClick(e));
+    }
+
+    onClick(e) {
+      e.preventDefault();
+      this.el.style.overflow = 'hidden';
+      if (this.isClosing || !this.el.open) {
+        this.open();
+      } else if (this.isExpanding || this.el.open) {
+        this.shrink();
+      }
+    }
+
+    shrink() {
+      this.isClosing = true;
+      const startHeight = `${this.el.offsetHeight}px`;
+      const endHeight = `${this.summary.offsetHeight}px`;
+
+      if (this.animation) this.animation.cancel();
+
+      this.animation = this.el.animate({
+        height: [startHeight, endHeight]
+      }, {
+        duration: 250,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
+      });
+
+      this.content?.animate({
+        opacity: [1, 0],
+        transform: ['translateY(0px)', 'translateY(-6px)']
+      }, {
+        duration: 200,
+        easing: 'ease-out'
+      });
+
+      this.animation.onfinish = () => this.onAnimationFinish(false);
+      this.animation.oncancel = () => (this.isClosing = false);
+    }
+
+    open() {
+      this.el.style.height = `${this.el.offsetHeight}px`;
+      this.el.open = true;
+      window.requestAnimationFrame(() => this.expand());
+    }
+
+    expand() {
+      this.isExpanding = true;
+      const startHeight = `${this.el.offsetHeight}px`;
+      const endHeight = `${this.summary.offsetHeight + (this.content?.offsetHeight || 0)}px`;
+
+      if (this.animation) this.animation.cancel();
+
+      this.animation = this.el.animate({
+        height: [startHeight, endHeight]
+      }, {
+        duration: 280,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
+      });
+
+      this.content?.animate({
+        opacity: [0, 1],
+        transform: ['translateY(-6px)', 'translateY(0px)']
+      }, {
+        duration: 260,
+        easing: 'ease-out'
+      });
+
+      this.animation.onfinish = () => this.onAnimationFinish(true);
+      this.animation.oncancel = () => (this.isExpanding = false);
+    }
+
+    onAnimationFinish(open) {
+      this.el.open = open;
+      this.animation = null;
+      this.isClosing = false;
+      this.isExpanding = false;
+      this.el.style.height = '';
+      this.el.style.overflow = '';
+    }
+  }
+
+  document.querySelectorAll('details.guide-faq-item').forEach((el) => {
+    new FaqAccordion(el);
+  });
+</script>
