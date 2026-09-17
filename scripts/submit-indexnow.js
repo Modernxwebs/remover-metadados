@@ -8,6 +8,10 @@ const keyLocation = `https://${host}/${key}.txt`;
 const urlList = [
   `https://${host}/`,
   `https://${host}/en/`,
+  `https://${host}/guias/`,
+  `https://${host}/guias/remover-metadados-de-imagem/`,
+  `https://${host}/guias/remover-metadados-de-video/`,
+  `https://${host}/guias/remover-metadados-pdf/`,
   `https://${host}/sobre/`,
   `https://${host}/contato/`,
   `https://${host}/privacidade/`,
