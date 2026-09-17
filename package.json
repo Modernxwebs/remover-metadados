@@ -17,6 +17,7 @@
     "@astrojs/sitemap": "^3.7.4",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.2",
+    "heic-to": "^1.5.2",
     "jszip": "^3.10.2",
     "pdf-lib": "^1.17.1",
     "piexifjs": "^1.0.6",

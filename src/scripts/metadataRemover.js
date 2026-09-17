@@ -239,20 +239,35 @@ export async function removeMetadata(file, onProgress) {
   }
 
   if (['heic', 'heif'].includes(ext)) {
-    // heic2any loaded from CDN
+    onProgress?.(15);
     try {
-      // @ts-ignore
-      const heic2any = (await import('https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js')).default;
-      const converted = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.92 });
-      const jpegFile = new File([converted], `${baseName}.jpg`, { type: 'image/jpeg' });
-      const blob = await stripViaCanvas(jpegFile, 'image/jpeg', 0.95);
+      const decodeHeic = await getHeicDecoder();
+      if (decodeHeic) {
+        onProgress?.(40);
+        const jpegBlob = await decodeHeic({
+          blob: file,
+          type: 'image/jpeg',
+          quality: 0.95,
+        });
+        onProgress?.(80);
+
+        // Re-encode via canvas for 100% EXIF & GPS sanitization
+        const jpegFile = new File([jpegBlob], `${baseName}.jpg`, { type: 'image/jpeg' });
+        const blob = await stripViaCanvas(jpegFile, 'image/jpeg', 0.95).catch(() => jpegBlob);
+        onProgress?.(100);
+        return { blob, filename: `${baseName}.jpg` };
+      }
+    } catch (err) {
+      console.warn('heic-to conversion error, trying native canvas fallback:', err);
+    }
+
+    // Fallback: try canvas directly (works in Safari/iOS/macOS with native HEIC decoding)
+    try {
+      const blob = await stripViaCanvas(file, 'image/jpeg', 0.95);
       onProgress?.(100);
       return { blob, filename: `${baseName}.jpg` };
-    } catch {
-      // Fallback: try canvas directly
-      const blob = await stripViaCanvas(file, 'image/jpeg', 0.92);
-      onProgress?.(100);
-      return { blob, filename: `${baseName}.jpg` };
+    } catch (fallbackErr) {
+      throw new Error('Falha ao processar arquivo HEIC. Não foi possível decodificar a imagem.');
     }
   }
 
@@ -543,6 +558,54 @@ export async function getJSZip() {
   })();
 
   return _jszipPromise;
+}
+
+let _heicDecoderPromise = null;
+
+/**
+ * Load modern HEIC decoder (heic-to with libheif 1.22.2).
+ * Supports modern iPhone HEIC/HEIF containers, grid images, and burst photos.
+ * @returns {Promise<((opts: { blob: Blob, type?: string, quality?: number }) => Promise<Blob>) | null>}
+ */
+export async function getHeicDecoder() {
+  if (_heicDecoderPromise) return _heicDecoderPromise;
+
+  _heicDecoderPromise = (async () => {
+    // 1. Try ESM dynamic import
+    try {
+      const mod = await import('heic-to');
+      if (typeof mod.heicTo === 'function') {
+        return mod.heicTo;
+      }
+    } catch (e) {
+      console.warn('Dynamic import of heic-to failed, attempting CDN fallback:', e);
+    }
+
+    // 2. Fallback to CDN IIFE injection
+    if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+      if (typeof window.HeicTo === 'function') {
+        return window.HeicTo;
+      }
+      try {
+        await new Promise((resolve, reject) => {
+          const s = document.createElement('script');
+          s.src = 'https://cdn.jsdelivr.net/npm/heic-to@1.5.2/dist/iife/heic-to.js';
+          s.onload = resolve;
+          s.onerror = reject;
+          document.head.appendChild(s);
+        });
+        if (typeof window.HeicTo === 'function') {
+          return window.HeicTo;
+        }
+      } catch (cdnErr) {
+        console.error('All heic-to loaders failed:', cdnErr);
+      }
+    }
+
+    return null;
+  })();
+
+  return _heicDecoderPromise;
 }
 
 /**
