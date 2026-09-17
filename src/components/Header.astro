@@ -60,12 +60,14 @@ const navLinks = isEn
         <a
           href={ptSwitchUrl}
           class={`lang-btn ${!isEn ? 'active' : ''}`}
+          data-language-choice="pt"
           title="Versão em Português"
         >PT</a>
         <span class="lang-divider"></span>
         <a
           href={enSwitchUrl}
           class={`lang-btn ${isEn ? 'active' : ''}`}
+          data-language-choice="en"
           title="English Version"
         >EN</a>
       </div>
@@ -345,6 +347,14 @@ const navLinks = isEn
   // Close drawer when link clicked
   document.querySelectorAll('.mobile-nav-link').forEach((link) => {
     link.addEventListener('click', () => toggleMenu(true));
+  });
+
+  // Remember an explicit language choice made in the header.
+  document.querySelectorAll('[data-language-choice].lang-btn').forEach((link) => {
+    link.addEventListener('click', () => {
+      const choice = link.getAttribute('data-language-choice');
+      if (choice) localStorage.setItem('preferred-language', choice);
+    });
   });
 
   // Close on outside click

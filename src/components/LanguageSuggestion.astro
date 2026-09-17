@@ -1,0 +1,162 @@
+---
+export interface Props {
+  isEn?: boolean;
+}
+
+const isEn = Astro.props.isEn || false;
+---
+
+<aside
+  id="language-suggestion"
+  class="language-suggestion"
+  aria-label="Language suggestion"
+  hidden
+>
+  <div class="language-suggestion-copy">
+    <span class="language-suggestion-icon" aria-hidden="true">{isEn ? 'PT' : 'EN'}</span>
+    <p>
+      <strong>{isEn ? 'Prefere português?' : 'Prefer English?'}</strong>
+      {isEn
+        ? 'Veja a versão brasileira do Remover Metadados.'
+        : 'View the global English version of Metadata Remover.'}
+    </p>
+  </div>
+  <div class="language-suggestion-actions">
+    <a
+      href={isEn ? '/' : '/en/'}
+      class="language-suggestion-button language-suggestion-primary"
+      data-language-choice={isEn ? 'pt' : 'en'}
+    >{isEn ? 'Ver em português' : 'View in English'}</a>
+    <button
+      type="button"
+      class="language-suggestion-button language-suggestion-dismiss"
+      data-language-choice={isEn ? 'en' : 'pt'}
+    >{isEn ? 'Continue in English' : 'Continuar em português'}</button>
+  </div>
+</aside>
+
+<script is:inline define:vars={{ isEn }}>
+  (() => {
+    const suggestion = document.getElementById('language-suggestion');
+    if (!suggestion) return;
+
+    const preferenceKey = 'preferred-language';
+    const storedPreference = localStorage.getItem(preferenceKey);
+    const languages = navigator.languages?.length ? navigator.languages : [navigator.language];
+    const prefersPortuguese = languages.some((language) => /^pt(?:-|$)/i.test(language || ''));
+    const shouldSuggestAlternateLanguage = isEn ? prefersPortuguese : !prefersPortuguese;
+
+    if (!storedPreference && shouldSuggestAlternateLanguage) suggestion.hidden = false;
+
+    suggestion.querySelectorAll('[data-language-choice]').forEach((control) => {
+      control.addEventListener('click', () => {
+        const choice = control.getAttribute('data-language-choice');
+        if (choice) localStorage.setItem(preferenceKey, choice);
+        if (control.tagName === 'BUTTON') suggestion.hidden = true;
+      });
+    });
+  })();
+</script>
+
+<style>
+  .language-suggestion {
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0.8rem 1rem;
+    background: var(--card-bg);
+    color: var(--text);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    box-shadow: var(--neo-shadow-lg);
+  }
+
+  .language-suggestion-copy,
+  .language-suggestion-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .language-suggestion-copy p {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+
+  .language-suggestion-copy strong {
+    display: block;
+    font-size: 0.85rem;
+  }
+
+  .language-suggestion-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+  }
+
+  .language-suggestion-button {
+    padding: 0.45rem 0.65rem;
+    border: 2px solid var(--border);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .language-suggestion-primary {
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+  }
+
+  .language-suggestion-dismiss {
+    background: transparent;
+    color: var(--text);
+  }
+
+  .language-suggestion-button:hover,
+  .language-suggestion-button:focus-visible {
+    transform: translate(-1px, -1px);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+  }
+
+  @media (max-width: 600px) {
+    .language-suggestion {
+      align-items: stretch;
+      flex-direction: column;
+      gap: 0.7rem;
+      bottom: 0.65rem;
+      padding: 0.8rem;
+    }
+
+    .language-suggestion-actions {
+      width: 100%;
+    }
+
+    .language-suggestion-button {
+      flex: 1;
+      text-align: center;
+    }
+  }
+</style>

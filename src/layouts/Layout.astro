@@ -3,6 +3,7 @@ import '../styles/global.css';
 
 import { faqs } from '../data/faqs.js';
 import { faqsEn } from '../data/faqsEn.js';
+import LanguageSuggestion from '../components/LanguageSuggestion.astro';
 
 export interface Props {
   title?: string;
@@ -315,6 +316,7 @@ const schemaData = {
     </script>
   </head>
   <body>
+    <LanguageSuggestion isEn={isEn} />
     <slot />
   </body>
 </html>
