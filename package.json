@@ -21,7 +21,8 @@
     "jszip": "^3.10.2",
     "pdf-lib": "^1.17.1",
     "piexifjs": "^1.0.6",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.3",
+    "utif": "^3.1.0"
   },
   "allowScripts": {
     "esbuild": true

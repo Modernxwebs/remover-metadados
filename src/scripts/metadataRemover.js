@@ -11,7 +11,10 @@
  * @param {File} file
  * @returns {Promise<ArrayBuffer>}
  */
-function readAsArrayBuffer(file) {
+async function readAsArrayBuffer(file) {
+  if (typeof file.arrayBuffer === 'function') {
+    return file.arrayBuffer();
+  }
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(/** @type {ArrayBuffer} */(reader.result));
@@ -116,14 +119,16 @@ function stripSvgMetadata(svgText) {
   const doc = parser.parseFromString(svgText, 'image/svg+xml');
   const root = doc.documentElement;
 
-  // Remove metadata elements
-  const toRemove = root.querySelectorAll('metadata, desc');
+  // Remove metadata, title, desc, and script elements
+  const toRemove = root.querySelectorAll('metadata, desc, title, script');
   toRemove.forEach(el => el.remove());
 
-  // Remove common metadata attributes from root SVG element
-  const metaAttrs = ['inkscape:version', 'sodipodi:docname', 'dc:format', 'dc:type',
+  // Remove common metadata & editor attributes from root SVG element
+  const metaAttrs = [
+    'inkscape:version', 'sodipodi:docname', 'dc:format', 'dc:type',
     'cc:license', 'rdf:about', 'xmlns:dc', 'xmlns:cc', 'xmlns:rdf', 'xmlns:inkscape',
-    'xmlns:sodipodi', 'xmlns:xlink'];
+    'xmlns:sodipodi', 'xmlns:xlink', 'adobe:adobe-illustrator'
+  ];
   metaAttrs.forEach(attr => root.removeAttribute(attr));
 
   return new XMLSerializer().serializeToString(doc);
@@ -132,13 +137,13 @@ function stripSvgMetadata(svgText) {
 // ─── PDF metadata stripper ─────────────────────────────────────────────────
 
 /**
- * Strip metadata from PDF using pdf-lib (loaded via CDN at runtime).
+ * Strip metadata from PDF using pdf-lib.
+ * Clears Info dictionary fields and removes XMP streams.
  * @param {ArrayBuffer} buffer
  * @returns {Promise<Uint8Array>}
  */
 async function stripPdfMetadata(buffer) {
-  // pdf-lib is loaded via import map / bundler
-  const { PDFDocument } = await import('pdf-lib');
+  const { PDFDocument, PDFName } = await import('pdf-lib');
   const pdfDoc = await PDFDocument.load(new Uint8Array(buffer), { ignoreEncryption: true });
 
   // Clear all Info dictionary fields
@@ -151,20 +156,25 @@ async function stripPdfMetadata(buffer) {
   pdfDoc.setCreationDate(new Date(0));
   pdfDoc.setModificationDate(new Date(0));
 
-  // Remove XMP metadata stream if present
-  const catalog = pdfDoc.context.lookup(pdfDoc.context.trailerInfo.Root);
-  if (catalog && catalog.has && catalog.has(PDFDocument.PDFName?.of?.('Metadata'))) {
-    catalog.delete(PDFDocument.PDFName.of('Metadata'));
+  // Remove XMP metadata and PieceInfo streams if present
+  try {
+    const catalog = pdfDoc.context.lookup(pdfDoc.context.trailerInfo.Root);
+    if (catalog && typeof catalog.delete === 'function' && typeof PDFName?.of === 'function') {
+      catalog.delete(PDFName.of('Metadata'));
+      catalog.delete(PDFName.of('PieceInfo'));
+    }
+  } catch (err) {
+    console.warn('Could not remove PDF catalog metadata stream:', err);
   }
 
   return pdfDoc.save();
 }
 
-// ─── DOCX / XLSX / PPTX (Office Open XML) ──────────────────────────────────
+// ─── DOCX / XLSX / PPTX / ODT / ODS / ODP (Office Open XML & ODF) ───────────
 
 /**
- * Strip metadata from Office Open XML files (docx, xlsx, pptx).
- * Removes docProps/core.xml and docProps/app.xml content.
+ * Strip metadata from Office files (docx, xlsx, pptx, odt, ods, odp).
+ * Removes docProps/core.xml, docProps/app.xml, meta.xml, and thumbnails.
  * @param {ArrayBuffer} buffer
  * @returns {Promise<Blob>}
  */
@@ -181,20 +191,36 @@ async function stripOfficeMetadata(buffer) {
 
   const CLEAN_APP = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties">
-  <Application>Microsoft Office</Application>
+  <Application>Office</Application>
 </Properties>`;
 
+  const CLEAN_ODF_META = `<?xml version="1.0" encoding="UTF-8"?>
+<office:document-meta xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+  xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  office:version="1.2">
+  <office:meta></office:meta>
+</office:document-meta>`;
+
+  // Microsoft Office (docx, xlsx, pptx)
   if (zip.files['docProps/core.xml']) {
     zip.file('docProps/core.xml', CLEAN_CORE);
   }
   if (zip.files['docProps/app.xml']) {
     zip.file('docProps/app.xml', CLEAN_APP);
   }
+  if (zip.files['docProps/custom.xml']) {
+    zip.remove('docProps/custom.xml');
+  }
+  if (zip.files['docProps/thumbnail.jpeg']) zip.remove('docProps/thumbnail.jpeg');
+  if (zip.files['docProps/thumbnail.png']) zip.remove('docProps/thumbnail.png');
 
-  // Also remove thumbnail
-  if (zip.files['docProps/thumbnail.jpeg'] || zip.files['docProps/thumbnail.png']) {
-    zip.remove('docProps/thumbnail.jpeg');
-    zip.remove('docProps/thumbnail.png');
+  // OpenDocument Format (odt, ods, odp)
+  if (zip.files['meta.xml']) {
+    zip.file('meta.xml', CLEAN_ODF_META);
+  }
+  if (zip.files['Thumbnails/thumbnail.png']) {
+    zip.remove('Thumbnails/thumbnail.png');
   }
 
   return zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
@@ -271,17 +297,56 @@ export async function removeMetadata(file, onProgress) {
     }
   }
 
-  // ── PNG chunk-level strip ────────────────────────────────
+  // ── PNG chunk-level strip with canvas fallback ───────────
   if (ext === 'png') {
-    const buffer = await readAsArrayBuffer(file);
-    onProgress?.(40);
-    const cleaned = stripPngMetadata(buffer);
-    onProgress?.(100);
-    return { blob: new Blob([cleaned], { type: 'image/png' }), filename: `${baseName}.png` };
+    try {
+      const buffer = await readAsArrayBuffer(file);
+      onProgress?.(40);
+      const cleaned = stripPngMetadata(buffer);
+      onProgress?.(100);
+      return { blob: new Blob([cleaned], { type: 'image/png' }), filename: `${baseName}.png` };
+    } catch (pngErr) {
+      console.warn('PNG chunk strip failed, falling back to canvas re-encode:', pngErr);
+      const blob = await stripViaCanvas(file, 'image/png');
+      onProgress?.(100);
+      return { blob, filename: `${baseName}.png` };
+    }
   }
 
-  // ── TIFF — canvas re-encode to PNG ──────────────────────
+  // ── TIFF — decode via UTIF or fallback to native canvas ──
   if (['tif', 'tiff'].includes(ext)) {
+    try {
+      const UTIF = await getUtif();
+      if (UTIF) {
+        onProgress?.(30);
+        const buffer = await readAsArrayBuffer(file);
+        const ifds = UTIF.decode(buffer);
+        if (ifds && ifds.length > 0) {
+          const first = ifds[0];
+          UTIF.decodeImage(buffer, first);
+          const rgba = UTIF.toRGBA8(first);
+          const canvas = document.createElement('canvas');
+          canvas.width = first.width;
+          canvas.height = first.height;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            const imgData = ctx.createImageData(first.width, first.height);
+            imgData.data.set(rgba);
+            ctx.putImageData(imgData, 0, 0);
+            onProgress?.(80);
+            const blob = await new Promise((resolve, reject) => {
+              canvas.toBlob((b) => b ? resolve(b) : reject(new Error('Canvas toBlob failed')), 'image/png');
+            });
+            onProgress?.(100);
+            return { blob, filename: `${baseName}.png` };
+          }
+        }
+      }
+    } catch (utifErr) {
+      console.warn('UTIF decode failed, attempting canvas fallback:', utifErr);
+    }
+
+    // Native browser fallback (Safari/macOS)
     try {
       const blob = await stripViaCanvas(file, 'image/png');
       onProgress?.(100);
@@ -357,17 +422,20 @@ function stripMp3Id3(buffer) {
 
   // Strip ID3v2 header (starts with "ID3")
   if (
+    buffer.byteLength >= 10 &&
     view.getUint8(0) === 0x49 && // I
     view.getUint8(1) === 0x44 && // D
     view.getUint8(2) === 0x33    // 3
   ) {
-    // ID3v2 size is encoded as 4 sync-safe bytes at offset 6
-    const b1 = view.getUint8(6);
-    const b2 = view.getUint8(7);
-    const b3 = view.getUint8(8);
-    const b4 = view.getUint8(9);
+    // ID3v2 size is encoded as 4 sync-safe bytes at offset 6..9
+    const b1 = view.getUint8(6) & 0x7f;
+    const b2 = view.getUint8(7) & 0x7f;
+    const b3 = view.getUint8(8) & 0x7f;
+    const b4 = view.getUint8(9) & 0x7f;
+    const flags = view.getUint8(5);
+    const hasFooter = (flags & 0x10) !== 0;
     const tagSize = (b1 << 21) | (b2 << 14) | (b3 << 7) | b4;
-    start = 10 + tagSize;
+    start = Math.min(10 + tagSize + (hasFooter ? 10 : 0), buffer.byteLength);
   }
 
   // Strip ID3v1 tail (last 128 bytes if starts with "TAG")
@@ -381,35 +449,33 @@ function stripMp3Id3(buffer) {
     end -= 128;
   }
 
+  if (start >= end) return new ArrayBuffer(0);
   return buffer.slice(start, end);
 }
 
-// ─── MP4 metadata stripper ─────────────────────────────────────────────────
+// ─── MP4 / MOV / M4V metadata stripper ─────────────────────────────────────
 
 /**
- * Strip MP4 metadata (udta/moov boxes) using mp4box.js.
- * Falls back to returning the original file if mp4box is unavailable.
+ * Strip MP4/MOV metadata (udta boxes & XMP uuid boxes).
  * @param {File} file
  * @returns {Promise<Blob>}
  */
 async function stripMp4Metadata(file) {
-  // We strip by removing the 'udta' user data atom (contains iTunes tags, GPS, etc.)
   const buffer = await readAsArrayBuffer(file);
   const cleaned = removeMp4Udta(buffer);
   return new Blob([cleaned], { type: file.type || 'video/mp4' });
 }
 
 /**
- * Walk MP4 boxes and remove 'udta' boxes inside 'moov'.
+ * Walk MP4 boxes and remove 'udta' user data boxes and XMP 'uuid' boxes.
  * @param {ArrayBuffer} buffer
  * @returns {ArrayBuffer}
  */
 function removeMp4Udta(buffer) {
   const data = new Uint8Array(buffer);
   const result = [];
-  let offset = 0;
 
-  function readBox(data, offset, end, insideMoov) {
+  function readBox(data, offset, end) {
     while (offset < end) {
       if (offset + 8 > end) break;
       const view = new DataView(data.buffer, data.byteOffset + offset);
@@ -419,7 +485,6 @@ function removeMp4Udta(buffer) {
 
       let headerSize = 8;
       if (boxSize === 1) {
-        // 64-bit size
         boxSize = Number(view.getBigUint64(8));
         headerSize = 16;
       }
@@ -428,17 +493,25 @@ function removeMp4Udta(buffer) {
 
       const boxEnd = offset + boxSize;
 
-      if (boxType === 'udta' && insideMoov) {
-        // Skip this box entirely
+      // Skip 'udta' (User Data) box wherever it occurs
+      if (boxType === 'udta') {
         offset = boxEnd;
         continue;
       }
 
+      // Skip XMP 'uuid' box: be 7a cf cb 97 a9 42 e8 9c 71 99 94 91 e3 af ac
+      if (boxType === 'uuid' && boxSize >= headerSize + 16) {
+        const u = data.subarray(offset + headerSize, offset + headerSize + 16);
+        if (u[0] === 0xbe && u[1] === 0x7a && u[2] === 0xcf && u[3] === 0xcb) {
+          offset = boxEnd;
+          continue;
+        }
+      }
+
       if (boxType === 'moov') {
-        // Recurse into moov but collect result
+        // Recurse into moov
         const headerBytes = data.slice(offset, offset + headerSize);
-        const childBytes = collectBox(data, offset + headerSize, boxEnd, true);
-        // Update size
+        const childBytes = collectMoovChildren(data, offset + headerSize, boxEnd);
         const newSize = headerSize + childBytes.byteLength;
         const newHeader = new Uint8Array(headerSize);
         new DataView(newHeader.buffer).setUint32(0, newSize);
@@ -454,7 +527,7 @@ function removeMp4Udta(buffer) {
     }
   }
 
-  function collectBox(data, offset, end, insideMoov) {
+  function collectMoovChildren(data, offset, end) {
     const parts = [];
     while (offset < end) {
       if (offset + 8 > end) break;
@@ -473,9 +546,17 @@ function removeMp4Udta(buffer) {
 
       const boxEnd = offset + boxSize;
 
-      if (boxType === 'udta' && insideMoov) {
+      if (boxType === 'udta') {
         offset = boxEnd;
         continue;
+      }
+
+      if (boxType === 'uuid' && boxSize >= headerSize + 16) {
+        const u = data.subarray(offset + headerSize, offset + headerSize + 16);
+        if (u[0] === 0xbe && u[1] === 0x7a && u[2] === 0xcf && u[3] === 0xcb) {
+          offset = boxEnd;
+          continue;
+        }
       }
 
       parts.push(data.slice(offset, boxEnd));
@@ -488,7 +569,7 @@ function removeMp4Udta(buffer) {
     return out.buffer;
   }
 
-  readBox(data, 0, data.byteLength, false);
+  readBox(data, 0, data.byteLength);
 
   const total = result.reduce((s, p) => s + p.byteLength, 0);
   const out = new Uint8Array(total);
@@ -606,6 +687,45 @@ export async function getHeicDecoder() {
   })();
 
   return _heicDecoderPromise;
+}
+
+let _utifPromise = null;
+
+/**
+ * Load UTIF library reliably (ESM dynamic import with fallback).
+ * @returns {Promise<any>}
+ */
+export async function getUtif() {
+  if (_utifPromise) return _utifPromise;
+
+  _utifPromise = (async () => {
+    try {
+      const mod = await import('utif');
+      return mod.default || mod;
+    } catch (e) {
+      console.warn('Dynamic import of utif failed, attempting CDN fallback:', e);
+    }
+
+    if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+      if (typeof window.UTIF !== 'undefined') return window.UTIF;
+      try {
+        await new Promise((resolve, reject) => {
+          const s = document.createElement('script');
+          s.src = 'https://cdn.jsdelivr.net/npm/utif@3.1.0/UTIF.js';
+          s.onload = resolve;
+          s.onerror = reject;
+          document.head.appendChild(s);
+        });
+        if (typeof window.UTIF !== 'undefined') return window.UTIF;
+      } catch (cdnErr) {
+        console.error('All UTIF loaders failed:', cdnErr);
+      }
+    }
+
+    return null;
+  })();
+
+  return _utifPromise;
 }
 
 /**
