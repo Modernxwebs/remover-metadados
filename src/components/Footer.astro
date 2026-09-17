@@ -60,8 +60,14 @@ const contactUrl = isEn ? '/en/contact/' : '/contato/';
           <li><a href={homeUrl} class="footer-link">{isEn ? 'Metadata Remover' : 'Início & Limpeza'}</a></li>
           <li><a href={isEn ? '/en/#how-it-works' : '/#como-funciona'} class="footer-link">{isEn ? 'How It Works' : 'Como Funciona'}</a></li>
           <li><a href={isEn ? '/en/#formats' : '/#formatos'} class="footer-link">{isEn ? 'Supported Formats' : 'Formatos Suportados'}</a></li>
-          <li><a href={isEn ? '/en/#privacy-guide' : '/#guia-metadados'} class="footer-link">{isEn ? 'Privacy Guide' : 'Guia de Metadados'}</a></li>
-          {!isEn && <li><a href="/guias/" class="footer-link">Guias de privacidade</a></li>}
+          {!isEn && (
+            <>
+              <li><a href="/guias/" class="footer-link">Central de Guias</a></li>
+              <li><a href="/guias/remover-metadados-de-video/" class="footer-link">Guia: Vídeos MP4 & MOV</a></li>
+              <li><a href="/guias/remover-metadados-de-imagem/" class="footer-link">Guia: Fotos EXIF & GPS</a></li>
+              <li><a href="/guias/remover-metadados-pdf/" class="footer-link">Guia: Documentos PDF</a></li>
+            </>
+          )}
           <li><a href={isEn ? '/en/#faq' : '/#faq'} class="footer-link">{isEn ? 'Frequently Asked' : 'Perguntas Frequentes'}</a></li>
         </ul>
       </div>

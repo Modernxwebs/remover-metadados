@@ -8,12 +8,16 @@
 - **English Version**: `https://remover-metadados.com/en/`
 - **Processing**: Entirely client-side using HTML5 Canvas, WebAssembly, jszip, pdf-lib, and piexifjs
 - **Privacy**: Zero data transmission — files never leave the user's browser
-- **Supported Formats**: JPEG, PNG, WebP, GIF (images) · PDF · DOCX, XLSX, PPTX (Office documents)
+- **Supported Formats**: JPEG, PNG, WebP, HEIC, GIF (images) · MP4, MOV, M4V, MP3 (video/audio) · PDF · DOCX, XLSX, PPTX (Office documents)
 
 ## Pages
 
 - [Home (PT-BR)](https://remover-metadados.com/): Main tool — Portuguese metadata remover
 - [Home (EN)](https://remover-metadados.com/en/): Main tool — English metadata remover
+- [Guias Hub (PT-BR)](https://remover-metadados.com/guias/): Privacy guides & technical tutorials index
+- [Guia de Fotos e Imagens (PT-BR)](https://remover-metadados.com/guias/remover-metadados-de-imagem/): Guide to removing EXIF and GPS from photos
+- [Guia de Vídeos (PT-BR)](https://remover-metadados.com/guias/remover-metadados-de-video/): Guide to removing metadata and GPS from MP4 & MOV videos
+- [Guia de Documentos PDF (PT-BR)](https://remover-metadados.com/guias/remover-metadados-pdf/): Guide to stripping author and revision metadata from PDFs
 - [About (PT-BR)](https://remover-metadados.com/sobre): About us in Portuguese
 - [About (EN)](https://remover-metadados.com/en/about): About us in English
 - [Privacy Policy (PT-BR)](https://remover-metadados.com/privacidade): Privacy policy in Portuguese

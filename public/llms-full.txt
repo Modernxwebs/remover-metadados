@@ -62,20 +62,24 @@ metadata remover, remove metadata from photos, remove EXIF data, strip GPS from 
 
 ```
 remover-metadados.com/
-├── /                        # PT-BR homepage + tool
-├── /sobre                   # About us (PT-BR)
-├── /privacidade             # Privacy policy (PT-BR)
-├── /termos                  # Terms of service (PT-BR)
-├── /contato                 # Contact (PT-BR)
-├── /en/                     # EN homepage + tool
-├── /en/about                # About us (EN)
-├── /en/privacy              # Privacy policy (EN)
-├── /en/terms                # Terms of service (EN)
-├── /en/contact              # Contact (EN)
-├── /sitemap-index.xml       # Sitemap index
-├── /robots.txt              # Crawler directives
-├── /llms.txt                # LLM summary
-└── /llms-full.txt           # This file
+├── /                                    # PT-BR homepage + tool
+├── /guias/                              # Privacy guides & tutorials hub (PT-BR)
+│   ├── /remover-metadados-de-imagem/    # Photos & EXIF guide
+│   ├── /remover-metadados-de-video/     # Videos & MP4/MOV guide
+│   └── /remover-metadados-pdf/          # PDF & Office documents guide
+├── /sobre                               # About us (PT-BR)
+├── /privacidade                         # Privacy policy (PT-BR)
+├── /termos                              # Terms of service (PT-BR)
+├── /contato                             # Contact (PT-BR)
+├── /en/                                 # EN homepage + tool
+├── /en/about                            # About us (EN)
+├── /en/privacy                          # Privacy policy (EN)
+├── /en/terms                            # Terms of service (EN)
+├── /en/contact                          # Contact (EN)
+├── /sitemap-index.xml                   # Sitemap index
+├── /robots.txt                          # Crawler directives
+├── /llms.txt                            # LLM summary
+└── /llms-full.txt                       # This file
 ```
 
 ---

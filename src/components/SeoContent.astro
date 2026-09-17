@@ -115,6 +115,37 @@
       </ol>
     </div>
 
+    <!-- Bloco 6: Guias e Tutoriais Especializados -->
+    <div class="seo-guides-callout">
+      <div class="guides-callout-header">
+        <div>
+          <span class="guides-callout-kicker">DOCUMENTAÇÃO & PRIVACIDADE</span>
+          <h3 class="guides-callout-title">Guias Práticos de Limpeza por Formato</h3>
+        </div>
+        <a href="/guias/" class="btn-guide-all">
+          <span>Ver Central de Guias</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+      <p class="guides-callout-desc">
+        Precisa de um passo a passo específico com exemplos de metadados expostos e eliminados? Acesse nossos tutoriais completos:
+      </p>
+      <div class="guides-callout-grid">
+        <a href="/guias/remover-metadados-de-imagem/" class="seo-guide-pill">
+          <span class="guide-pill-meta">EXIF · GPS · FOTOS</span>
+          <strong class="guide-pill-name">Remover Metadados de Fotos &rarr;</strong>
+        </a>
+        <a href="/guias/remover-metadados-de-video/" class="seo-guide-pill">
+          <span class="guide-pill-meta">MP4 · MOV · M4V</span>
+          <strong class="guide-pill-name">Remover Metadados de Vídeo &rarr;</strong>
+        </a>
+        <a href="/guias/remover-metadados-pdf/" class="seo-guide-pill">
+          <span class="guide-pill-meta">PDF · DOCX · XMP</span>
+          <strong class="guide-pill-name">Remover Metadados de PDF &rarr;</strong>
+        </a>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -253,6 +284,107 @@
     margin: 0;
   }
 
+  /* ── Guides Callout Box ── */
+  .seo-guides-callout {
+    margin-top: 3.5rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 4px;
+    padding: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .guides-callout-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .guides-callout-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  .guides-callout-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0.25rem 0 0;
+  }
+
+  .btn-guide-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.95rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+    border-radius: 3px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .btn-guide-all:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 3.5px 3.5px 0px var(--shadow-color);
+  }
+
+  .guides-callout-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0 0 1.25rem;
+  }
+
+  .guides-callout-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .seo-guide-pill {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 1.15rem;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    border-radius: 3px;
+    text-decoration: none;
+    color: var(--text);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+
+  .seo-guide-pill:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--neo-shadow);
+    border-color: var(--border);
+  }
+
+  .guide-pill-meta {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .guide-pill-name {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
   @media (max-width: 860px) {
     .seo-grid {
       grid-template-columns: 1fr;
@@ -261,6 +393,10 @@
     .formats-seo-grid {
       grid-template-columns: 1fr;
       gap: 1rem;
+    }
+    .guides-callout-grid {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
     }
   }
 
