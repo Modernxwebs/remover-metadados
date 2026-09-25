@@ -27,6 +27,7 @@ const navLinks = isEn
       { href: isSubpage ? '/#como-funciona' : '#como-funciona', label: 'Como funciona' },
       { href: isSubpage ? '/#formatos' : '#formatos', label: 'Formatos' },
       { href: '/guias/', label: 'Guias' },
+      { href: '/blog/', label: 'Blog' },
       { href: isSubpage ? '/#faq' : '#faq', label: 'FAQ' },
     ];
 ---
@@ -52,7 +53,10 @@ const navLinks = isEn
       <!-- Desktop nav -->
       <nav class="desktop-nav" aria-label={isEn ? "Main navigation" : "Navegação principal"}>
         {navLinks.map((item) => {
-          const isActive = item.href === '/guias/' && currentPath.startsWith('/guias');
+          const isActive =
+            (item.href === '/guias/' && currentPath.startsWith('/guias')) ||
+            (item.href === '/blog/' && currentPath.startsWith('/blog')) ||
+            (item.href === '/en/blog/' && currentPath.startsWith('/en/blog'));
           return (
             <a
               href={item.href}
@@ -123,7 +127,10 @@ const navLinks = isEn
   <div id="mobile-nav-panel" class="mobile-nav-panel">
     <nav class="mobile-nav-links" aria-label={isEn ? "Mobile navigation" : "Navegação mobile"}>
       {navLinks.map((item) => {
-        const isActive = item.href === '/guias/' && currentPath.startsWith('/guias');
+        const isActive =
+          (item.href === '/guias/' && currentPath.startsWith('/guias')) ||
+          (item.href === '/blog/' && currentPath.startsWith('/blog')) ||
+          (item.href === '/en/blog/' && currentPath.startsWith('/en/blog'));
         return (
           <a
             href={item.href}

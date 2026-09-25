@@ -1,0 +1,261 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+  post: CollectionEntry<'blog'>;
+  isFeatured?: boolean;
+}
+
+const { post, isFeatured = false } = Astro.props;
+const { data, id } = post;
+const isEn = data.lang === 'en';
+
+const postUrl = isEn ? `/en/blog/${id}/` : `/blog/${id}/`;
+
+const formattedDate = new Intl.DateTimeFormat(isEn ? 'en-US' : 'pt-BR', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+}).format(data.pubDate);
+---
+
+<article class:list={['blog-card', { 'featured-card': isFeatured }]}>
+  <div class="card-top-bar">
+    <span class="card-cat-badge">{data.category}</span>
+    <span class="card-read-pill">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+      {data.readTime}
+    </span>
+  </div>
+
+  {data.coverImage && (
+    <a href={postUrl} class="card-image-wrap" tabindex="-1" aria-hidden="true">
+      <img
+        src={data.coverImage}
+        alt={data.coverAlt || data.title}
+        class="card-image"
+        loading="lazy"
+        decoding="async"
+        width="600"
+        height="338"
+      />
+    </a>
+  )}
+
+  <h3 class="card-title">
+    <a href={postUrl} class="card-title-link">
+      {data.title}
+    </a>
+  </h3>
+
+  <p class="card-desc">
+    {data.description}
+  </p>
+
+  <div class="card-footer">
+    <div class="card-meta">
+      <span class="card-author-name">{data.author}</span>
+      <span class="card-meta-dot" aria-hidden="true">•</span>
+      <time datetime={data.pubDate.toISOString()} class="card-date">{formattedDate}</time>
+    </div>
+
+    <a href={postUrl} class="card-cta-link" aria-label={`${isEn ? 'Read article' : 'Ler artigo'}: ${data.title}`}>
+      <span>{isEn ? 'Read' : 'Ler'}</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+  </div>
+</article>
+
+<style>
+  .blog-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    padding: 1.5rem;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    text-align: left;
+    position: relative;
+  }
+
+  .blog-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--neo-shadow-lg);
+  }
+
+  .featured-card {
+    border-width: 2.5px;
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--badge-bg) 100%);
+    box-shadow: var(--neo-shadow-lg);
+  }
+
+  .card-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .card-cat-badge {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.55rem;
+    background: var(--badge-bg);
+    color: var(--badge-text);
+    border: 1.5px solid var(--border);
+    border-radius: 2px;
+  }
+
+  .featured-card .card-cat-badge {
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+  }
+
+  .card-read-pill {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .card-image-wrap {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 2px solid var(--border);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+    border-radius: 3px;
+    margin-bottom: 1.15rem;
+    background: var(--bg);
+    text-decoration: none;
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.25s ease;
+  }
+
+  .blog-card:hover .card-image {
+    transform: scale(1.03);
+  }
+
+  .featured-card .card-image-wrap {
+    border-width: 2px;
+    box-shadow: var(--neo-shadow-sm);
+  }
+
+  .card-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.75rem 0;
+    text-transform: none;
+    color: var(--text);
+  }
+
+  .featured-card .card-title {
+    font-size: clamp(1.35rem, 2.8vw, 1.7rem);
+  }
+
+  .card-title-link {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .card-title-link:hover {
+    color: var(--link-color);
+  }
+
+  .card-desc {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0 0 1.5rem 0;
+    flex-grow: 1;
+  }
+
+  .featured-card .card-desc {
+    font-size: 1.02rem;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1.5px solid var(--border-light);
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .card-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-muted);
+  }
+
+  .card-author-name {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .card-meta-dot {
+    color: var(--text-faint);
+  }
+
+  .card-cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--btn-accent-text);
+    background: var(--btn-accent);
+    padding: 0.35rem 0.75rem;
+    border: 1.5px solid var(--border);
+    box-shadow: 1.5px 1.5px 0px var(--shadow-color);
+    border-radius: 2px;
+    text-decoration: none;
+    transition: transform 0.12s ease, background 0.15s ease;
+  }
+
+  .card-cta-link:hover {
+    background: var(--btn-accent-hover);
+    transform: translate(-1px, -1px);
+  }
+
+  @media (max-width: 640px) {
+    .blog-card {
+      padding: 1.25rem;
+    }
+    .card-title {
+      font-size: 1.15rem;
+    }
+  }
+</style>

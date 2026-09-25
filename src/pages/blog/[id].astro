@@ -1,0 +1,679 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import BlogToc from '../../components/BlogToc.astro';
+import BlogShare from '../../components/BlogShare.astro';
+import BlogAuthor from '../../components/BlogAuthor.astro';
+import BlogCta from '../../components/BlogCta.astro';
+import BlogCard from '../../components/BlogCard.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => data.lang === 'pt-BR' && !data.draft);
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { data, id } = post;
+const { Content, headings } = await render(post);
+
+const canonicalUrl = `https://remover-metadados.com/blog/${id}/`;
+const pageTitle = `${data.title} | Blog Remover Metadados`;
+const pageDescription = data.description;
+
+// Fetch related posts (if defined in frontmatter, or fallback to same category)
+const allPtPosts = await getCollection('blog', ({ data }) => data.lang === 'pt-BR' && !data.draft);
+const relatedPosts = allPtPosts
+  .filter((p) => p.id !== id && (data.relatedPosts?.includes(p.id) || p.data.category === data.category))
+  .slice(0, 2);
+
+// Calculate previous & next posts
+const sortedPosts = allPtPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const currentIndex = sortedPosts.findIndex((p) => p.id === id);
+const prevPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
+const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
+
+const formattedPubDate = new Intl.DateTimeFormat('pt-BR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(data.pubDate);
+
+const formattedUpdateDate = data.updatedDate
+  ? new Intl.DateTimeFormat('pt-BR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }).format(data.updatedDate)
+  : null;
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  'itemListElement': [
+    { '@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': 'https://remover-metadados.com/' },
+    { '@type': 'ListItem', 'position': 2, 'name': 'Blog', 'item': 'https://remover-metadados.com/blog/' },
+    { '@type': 'ListItem', 'position': 3, 'name': data.title, 'item': canonicalUrl },
+  ],
+};
+
+const blogPostingSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  '@id': `${canonicalUrl}#article`,
+  'isPartOf': {
+    '@id': 'https://remover-metadados.com/blog/#blog',
+  },
+  'headline': data.title,
+  'description': data.description,
+  'url': canonicalUrl,
+  'inLanguage': 'pt-BR',
+  'mainEntityOfPage': canonicalUrl,
+  'datePublished': data.pubDate.toISOString(),
+  'dateModified': (data.updatedDate || data.pubDate).toISOString(),
+  'author': {
+    '@type': 'Person',
+    'name': data.author,
+    'jobTitle': data.authorRole,
+    'url': 'https://remover-metadados.com/sobre/',
+  },
+  'publisher': {
+    '@type': 'Organization',
+    'name': 'Remover Metadados',
+    'url': 'https://remover-metadados.com/',
+    'logo': {
+      '@type': 'ImageObject',
+      'url': 'https://remover-metadados.com/logo.png',
+    },
+  },
+  'image': data.coverImage ? `https://remover-metadados.com${data.coverImage}` : undefined,
+  'keywords': data.tags.join(', '),
+  'articleSection': data.category,
+};
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  lang="pt-BR"
+  canonicalUrl={canonicalUrl}
+  includeHreflang={false}
+  ogImage={data.coverImage}
+  ogType="article"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />
+
+  <Header lang="pt-BR" ptUrl={`/blog/${id}/`} enUrl="/en/" isSubpage={true} />
+
+  <main class="post-main">
+    <div class="page-wrap post-wrap">
+
+      <!-- Breadcrumbs -->
+      <nav class="post-breadcrumb" aria-label="Navegação estrutural">
+        <a href="/">Remover Metadados</a>
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        <a href="/blog/">Blog</a>
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        <span class="crumb-cat">{data.category}</span>
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        <span class="crumb-current" aria-current="page">{data.title}</span>
+      </nav>
+
+      <!-- Post Header -->
+      <header class="post-header">
+        <div class="post-kicker-strip">
+          <span class="cat-pill">{data.category}</span>
+          <span class="read-pill">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            {data.readTime}
+          </span>
+        </div>
+
+        <h1 class="post-title">{data.title}</h1>
+
+        <p class="post-lead">{data.description}</p>
+
+        <div class="post-author-meta">
+          <div class="meta-author-box">
+            <div class="meta-avatar" aria-hidden="true">DS</div>
+            <div class="meta-names">
+              <span class="meta-name">{data.author}</span>
+              <span class="meta-role">{data.authorRole}</span>
+            </div>
+          </div>
+
+          <div class="meta-date-box">
+            <span class="date-label">Publicado em:</span>
+            <time datetime={data.pubDate.toISOString()} class="date-value">{formattedPubDate}</time>
+            {formattedUpdateDate && (
+              <span class="date-updated">(Atualizado: {formattedUpdateDate})</span>
+            )}
+          </div>
+        </div>
+      </header>
+
+      <!-- Hero Cover Image -->
+      {data.coverImage && (
+        <figure class="post-hero-figure">
+          <img
+            src={data.coverImage}
+            alt={data.coverAlt || data.title}
+            class="post-hero-image"
+            width="1200"
+            height="675"
+            loading="eager"
+            fetchpriority="high"
+          />
+          {data.coverAlt && (
+            <figcaption class="post-hero-caption">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+              <span>{data.coverAlt}</span>
+            </figcaption>
+          )}
+        </figure>
+      )}
+
+      <!-- Post Body Layout -->
+      <div class="post-body-layout">
+        <!-- Table of Contents -->
+        <BlogToc headings={headings} isEn={false} />
+
+        <!-- Article Content -->
+        <article class="post-content">
+          <Content />
+        </article>
+
+        <!-- Social Share Bar -->
+        <BlogShare title={data.title} url={canonicalUrl} isEn={false} />
+
+        <!-- Author Bio Card -->
+        <BlogAuthor author={data.author} role={data.authorRole} isEn={false} />
+
+        <!-- In-Content Tool CTA -->
+        <BlogCta isEn={false} />
+
+        <!-- Prev / Next Navigation -->
+        <nav class="post-navigation" aria-label="Navegação entre artigos">
+          {prevPost ? (
+            <a href={`/blog/${prevPost.id}/`} class="nav-prev">
+              <span class="nav-dir-label">← Artigo Anterior</span>
+              <span class="nav-post-title">{prevPost.data.title}</span>
+            </a>
+          ) : <div />}
+
+          {nextPost && (
+            <a href={`/blog/${nextPost.id}/`} class="nav-next">
+              <span class="nav-dir-label">Próximo Artigo →</span>
+              <span class="nav-post-title">{nextPost.data.title}</span>
+            </a>
+          )}
+        </nav>
+
+        <!-- Related Posts Section -->
+        {relatedPosts.length > 0 && (
+          <section class="related-posts-section">
+            <div class="section-label-bar">
+              <span class="section-tag-pill">ARTIGOS RELACIONADOS</span>
+            </div>
+            <div class="related-posts-grid">
+              {relatedPosts.map((related) => (
+                <BlogCard post={related} />
+              ))}
+            </div>
+          </section>
+        )}
+
+      </div>
+
+    </div>
+  </main>
+
+  <Footer lang="pt-BR" />
+</Layout>
+
+<style>
+  .post-main {
+    padding-top: 2rem;
+    padding-bottom: 5rem;
+  }
+
+  .post-wrap {
+    max-width: 860px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: left;
+  }
+
+  .post-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .post-breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .post-breadcrumb a:hover {
+    color: var(--text);
+    text-decoration: underline;
+  }
+
+  .crumb-sep {
+    color: var(--text-faint);
+  }
+
+  .crumb-cat {
+    color: var(--text-muted);
+  }
+
+  .crumb-current {
+    font-weight: 700;
+    color: var(--text);
+    max-width: 320px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .post-header {
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .post-kicker-strip {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .cat-pill {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.55rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 1.5px solid var(--border);
+    border-radius: 2px;
+  }
+
+  .read-pill {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .post-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.65rem, 4.5vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin: 0 0 1rem 0;
+    text-wrap: balance;
+  }
+
+  .post-lead {
+    font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0 0 1.75rem 0;
+  }
+
+  .post-author-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    padding: 1rem 1.25rem;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    border-radius: 3px;
+  }
+
+  .meta-author-box {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .meta-avatar {
+    width: 38px;
+    height: 38px;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border: 1.5px solid var(--border);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+
+  .meta-names {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .meta-name {
+    font-family: var(--font-heading);
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .meta-role {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  .meta-date-box {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+  }
+
+  .date-value {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .date-updated {
+    color: var(--text-faint);
+  }
+
+  /* Hero Cover Image */
+  .post-hero-figure {
+    margin: 1.5rem 0 2rem 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .post-hero-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 4px;
+    background: var(--card-bg);
+  }
+
+  .post-hero-caption {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    margin-top: 0.65rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    line-height: 1.45;
+  }
+
+  /* Content typography */
+  .post-content {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text);
+    margin: 2rem 0;
+  }
+
+  .post-content :global(h2) {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-transform: none;
+    margin: 2.75rem 0 1rem 0;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--border);
+    scroll-margin-top: 100px;
+  }
+
+  .post-content :global(h3) {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin: 2rem 0 0.85rem 0;
+    scroll-margin-top: 100px;
+  }
+
+  .post-content :global(p) {
+    margin: 0 0 1.5rem 0;
+  }
+
+  .post-content :global(ul),
+  .post-content :global(ol) {
+    margin: 0 0 1.75rem 1.5rem;
+    padding: 0;
+  }
+
+  .post-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .post-content :global(blockquote) {
+    margin: 2rem 0;
+    padding: 1.25rem 1.5rem;
+    background: var(--card-bg);
+    border-left: 5px solid var(--btn-accent);
+    border-top: 1.5px solid var(--border);
+    border-right: 1.5px solid var(--border);
+    border-bottom: 1.5px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    font-style: italic;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .post-content :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--badge-bg);
+    color: var(--badge-text);
+    padding: 0.2rem 0.4rem;
+    border: 1px solid var(--border-light);
+    border-radius: 2px;
+  }
+
+  .post-content :global(pre) {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    padding: 1.25rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 2rem 0;
+  }
+
+  .post-content :global(pre code) {
+    background: transparent;
+    padding: 0;
+    border: none;
+    color: inherit;
+  }
+
+  .post-content :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2.25rem 0;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    background: var(--card-bg);
+  }
+
+  .post-content :global(th) {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 700;
+  }
+
+  .post-content :global(td) {
+    border: 1px solid var(--border-light);
+    padding: 0.65rem 1rem;
+    text-align: left;
+  }
+
+  .post-content :global(hr) {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 3rem 0;
+  }
+
+  .post-content :global(a) {
+    color: var(--link-color);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 500;
+  }
+
+  .post-content :global(a:hover) {
+    color: var(--text);
+  }
+
+  /* Prev / Next navigation */
+  .post-navigation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin: 3rem 0;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .nav-prev,
+  .nav-next {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1rem 1.25rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .nav-prev:hover,
+  .nav-next:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .nav-next {
+    text-align: right;
+  }
+
+  .nav-dir-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+  }
+
+  .nav-post-title {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* Related posts */
+  .related-posts-section {
+    margin-top: 2rem;
+  }
+
+  .section-label-bar {
+    margin-bottom: 1.25rem;
+  }
+
+  .section-tag-pill {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.3rem;
+  }
+
+  .related-posts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .post-navigation {
+      grid-template-columns: 1fr;
+    }
+    .related-posts-grid {
+      grid-template-columns: 1fr;
+    }
+    .post-header {
+      padding-bottom: 1.25rem;
+    }
+    .post-author-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+  }
+</style>

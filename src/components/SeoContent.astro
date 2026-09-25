@@ -146,6 +146,37 @@
       </div>
     </div>
 
+    <!-- Bloco 7: Artigos Recentes do Blog -->
+    <div class="seo-blog-callout">
+      <div class="guides-callout-header">
+        <div>
+          <span class="guides-callout-kicker">BLOG DE PRIVACIDADE & SEGURANÇA</span>
+          <h3 class="guides-callout-title">Artigos em Destaque & Análises Técnicas</h3>
+        </div>
+        <a href="/blog/" class="btn-guide-all">
+          <span>Acessar o Blog</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+      <p class="guides-callout-desc">
+        Aprofunde seus conhecimentos sobre proteção de dados, riscos perante a LGPD e privacidade digital:
+      </p>
+      <div class="blog-callout-grid">
+        <a href="/blog/o-que-sao-metadados-exif-guia-completo/" class="seo-blog-card">
+          <div class="seo-blog-badge">FOTOS & IMAGENS · 8 MIN</div>
+          <h4 class="seo-blog-card-title">O que são Metadados EXIF: O Guia Definitivo sobre Dados Ocultos em Fotos</h4>
+          <p class="seo-blog-card-desc">Descubra quais dados confidenciais seu celular grava em segredo (GPS, modelo e número de série) e como se proteger.</p>
+          <span class="seo-blog-cta">Ler artigo completo &rarr;</span>
+        </a>
+        <a href="/blog/metadados-em-pdf-riscos-e-como-remover/" class="seo-blog-card">
+          <div class="seo-blog-badge">DOCUMENTOS & PDF · 7 MIN</div>
+          <h4 class="seo-blog-card-title">Metadados Ocultos em PDFs: Riscos Jurídicos, LGPD e Como Limpar Documentos</h4>
+          <p class="seo-blog-card-desc">Entenda como nomes de autores, caminhos de pastas internas e revisões em PDFs vazam dados de empresas e escritórios.</p>
+          <span class="seo-blog-cta">Ler artigo completo &rarr;</span>
+        </a>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -385,6 +416,77 @@
     color: var(--text);
   }
 
+  .seo-blog-callout {
+    margin-top: 3.5rem;
+    padding: 2rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 4px;
+  }
+
+  .blog-callout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .seo-blog-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+    border-radius: 3px;
+    text-decoration: none;
+    color: var(--text);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .seo-blog-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .seo-blog-badge {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--btn-accent-text);
+    background: var(--btn-accent);
+    display: inline-block;
+    align-self: flex-start;
+    padding: 0.15rem 0.5rem;
+    border: 1.5px solid var(--border);
+    border-radius: 2px;
+    margin-bottom: 0.65rem;
+  }
+
+  .seo-blog-card-title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin: 0 0 0.5rem 0;
+    color: var(--text);
+  }
+
+  .seo-blog-card-desc {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+    margin: 0 0 0.85rem 0;
+    flex-grow: 1;
+  }
+
+  .seo-blog-cta {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--link-color);
+  }
+
   @media (max-width: 860px) {
     .seo-grid {
       grid-template-columns: 1fr;
@@ -397,6 +499,10 @@
     .guides-callout-grid {
       grid-template-columns: 1fr;
       gap: 0.75rem;
+    }
+    .blog-callout-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
     }
   }
 

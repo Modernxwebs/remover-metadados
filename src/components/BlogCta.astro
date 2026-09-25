@@ -1,0 +1,151 @@
+---
+export interface Props {
+  isEn?: boolean;
+}
+
+const { isEn = false } = Astro.props;
+const toolUrl = isEn ? '/en/#hero-section' : '/#hero-section';
+---
+
+<div class="blog-tool-cta">
+  <div class="cta-inner">
+    <div class="cta-badge">
+      <span class="pulse-dot" aria-hidden="true"></span>
+      <span>{isEn ? 'FREE CLIENT-SIDE TOOL' : 'FERRAMENTA GRATUITA NO NAVEGADOR'}</span>
+    </div>
+
+    <h3 class="cta-title">
+      {isEn
+        ? 'Protect Your Privacy: Strip Hidden Metadata in Seconds'
+        : 'Proteja Sua Privacidade: Remova Metadados em Segundos'}
+    </h3>
+
+    <p class="cta-desc">
+      {isEn
+        ? 'Do not leave your GPS coordinates, device history, or author tags exposed. Clean your JPEG, PNG, WebP, HEIC, and PDF files directly inside your browser without uploading to external servers.'
+        : 'Não deixe suas coordenadas GPS, modelo de celular ou histórico de autoria expostos na internet. Higienize fotos, documentos e PDFs diretamente no navegador com total sigilo.'}
+    </p>
+
+    <div class="cta-action-row">
+      <a href={toolUrl} class="btn-accent cta-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        <span>{isEn ? 'Open Metadata Cleaner Free' : 'Abrir Removedor Gratuito'}</span>
+      </a>
+
+      <div class="cta-trust-tags">
+        <span class="trust-tag">🔒 {isEn ? 'Zero Server Upload' : 'Zero Envio a Servidores'}</span>
+        <span class="trust-tag">⚡ {isEn ? 'Instant In-Browser' : 'Processamento Local'}</span>
+        <span class="trust-tag">✨ {isEn ? '100% Free' : '100% Gratuito'}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .blog-tool-cta {
+    background: var(--card-bg);
+    border: 2.5px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 4px;
+    padding: 2rem 2.25rem;
+    margin: 3.5rem 0;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .blog-tool-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background: var(--btn-accent);
+  }
+
+  .cta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: var(--badge-bg);
+    color: var(--badge-text);
+    border: 1.5px solid var(--border);
+    padding: 0.2rem 0.55rem;
+    border-radius: 2px;
+    margin-bottom: 0.85rem;
+  }
+
+  .pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.25);
+  }
+
+  .cta-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.2rem, 3vw, 1.55rem);
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.65rem 0;
+    letter-spacing: -0.02em;
+    text-transform: none;
+  }
+
+  .cta-desc {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0 0 1.5rem 0;
+    max-width: 720px;
+  }
+
+  .cta-action-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .cta-btn {
+    padding: 0.75rem 1.65rem;
+    font-size: 0.88rem;
+    box-shadow: var(--neo-shadow-sm);
+  }
+
+  .cta-trust-tags {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .trust-tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    background: var(--bg);
+    border: 1px solid var(--border-light);
+    padding: 0.25rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 640px) {
+    .blog-tool-cta {
+      padding: 1.5rem 1.25rem;
+    }
+    .cta-action-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  }
+</style>

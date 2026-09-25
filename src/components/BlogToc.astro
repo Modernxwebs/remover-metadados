@@ -1,0 +1,103 @@
+---
+export interface HeadingItem {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+export interface Props {
+  headings: HeadingItem[];
+  isEn?: boolean;
+}
+
+const { headings, isEn = false } = Astro.props;
+
+const tocItems = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{tocItems.length > 0 && (
+  <nav class="blog-toc" aria-label={isEn ? "Table of contents" : "Índice do conteúdo"}>
+    <div class="toc-header">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="8" y1="6" x2="21" y2="6"/>
+        <line x1="8" y1="12" x2="21" y2="12"/>
+        <line x1="8" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="3.01" y2="6"/>
+        <line x1="3" y1="12" x2="3.01" y2="12"/>
+        <line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+      <span class="toc-title">{isEn ? 'Table of Contents' : 'Neste Artigo'}</span>
+    </div>
+
+    <ul class="toc-list">
+      {tocItems.map((item) => (
+        <li class:list={['toc-item', `toc-depth-${item.depth}`]}>
+          <a href={`#${item.slug}`} class="toc-link">
+            {item.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .blog-toc {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    border-radius: 4px;
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    text-align: left;
+  }
+
+  .toc-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text);
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1.5px solid var(--border-light);
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .toc-item.toc-depth-3 {
+    margin-left: 1.25rem;
+    font-size: 0.82rem;
+  }
+
+  .toc-link {
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.12s ease, transform 0.12s ease;
+    display: inline-block;
+  }
+
+  .toc-depth-3 .toc-link {
+    font-size: 0.82rem;
+  }
+
+  .toc-link:hover {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transform: translateX(2px);
+  }
+</style>
