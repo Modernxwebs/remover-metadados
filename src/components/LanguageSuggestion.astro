@@ -1,9 +1,53 @@
 ---
 export interface Props {
   isEn?: boolean;
+  ptUrl?: string;
+  enUrl?: string;
+  targetUrl?: string;
 }
 
 const isEn = Astro.props.isEn || false;
+const currentPath = Astro.url.pathname;
+
+const routeMap: Record<string, string> = {
+  '/ver-metadados/': '/en/metadata-viewer/',
+  '/ver-metadados': '/en/metadata-viewer/',
+  '/sobre/': '/en/about/',
+  '/sobre': '/en/about/',
+  '/contato/': '/en/contact/',
+  '/contato': '/en/contact/',
+  '/privacidade/': '/en/privacy/',
+  '/privacidade': '/en/privacy/',
+  '/termos/': '/en/terms/',
+  '/termos': '/en/terms/',
+  '/': '/en/',
+};
+
+const reverseRouteMap: Record<string, string> = {
+  '/en/metadata-viewer/': '/ver-metadados/',
+  '/en/metadata-viewer': '/ver-metadados/',
+  '/en/about/': '/sobre/',
+  '/en/about': '/sobre/',
+  '/en/contact/': '/contato/',
+  '/en/contact': '/contato/',
+  '/en/privacy/': '/privacidade/',
+  '/en/privacy': '/privacidade/',
+  '/en/terms/': '/termos/',
+  '/en/terms': '/termos/',
+  '/en/': '/',
+  '/en': '/',
+};
+
+let switchUrl = Astro.props.targetUrl;
+if (!switchUrl) {
+  if (isEn) {
+    switchUrl = Astro.props.ptUrl || reverseRouteMap[currentPath] || '/';
+  } else {
+    switchUrl = Astro.props.enUrl || routeMap[currentPath] || '/en/';
+  }
+}
+
+const isViewer = currentPath.includes('/ver-metadados') || currentPath.includes('/metadata-viewer');
 ---
 
 <aside
@@ -22,13 +66,13 @@ const isEn = Astro.props.isEn || false;
     <p>
       <strong>{isEn ? 'Prefere português?' : 'Prefer English?'}</strong>
       {isEn
-        ? 'Veja a versão brasileira do Remover Metadados.'
-        : 'View the global English version of Metadata Remover.'}
+        ? (isViewer ? 'Veja o Visualizador de Metadados em português.' : 'Veja a versão brasileira do Remover Metadados.')
+        : (isViewer ? 'View the Metadata Viewer in English.' : 'View the global English version of Metadata Remover.')}
     </p>
   </div>
   <div class="language-suggestion-actions">
     <a
-      href={isEn ? '/' : '/en/'}
+      href={switchUrl}
       class="language-suggestion-button language-suggestion-primary"
       data-language-choice={isEn ? 'pt' : 'en'}
     >{isEn ? 'Ver em português' : 'View in English'}</a>
@@ -52,6 +96,33 @@ const isEn = Astro.props.isEn || false;
     const languages = navigator.languages?.length ? navigator.languages : [navigator.language];
     const prefersPortuguese = languages.some((language) => /^pt(?:-|$)/i.test(language || ''));
     const shouldSuggestAlternateLanguage = isEn ? prefersPortuguese : !prefersPortuguese;
+
+    // Safety fallback: ensure anchor href points to correct page pair dynamically
+    const link = suggestion.querySelector('a[data-language-choice]');
+    if (link) {
+      const path = window.location.pathname;
+      if (path.includes('/ver-metadados')) {
+        link.href = '/en/metadata-viewer/';
+      } else if (path.includes('/metadata-viewer')) {
+        link.href = '/ver-metadados/';
+      } else if (path.includes('/sobre')) {
+        link.href = '/en/about/';
+      } else if (path.includes('/about')) {
+        link.href = '/sobre/';
+      } else if (path.includes('/contato')) {
+        link.href = '/en/contact/';
+      } else if (path.includes('/contact')) {
+        link.href = '/contato/';
+      } else if (path.includes('/privacidade')) {
+        link.href = '/en/privacy/';
+      } else if (path.includes('/privacy')) {
+        link.href = '/privacidade/';
+      } else if (path.includes('/termos')) {
+        link.href = '/en/terms/';
+      } else if (path.includes('/terms')) {
+        link.href = '/termos/';
+      }
+    }
 
     const hideSuggestion = () => {
       suggestion.hidden = true;

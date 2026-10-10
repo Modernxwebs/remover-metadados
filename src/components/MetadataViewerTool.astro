@@ -489,7 +489,7 @@ const t = isEn
 </div>
 
 <!-- ── Neo-Brutalist Component Styles ─────────────────────── -->
-<style>
+<style is:global>
   .metadata-viewer-tool {
     width: 100%;
     margin: 0 auto;
@@ -1409,16 +1409,16 @@ const t = isEn
     display: grid;
     grid-template-columns: minmax(260px, 340px) 1fr 52px;
     gap: 1.5rem;
-    padding: 0.85rem 1.4rem;
+    padding: 1rem 1.75rem;
     background: var(--bg);
     border-bottom: 2px solid var(--border);
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     font-weight: 800;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--text);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
   }
 
   .raw-th-act {
@@ -1428,16 +1428,17 @@ const t = isEn
   .raw-tags-list {
     display: flex;
     flex-direction: column;
+    padding: 0.25rem 0 1rem 0;
   }
 
   .raw-tag-row {
     display: grid;
     grid-template-columns: minmax(260px, 340px) 1fr 52px;
     gap: 1.5rem;
-    padding: 0.95rem 1.4rem;
+    padding: 1.15rem 1.75rem;
     border-bottom: 1px solid var(--border-light);
     align-items: start;
-    font-size: 0.86rem;
+    font-size: 0.88rem;
     transition: background-color 0.1s ease;
   }
 
@@ -1459,17 +1460,17 @@ const t = isEn
 
   .raw-tag-key-col {
     min-width: 0;
-    padding-top: 0.35rem;
+    padding-top: 0.45rem;
   }
 
   .raw-tag-key {
     font-family: var(--font-mono);
-    font-size: 0.84rem;
+    font-size: 0.86rem;
     font-weight: 700;
     color: var(--text);
     word-break: break-word;
     overflow-wrap: anywhere;
-    line-height: 1.45;
+    line-height: 1.5;
     display: block;
   }
 
@@ -1479,15 +1480,15 @@ const t = isEn
 
   .raw-tag-val {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     color: var(--text);
     word-break: break-word;
     overflow-wrap: anywhere;
-    line-height: 1.55;
+    line-height: 1.6;
     background: var(--bg);
-    border: 1px solid var(--border-light);
-    padding: 0.55rem 0.9rem;
-    border-radius: 2px;
+    border: 1.5px solid var(--border-light);
+    padding: 0.65rem 1.1rem;
+    border-radius: 3px;
     display: block;
     width: 100%;
     box-sizing: border-box;
@@ -1498,7 +1499,7 @@ const t = isEn
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 0.25rem;
+    padding-top: 0.35rem;
   }
 
   .raw-tag-copy {
@@ -1506,8 +1507,8 @@ const t = isEn
     border: 1.5px solid var(--border);
     color: var(--text-muted);
     cursor: pointer;
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1537,20 +1538,20 @@ const t = isEn
     .raw-tag-row {
       display: flex;
       flex-direction: column;
-      gap: 0.55rem;
-      padding: 0.95rem 1rem;
+      gap: 0.65rem;
+      padding: 1.15rem 1.25rem;
       position: relative;
     }
 
     .raw-tag-key-col {
-      padding-right: 44px;
+      padding-right: 48px;
       padding-top: 0;
     }
 
     .raw-tag-act-col {
       position: absolute;
-      top: 0.8rem;
-      right: 1rem;
+      top: 0.95rem;
+      right: 1.25rem;
       padding-top: 0;
     }
 
@@ -1559,8 +1560,8 @@ const t = isEn
     }
 
     .raw-tag-val {
-      font-size: 0.82rem;
-      padding: 0.5rem 0.75rem;
+      font-size: 0.84rem;
+      padding: 0.65rem 0.95rem;
     }
   }
 

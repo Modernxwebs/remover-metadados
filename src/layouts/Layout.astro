@@ -44,6 +44,22 @@ const pageUrl = canonicalUrl || (isEn ? `${siteUrl}/en/` : `${siteUrl}/`);
 const ptHreflang = alternatePt || `${siteUrl}/`;
 const enHreflang = alternateEn || `${siteUrl}/en/`;
 const xDefaultHreflang = alternateXDefault || enHreflang;
+
+function toRelativeUrl(url?: string): string {
+  if (!url) return '';
+  try {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      const u = new URL(url);
+      return u.pathname + u.search + u.hash;
+    }
+    return url;
+  } catch {
+    return url;
+  }
+}
+
+const ptRelativeUrl = toRelativeUrl(alternatePt);
+const enRelativeUrl = toRelativeUrl(alternateEn);
 const rawOgImage = Astro.props.ogImage;
 const ogImage = rawOgImage
   ? (rawOgImage.startsWith('http') ? rawOgImage : `${siteUrl}${rawOgImage}`)
@@ -334,7 +350,7 @@ if (!isHomepage) {
     </script>
   </head>
   <body>
-    <LanguageSuggestion isEn={isEn} />
+    <LanguageSuggestion isEn={isEn} ptUrl={ptRelativeUrl} enUrl={enRelativeUrl} />
     <slot />
   </body>
 </html>
