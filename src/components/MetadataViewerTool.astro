@@ -1,0 +1,2247 @@
+---
+// MetadataViewerTool.astro — Neo-Brutalist 100% Client-Side Metadata Viewer (supports pt-BR and en)
+export interface Props {
+  lang?: string;
+}
+
+const currentLocale = Astro.props.lang || Astro.currentLocale || 'pt-BR';
+const isEn = currentLocale === 'en';
+
+const t = isEn
+  ? {
+      privacyBadge: "100% PRIVATE · LOCAL IN-BROWSER INSPECTION",
+      dropTitle: "Drag & drop photos or documents here",
+      dropDesc: "or click to browse files from your computer or phone",
+      browseBtn: "Choose Files",
+      sampleBtn: "⚡ Test Sample with GPS",
+      sampleHint: "Test viewer with a sample photo containing GPS and EXIF",
+      formatsNote: "Supports photos (JPG, PNG, HEIC, WebP, TIFF), documents (PDF, DOCX, XLSX, PPTX) and media (MP4, MP3)",
+      loadingText: "Reading metadata locally in your browser...",
+      loadingSub: "No files ever leave your device.",
+      filesLoadedPlural: "files loaded",
+      filesLoadedSingular: "file loaded",
+      addMore: "+ Add More",
+      clearAll: "Clear All",
+      cleanBtnText: "Clean Metadata from This File Now",
+      cleaningBtnText: "Removing metadata...",
+      cleanedBtnText: "✓ Cleaned & Downloaded",
+      reDownloadBtnText: "Download Clean File Again",
+      copyJson: "Copy JSON",
+      copiedJson: "✓ JSON Copied!",
+      exportReport: "Export Report",
+      tabGeneral: "📌 Overview",
+      tabCamera: "📷 Camera & EXIF",
+      tabGps: "🗺️ Location & GPS",
+      tabDoc: "📄 Document & Author",
+      tabMedia: "🎵 Audio / Video",
+      tabRaw: "🔍 All Data",
+      headerProperty: "Property / Metadata Tag",
+      headerValue: "Detected Value",
+      headerAction: "Copy",
+      clearFilter: "Clear filter",
+      cameraSectionTitle: "Photography & Device Specifications (EXIF / IPTC)",
+      cameraSectionSub: "Optical parameters, original timestamp, and camera hardware details.",
+      gpsAlertTitle: "Satellite Coordinates Found in File!",
+      gpsAlertDesc: "This image contains exact latitude and longitude coordinates where it was taken. Anyone with this file can see your home, workplace, or travel route.",
+      coordLat: "Latitude",
+      coordLon: "Longitude",
+      coordAlt: "Altitude",
+      coordAltSub: "Above sea level",
+      openGoogleMaps: "📍 Open in Google Maps ↗",
+      openOsm: "🗺️ Open in OpenStreetMap ↗",
+      copyCoords: "📋 Copy Coordinates",
+      copiedCoords: "✓ Coordinates Copied!",
+      mapTitle: "Location Preview on Map",
+      mapTag: "OpenStreetMap (Zero Tracking)",
+      docSectionTitle: "Document Metadata & Properties",
+      docSectionSub: "Author identity, creating application, revision cycles, and editing history.",
+      mediaSectionTitle: "Media File Tags & Attributes",
+      mediaSectionSub: "ID3 tags, artist, album, track duration, and media codec info.",
+      searchPlaceholder: "Filter by tag name or value (e.g., Model, Date, GPS, Creator)...",
+      tagsFound: "tags found",
+      emptyFilter: "No tags match the search term",
+      emptyCategory: "No metadata found in this category.",
+      reportTitle: "METADATA REPORT - METADATA REMOVER",
+      reportFile: "File",
+      reportSize: "Size",
+      reportFormat: "Format",
+      reportDate: "Analysis Date",
+      reportRisk: "[PRIVACY RISK ASSESSMENT]",
+      reportGps: "[GPS LOCATION]",
+      reportGeneral: "[GENERAL FILE DATA]",
+      reportCamera: "[CAMERA AND EXIF]",
+      reportDoc: "[DOCUMENT PROPERTIES]",
+      sampleFileName: "sample-photo-sao-paulo.jpg",
+    }
+  : {
+      privacyBadge: "100% PRIVADO · LEITURA LOCAL NO NAVEGADOR",
+      dropTitle: "Arraste e solte fotos ou documentos aqui",
+      dropDesc: "ou clique para selecionar arquivos do seu celular ou computador",
+      browseBtn: "Escolher Arquivos",
+      sampleBtn: "⚡ Testar Exemplo com GPS",
+      sampleHint: "Testar visualizador com foto de exemplo contendo GPS e EXIF",
+      formatsNote: "Suporta fotos (JPG, PNG, HEIC, WebP, TIFF), documentos (PDF, DOCX, XLSX, PPTX) e mídias (MP4, MP3)",
+      loadingText: "Lendo metadados localmente no navegador...",
+      loadingSub: "Nenhum dado sai do seu dispositivo.",
+      filesLoadedPlural: "arquivos carregados",
+      filesLoadedSingular: "arquivo carregado",
+      addMore: "+ Adicionar Mais",
+      clearAll: "Limpar Tudo",
+      cleanBtnText: "Limpar Metadados Deste Arquivo Agora",
+      cleaningBtnText: "Limpando metadados...",
+      cleanedBtnText: "✓ Limpo & Baixado",
+      reDownloadBtnText: "Baixar Novamente Arquivo Limpo",
+      copyJson: "Copiar JSON",
+      copiedJson: "✓ JSON Copiado!",
+      exportReport: "Exportar Relatório",
+      tabGeneral: "📌 Visão Geral",
+      tabCamera: "📷 Câmera & EXIF",
+      tabGps: "🗺️ Localização & GPS",
+      tabDoc: "📄 Documento & Autoria",
+      tabMedia: "🎵 Áudio / Vídeo",
+      tabRaw: "🔍 Todos os Dados",
+      headerProperty: "Propriedade / Tag de Metadados",
+      headerValue: "Valor Detectado",
+      headerAction: "Copiar",
+      clearFilter: "Limpar filtro",
+      cameraSectionTitle: "Dados de Fotografia e Dispositivo (EXIF / IPTC)",
+      cameraSectionSub: "Parâmetros ópticos, data original e especificações da câmera usadas no registro.",
+      gpsAlertTitle: "Coordenadas de Satélite Encontradas!",
+      gpsAlertDesc: "Esta foto contém os dados exatos de latitude e longitude de onde foi tirada. Qualquer pessoa que receber esta imagem pode ver seu endereço ou trajeto.",
+      coordLat: "Latitude",
+      coordLon: "Longitude",
+      coordAlt: "Altitude",
+      coordAltSub: "Acima do nível do mar",
+      openGoogleMaps: "📍 Abrir no Google Maps ↗",
+      openOsm: "🗺️ Abrir no OpenStreetMap ↗",
+      copyCoords: "📋 Copiar Coordenadas",
+      copiedCoords: "✓ Coordenadas Copiadas!",
+      mapTitle: "Visualização do Local no Mapa",
+      mapTag: "OpenStreetMap (Zero Rastreamento)",
+      docSectionTitle: "Propriedades e Metadados do Documento",
+      docSectionSub: "Informações de autoria corporativa, software gerador, histórico de edição e revisões.",
+      mediaSectionTitle: "Tags e Informações do Arquivo de Mídia",
+      mediaSectionSub: "Tags ID3, artista, álbum, duração e codificador de mídia.",
+      searchPlaceholder: "Filtrar por nome de tag ou valor (ex: Model, Date, GPS, Creator)...",
+      tagsFound: "tags encontradas",
+      emptyFilter: "Nenhuma tag corresponde à busca",
+      emptyCategory: "Nenhum metadado encontrado nesta categoria.",
+      reportTitle: "RELATÓRIO DE METADADOS - REMOVER-METADADOS.COM",
+      reportFile: "Arquivo",
+      reportSize: "Tamanho",
+      reportFormat: "Formato",
+      reportDate: "Data de Análise",
+      reportRisk: "[AVALIAÇÃO DE RISCO DE PRIVACIDADE]",
+      reportGps: "[LOCALIZAÇÃO GPS]",
+      reportGeneral: "[DADOS GERAIS]",
+      reportCamera: "[CÂMERA E EXIF]",
+      reportDoc: "[PROPRIEDADES DO DOCUMENTO]",
+      sampleFileName: "foto-exemplo-sao-paulo.jpg",
+    };
+---
+
+<div
+  class="metadata-viewer-tool"
+  id="metadata-viewer-tool"
+  data-i18n={JSON.stringify(t)}
+  data-lang={isEn ? "en" : "pt-BR"}
+>
+
+  <!-- ── Drop Zone / Upload Area ───────────────────────────── -->
+  <div class="viewer-drop-card" id="viewer-drop-zone">
+    <input
+      type="file"
+      id="viewer-file-input"
+      multiple
+      accept="image/*,.pdf,.docx,.xlsx,.pptx,.odt,.ods,.odp,.mp3,.mp4,.m4v,.mov,.svg,.heic,.heif,.tif,.tiff"
+      style="display:none;"
+      aria-hidden="true"
+    />
+
+    <!-- Moving dashed animated SVG border -->
+    <svg class="drop-border-svg" aria-hidden="true">
+      <rect class="marching-rect" />
+    </svg>
+
+    <div class="viewer-drop-content">
+      <!-- Badge de Privacidade -->
+      <div class="drop-privacy-pill">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span>{t.privacyBadge}</span>
+      </div>
+
+      <div class="drop-icon-wrapper" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          <path d="M11 8v6"/>
+          <path d="M8 11h6"/>
+        </svg>
+      </div>
+
+      <h2 class="drop-title">{t.dropTitle}</h2>
+      <p class="drop-desc">
+        {t.dropDesc}
+      </p>
+
+      <div class="drop-actions-row">
+        <button id="viewer-browse-btn" class="btn-accent viewer-browse-btn" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+            <polyline points="13 2 13 9 20 9"/>
+          </svg>
+          {t.browseBtn}
+        </button>
+
+        <button id="viewer-sample-btn" class="btn-ghost viewer-sample-btn" type="button" title={t.sampleHint}>
+          <span>{t.sampleBtn}</span>
+        </button>
+      </div>
+
+      <p class="drop-formats-note">
+        {t.formatsNote}
+      </p>
+    </div>
+  </div>
+
+  <!-- ── Loading Spinner State ─────────────────────────────── -->
+  <div id="viewer-loading" class="viewer-loading-state" style="display:none;" aria-live="polite">
+    <div class="spinner-box">
+      <div class="neo-spinner" aria-hidden="true"></div>
+      <p class="spinner-text">{t.loadingText}</p>
+      <span class="spinner-sub">{t.loadingSub}</span>
+    </div>
+  </div>
+
+  <!-- ── Multi-file Selector Strip (when multiple files added) ─ -->
+  <div id="viewer-files-strip" class="viewer-files-strip" style="display:none;">
+    <div class="files-strip-header">
+      <div class="files-strip-title">
+        <span class="files-icon" aria-hidden="true">📁</span>
+        <span id="files-strip-count">1 {t.filesLoadedSingular}</span>
+      </div>
+      <div class="files-strip-actions">
+        <button id="viewer-add-more-btn" class="btn-subtle" type="button">
+          {t.addMore}
+        </button>
+        <button id="viewer-clear-all-btn" class="btn-subtle btn-danger-subtle" type="button">
+          {t.clearAll}
+        </button>
+      </div>
+    </div>
+    <div id="viewer-files-list" class="viewer-files-scroll">
+      <!-- File cards rendered dynamically -->
+    </div>
+  </div>
+
+  <!-- ── Active File Inspection Result View ────────────────── -->
+  <div id="viewer-results" class="viewer-results-container" style="display:none;">
+
+    <!-- Top Card: File Summary & Privacy Health Rating -->
+    <div class="viewer-summary-card">
+      <div class="summary-card-inner">
+
+        <!-- File Info & Thumbnail -->
+        <div class="summary-file-block">
+          <div class="file-thumb-container" id="file-thumb-box">
+            <img id="file-thumb-img" class="file-thumb-img" src="" alt="File preview" style="display:none;" />
+            <div id="file-thumb-icon" class="file-thumb-icon">📄</div>
+          </div>
+
+          <div class="file-meta-headings">
+            <div class="file-name-row">
+              <h3 id="res-file-name" class="res-file-name">foto.jpg</h3>
+              <span id="res-file-ext-badge" class="badge-ext">JPG</span>
+            </div>
+            <div class="file-specs-chips">
+              <span id="res-file-size" class="spec-chip">2.4 MB</span>
+              <span id="res-file-dims" class="spec-chip" style="display:none;">4032 × 3024 px</span>
+              <span id="res-file-date" class="spec-chip">Today</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Privacy Risk Assessment Alert Box -->
+        <div id="privacy-risk-box" class="privacy-risk-box risk-danger">
+          <div class="risk-header">
+            <span id="risk-status-icon" class="risk-status-icon" aria-hidden="true">⚠️</span>
+            <div class="risk-text-group">
+              <h4 id="risk-status-title" class="risk-title">High Privacy Risk Detected</h4>
+              <p id="risk-status-desc" class="risk-desc">
+                This file exposes exact GPS coordinates and device identifiers.
+              </p>
+            </div>
+          </div>
+          <div id="risk-findings-list" class="risk-findings-list">
+            <!-- Rendered list of findings -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Actions Toolbar -->
+      <div class="summary-actions-toolbar">
+        <div class="actions-left-group">
+          <!-- Quick Clean CTA Button -->
+          <button id="quick-clean-btn" class="btn-accent quick-clean-btn" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+            <span id="quick-clean-text">{t.cleanBtnText}</span>
+          </button>
+        </div>
+
+        <div class="actions-right-group">
+          <button id="copy-json-btn" class="btn-secondary" type="button" title="Copy all metadata in JSON format">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            <span id="copy-json-label">{t.copyJson}</span>
+          </button>
+
+          <button id="export-report-btn" class="btn-secondary" type="button" title="Export metadata report (.txt)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <span>{t.exportReport}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Tab Navigation ──────────────────────────────────── -->
+    <div class="viewer-tabs-bar" role="tablist" aria-label="Metadata tabs">
+      <button id="tab-btn-raw" class="viewer-tab-btn active" role="tab" aria-selected="true" data-tab="tab-raw">
+        <span>{t.tabRaw}</span>
+        <span id="badge-raw-count" class="tab-badge" style="display:none;">0</span>
+      </button>
+
+      <button id="tab-btn-general" class="viewer-tab-btn" role="tab" aria-selected="false" data-tab="tab-general">
+        <span>{t.tabGeneral}</span>
+      </button>
+
+      <button id="tab-btn-camera" class="viewer-tab-btn" role="tab" aria-selected="false" data-tab="tab-camera" style="display:none;">
+        <span>{t.tabCamera}</span>
+        <span id="badge-camera-count" class="tab-badge">0</span>
+      </button>
+
+      <button id="tab-btn-gps" class="viewer-tab-btn tab-gps-highlight" role="tab" aria-selected="false" data-tab="tab-gps" style="display:none;">
+        <span class="gps-pulse-dot" aria-hidden="true"></span>
+        <span>{t.tabGps}</span>
+      </button>
+
+      <button id="tab-btn-doc" class="viewer-tab-btn" role="tab" aria-selected="false" data-tab="tab-doc" style="display:none;">
+        <span>{t.tabDoc}</span>
+      </button>
+
+      <button id="tab-btn-media" class="viewer-tab-btn" role="tab" aria-selected="false" data-tab="tab-media" style="display:none;">
+        <span>{t.tabMedia}</span>
+      </button>
+    </div>
+
+    <!-- ── Tab Panels ──────────────────────────────────────── -->
+    <div class="viewer-tab-panels">
+
+      <!-- 1. Panel: All Data (Raw Tags) — ACTIVE BY DEFAULT -->
+      <div id="tab-raw" class="viewer-tab-panel active" role="tabpanel">
+        <div class="raw-search-toolbar">
+          <div class="raw-search-input-wrapper">
+            <span class="search-icon" aria-hidden="true">🔎</span>
+            <input
+              type="text"
+              id="raw-search-input"
+              class="raw-search-input"
+              placeholder={t.searchPlaceholder}
+              aria-label="Filter raw tags"
+            />
+            <button id="raw-search-clear-btn" class="raw-search-clear-btn" type="button" style="display:none;" aria-label={t.clearFilter} title={t.clearFilter}>✕</button>
+          </div>
+          <div class="raw-toolbar-stats">
+            <span id="raw-count-label" class="raw-count-label">0 {t.tagsFound}</span>
+          </div>
+        </div>
+
+        <div id="raw-tags-container" class="raw-tags-container">
+          <div class="raw-table-header" aria-hidden="true">
+            <span class="raw-th-key">{t.headerProperty}</span>
+            <span class="raw-th-val">{t.headerValue}</span>
+            <span class="raw-th-act">{t.headerAction}</span>
+          </div>
+          <div id="raw-tags-list" class="raw-tags-list">
+            <!-- Key-value table rendered dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Panel: Overview / Geral -->
+      <div id="tab-general" class="viewer-tab-panel" role="tabpanel">
+        <div class="meta-cards-grid" id="grid-general">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- 3. Panel: Camera & EXIF -->
+      <div id="tab-camera" class="viewer-tab-panel" role="tabpanel">
+        <div class="meta-section-header">
+          <h4 class="section-title">{t.cameraSectionTitle}</h4>
+          <p class="section-sub">{t.cameraSectionSub}</p>
+        </div>
+        <div class="meta-cards-grid" id="grid-camera">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- 4. Panel: Location & GPS -->
+      <div id="tab-gps" class="viewer-tab-panel" role="tabpanel">
+        <div class="gps-panel-content">
+          <!-- GPS Alert Notice -->
+          <div class="gps-warning-alert">
+            <div class="gps-warning-icon" aria-hidden="true">📍</div>
+            <div class="gps-warning-text">
+              <h4 class="gps-warning-title">{t.gpsAlertTitle}</h4>
+              <p class="gps-warning-desc">
+                {t.gpsAlertDesc}
+              </p>
+            </div>
+          </div>
+
+          <!-- GPS Coordinates Grid & Action Buttons -->
+          <div class="gps-coords-container">
+            <div class="gps-coords-grid">
+              <div class="coord-box">
+                <span class="coord-label">{t.coordLat}</span>
+                <span id="gps-lat-val" class="coord-val">—</span>
+                <span id="gps-lat-dms" class="coord-dms">—</span>
+              </div>
+              <div class="coord-box">
+                <span class="coord-label">{t.coordLon}</span>
+                <span id="gps-lon-val" class="coord-val">—</span>
+                <span id="gps-lon-dms" class="coord-dms">—</span>
+              </div>
+              <div class="coord-box">
+                <span class="coord-label">{t.coordAlt}</span>
+                <span id="gps-alt-val" class="coord-val">—</span>
+                <span class="coord-dms">{t.coordAltSub}</span>
+              </div>
+            </div>
+
+            <!-- External Map Buttons -->
+            <div class="gps-buttons-row">
+              <a id="btn-open-gmaps" class="btn-main gps-ext-btn" href="#" target="_blank" rel="noopener noreferrer">
+                <span>{t.openGoogleMaps}</span>
+              </a>
+              <a id="btn-open-osm" class="btn-secondary gps-ext-btn" href="#" target="_blank" rel="noopener noreferrer">
+                <span>{t.openOsm}</span>
+              </a>
+              <button id="btn-copy-coords" class="btn-secondary gps-ext-btn" type="button">
+                <span>{t.copyCoords}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Embedded OpenStreetMap Map Frame -->
+          <div class="gps-map-frame-box">
+            <div class="map-frame-header">
+              <span class="map-frame-title">{t.mapTitle}</span>
+              <span class="map-frame-tag">{t.mapTag}</span>
+            </div>
+            <iframe
+              id="gps-map-iframe"
+              class="gps-map-iframe"
+              title="Map showing coordinates from image"
+              loading="lazy"
+              src="about:blank"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Panel: Document & Author -->
+      <div id="tab-doc" class="viewer-tab-panel" role="tabpanel">
+        <div class="meta-section-header">
+          <h4 class="section-title">{t.docSectionTitle}</h4>
+          <p class="section-sub">{t.docSectionSub}</p>
+        </div>
+        <div class="meta-cards-grid" id="grid-doc">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- 6. Panel: Media (Audio / Video) -->
+      <div id="tab-media" class="viewer-tab-panel" role="tabpanel">
+        <div class="meta-section-header">
+          <h4 class="section-title">{t.mediaSectionTitle}</h4>
+          <p class="section-sub">{t.mediaSectionSub}</p>
+        </div>
+        <div class="meta-cards-grid" id="grid-media">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ── Neo-Brutalist Component Styles ─────────────────────── -->
+<style>
+  .metadata-viewer-tool {
+    width: 100%;
+    margin: 0 auto;
+    font-family: var(--font-sans);
+    text-align: left;
+  }
+
+  /* ── Drop Card ─────────────────────────────────────────── */
+  .viewer-drop-card {
+    position: relative;
+    background: var(--card-bg);
+    border: 2.5px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    padding: clamp(2.5rem, 5vw, 4rem) clamp(1.25rem, 4vw, 2.5rem);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    user-select: none;
+    outline: none;
+  }
+
+  .viewer-drop-card:hover,
+  .viewer-drop-card.drag-over {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--neo-shadow-lg);
+  }
+
+  .drop-border-svg {
+    position: absolute;
+    inset: 6px;
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .marching-rect {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: var(--text-faint);
+    stroke-width: 1.5;
+    stroke-dasharray: 6 6;
+    animation: march 22s linear infinite;
+  }
+
+  @keyframes march {
+    to { stroke-dashoffset: -200; }
+  }
+
+  .viewer-drop-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .drop-privacy-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.35rem 0.85rem;
+    background: var(--badge-bg);
+    color: var(--text);
+    border: 1.5px solid var(--border);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+    margin-bottom: 1.5rem;
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #16a34a;
+    display: inline-block;
+  }
+
+  .drop-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    box-shadow: 3px 3px 0px var(--shadow-color);
+    margin-bottom: 1.25rem;
+  }
+
+  .drop-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.15rem, 3.2vw, 1.65rem);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.02em;
+  }
+
+  .drop-desc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: 1.75rem;
+    max-width: 500px;
+  }
+
+  .drop-actions-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .viewer-browse-btn {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    font-weight: 700;
+    padding: 0.75rem 1.4rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+
+  .viewer-browse-btn:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .viewer-sample-btn {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 0.75rem 1.25rem;
+    background: var(--card-bg);
+    color: var(--text);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+
+  .viewer-sample-btn:hover {
+    background: var(--badge-bg);
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .drop-formats-note {
+    font-size: 0.75rem;
+    color: var(--text-faint);
+    max-width: 580px;
+  }
+
+  /* ── Loading Spinner ────────────────────────────────────── */
+  .viewer-loading-state {
+    padding: 3rem 1rem;
+    text-align: center;
+  }
+
+  .spinner-box {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    padding: 2rem 2.5rem;
+  }
+
+  .neo-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3.5px solid var(--border-light);
+    border-top-color: var(--text);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .spinner-text {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .spinner-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  /* ── Multi-file Selector Strip ──────────────────────────── */
+  .viewer-files-strip {
+    margin-top: 1.5rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    padding: 1rem;
+  }
+
+  .files-strip-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.85rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .files-strip-title {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .files-strip-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .btn-subtle {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 700;
+    padding: 0.35rem 0.65rem;
+    background: var(--card-bg);
+    color: var(--text);
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+  }
+
+  .btn-subtle:hover {
+    background: var(--badge-bg);
+  }
+
+  .btn-danger-subtle:hover {
+    background: #fee2e2;
+    color: #b91c1c;
+  }
+
+  .viewer-files-scroll {
+    display: flex;
+    gap: 0.65rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scrollbar-width: thin;
+  }
+
+  /* ── Results Container & Summary ────────────────────────── */
+  .viewer-results-container {
+    margin-top: 2rem;
+  }
+
+  .viewer-summary-card {
+    background: var(--card-bg);
+    border: 2.5px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    margin-bottom: 2rem;
+  }
+
+  .summary-card-inner {
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 860px) {
+    .summary-card-inner {
+      grid-template-columns: 1.1fr 1.3fr;
+      align-items: start;
+    }
+  }
+
+  .summary-file-block {
+    display: flex;
+    gap: 1.15rem;
+    align-items: center;
+  }
+
+  .file-thumb-container {
+    width: 74px;
+    height: 74px;
+    border: 2px solid var(--border);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+    background: var(--badge-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .file-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .file-thumb-icon {
+    font-size: 2rem;
+  }
+
+  .file-meta-headings {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+
+  .file-name-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .res-file-name {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    word-break: break-all;
+  }
+
+  .badge-ext {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 1.5px solid var(--border);
+    box-shadow: 1.5px 1.5px 0px var(--shadow-color);
+  }
+
+  .file-specs-chips {
+    display: flex;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+
+  .spec-chip {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    background: var(--badge-bg);
+    border: 1px solid var(--border-light);
+    padding: 0.15rem 0.45rem;
+  }
+
+  /* ── Privacy Risk Box ──────────────────────────────────── */
+  .privacy-risk-box {
+    border: 2px solid var(--border);
+    box-shadow: 2.5px 2.5px 0px var(--shadow-color);
+    padding: 1rem 1.25rem;
+  }
+
+  .privacy-risk-box.risk-danger {
+    background: #fef2f2;
+    border-color: #dc2626;
+  }
+
+  html.dark .privacy-risk-box.risk-danger {
+    background: #450a0a;
+    border-color: #ef4444;
+  }
+
+  .privacy-risk-box.risk-warning {
+    background: #fffbeb;
+    border-color: #d97706;
+  }
+
+  html.dark .privacy-risk-box.risk-warning {
+    background: #451a03;
+    border-color: #f59e0b;
+  }
+
+  .privacy-risk-box.risk-clean {
+    background: #f0fdf4;
+    border-color: #16a34a;
+  }
+
+  html.dark .privacy-risk-box.risk-clean {
+    background: #052e16;
+    border-color: #22c55e;
+  }
+
+  .risk-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .risk-status-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .risk-title {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.2rem 0;
+  }
+
+  .risk-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .risk-findings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed rgba(0, 0, 0, 0.15);
+  }
+
+  html.dark .risk-findings-list {
+    border-top-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .finding-item {
+    color: var(--text);
+  }
+
+  /* ── Actions Toolbar ────────────────────────────────────── */
+  .summary-actions-toolbar {
+    background: var(--bg);
+    border-top: 2px solid var(--border);
+    padding: 0.85rem clamp(1rem, 2.5vw, 1.75rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .quick-clean-btn {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.65rem 1.25rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+
+  .quick-clean-btn:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .quick-clean-btn.done-state {
+    background: #16a34a;
+    color: #ffffff;
+    border-color: var(--border);
+  }
+
+  .actions-right-group {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .btn-secondary {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.65rem 0.95rem;
+    background: var(--card-bg);
+    color: var(--text);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: transform 0.1s ease;
+  }
+
+  .btn-secondary:hover {
+    background: var(--badge-bg);
+    transform: translate(-1.5px, -1.5px);
+  }
+
+  /* ── Tabs Bar ───────────────────────────────────────────── */
+  .viewer-tabs-bar {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 2px;
+    margin-bottom: 1.5rem;
+    scrollbar-width: thin;
+  }
+
+  .viewer-tab-btn {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 0.75rem 1.15rem;
+    background: var(--card-bg);
+    color: var(--text-muted);
+    border: 2px solid var(--border);
+    border-bottom: none;
+    box-shadow: 2px -2px 0px transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  }
+
+  .viewer-tab-btn:hover {
+    color: var(--text);
+    background: var(--badge-bg);
+  }
+
+  .viewer-tab-btn.active {
+    background: var(--bg);
+    color: var(--text);
+    border-bottom: 2px solid var(--bg);
+    margin-bottom: -2px;
+    box-shadow: 3px -3px 0px var(--shadow-color);
+  }
+
+  .tab-badge {
+    font-size: 0.68rem;
+    padding: 0.1rem 0.4rem;
+    background: var(--badge-bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+
+  .tab-gps-highlight {
+    position: relative;
+  }
+
+  .gps-pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.4);
+    animation: gpsPulse 1.8s infinite;
+  }
+
+  @keyframes gpsPulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+  }
+
+  /* ── Tab Panels ─────────────────────────────────────────── */
+  .viewer-tab-panel {
+    display: none;
+  }
+
+  .viewer-tab-panel.active {
+    display: block;
+    animation: fadeIn 0.2s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .meta-section-header {
+    margin-bottom: 1.25rem;
+  }
+
+  .section-title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .section-sub {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* ── Metadata Cards Grid ────────────────────────────────── */
+  .meta-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+
+  .meta-item-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    padding: 0.95rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .meta-item-key {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+  }
+
+  .meta-item-val {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    word-break: break-word;
+  }
+
+  /* ── GPS Panel Styling ──────────────────────────────────── */
+  .gps-warning-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: #fef2f2;
+    border: 2px solid #dc2626;
+    box-shadow: var(--neo-shadow-sm);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  html.dark .gps-warning-alert {
+    background: #450a0a;
+    border-color: #ef4444;
+  }
+
+  .gps-warning-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .gps-warning-title {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #b91c1c;
+    margin: 0 0 0.25rem 0;
+  }
+
+  html.dark .gps-warning-title {
+    color: #fca5a5;
+  }
+
+  .gps-warning-desc {
+    font-size: 0.85rem;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.45;
+  }
+
+  .gps-coords-container {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    padding: 1.25rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .gps-coords-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .coord-box {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    padding: 0.85rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .coord-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.35rem;
+  }
+
+  .coord-val {
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.15rem;
+  }
+
+  .coord-dms {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-muted);
+  }
+
+  .gps-buttons-row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    border-top: 1px dashed var(--border-light);
+    padding-top: 1rem;
+  }
+
+  .gps-ext-btn {
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 0.65rem 1.15rem;
+  }
+
+  .btn-main {
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.1s ease;
+  }
+
+  .btn-main:hover {
+    transform: translate(-1.5px, -1.5px);
+  }
+
+  .gps-map-frame-box {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    overflow: hidden;
+  }
+
+  .map-frame-header {
+    background: var(--bg);
+    border-bottom: 2px solid var(--border);
+    padding: 0.65rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .map-frame-title {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .map-frame-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  .gps-map-iframe {
+    width: 100%;
+    height: 340px;
+    border: none;
+    display: block;
+    background: #e5e7eb;
+  }
+
+  /* ── Raw Tags Panel (Spacious & Unsqueezed) ──────────────── */
+  .raw-search-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .raw-search-input-wrapper {
+    position: relative;
+    flex: 1;
+    min-width: 280px;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 0.95rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  .raw-search-input {
+    width: 100%;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    padding: 0.75rem 2.6rem 0.75rem 2.5rem;
+    background: var(--card-bg);
+    color: var(--text);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    outline: none;
+    box-sizing: border-box;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+
+  .raw-search-input:focus {
+    border-color: var(--border);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .raw-search-clear-btn {
+    position: absolute;
+    right: 0.65rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: var(--badge-bg);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+  }
+
+  .raw-search-clear-btn:hover {
+    color: var(--text);
+    background: var(--border-light);
+  }
+
+  .raw-toolbar-stats {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .raw-count-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: var(--badge-bg);
+    border: 1px solid var(--border-light);
+    padding: 0.35rem 0.65rem;
+    display: inline-block;
+  }
+
+  .raw-tags-container {
+    background: var(--card-bg);
+    border: 2.5px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    max-height: 850px;
+    overflow-y: auto;
+    position: relative;
+    scrollbar-width: thin;
+  }
+
+  .raw-table-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: minmax(260px, 340px) 1fr 52px;
+    gap: 1.5rem;
+    padding: 0.85rem 1.4rem;
+    background: var(--bg);
+    border-bottom: 2px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  }
+
+  .raw-th-act {
+    text-align: center;
+  }
+
+  .raw-tags-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .raw-tag-row {
+    display: grid;
+    grid-template-columns: minmax(260px, 340px) 1fr 52px;
+    gap: 1.5rem;
+    padding: 0.95rem 1.4rem;
+    border-bottom: 1px solid var(--border-light);
+    align-items: start;
+    font-size: 0.86rem;
+    transition: background-color 0.1s ease;
+  }
+
+  .raw-tag-row:nth-child(even) {
+    background: rgba(0, 0, 0, 0.018);
+  }
+
+  html.dark .raw-tag-row:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .raw-tag-row:hover {
+    background: rgba(0, 0, 0, 0.035);
+  }
+
+  html.dark .raw-tag-row:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .raw-tag-key-col {
+    min-width: 0;
+    padding-top: 0.35rem;
+  }
+
+  .raw-tag-key {
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--text);
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.45;
+    display: block;
+  }
+
+  .raw-tag-val-col {
+    min-width: 0;
+  }
+
+  .raw-tag-val {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text);
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.55;
+    background: var(--bg);
+    border: 1px solid var(--border-light);
+    padding: 0.55rem 0.9rem;
+    border-radius: 2px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    white-space: pre-wrap;
+  }
+
+  .raw-tag-act-col {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 0.25rem;
+  }
+
+  .raw-tag-copy {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    color: var(--text-muted);
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.1s ease, color 0.1s ease, transform 0.1s ease;
+  }
+
+  .raw-tag-copy:hover {
+    background: var(--card-bg);
+    color: var(--text);
+    border-color: var(--border);
+    transform: translate(-1px, -1px);
+    box-shadow: 1.5px 1.5px 0px var(--shadow-color);
+  }
+
+  .raw-tag-copy.copied {
+    background: #16a34a;
+    color: #ffffff;
+    border-color: #16a34a;
+  }
+
+  /* Responsive mobile view for raw tags */
+  @media (max-width: 768px) {
+    .raw-table-header {
+      display: none;
+    }
+
+    .raw-tag-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      padding: 0.95rem 1rem;
+      position: relative;
+    }
+
+    .raw-tag-key-col {
+      padding-right: 44px;
+      padding-top: 0;
+    }
+
+    .raw-tag-act-col {
+      position: absolute;
+      top: 0.8rem;
+      right: 1rem;
+      padding-top: 0;
+    }
+
+    .raw-tag-val-col {
+      width: 100%;
+    }
+
+    .raw-tag-val {
+      font-size: 0.82rem;
+      padding: 0.5rem 0.75rem;
+    }
+  }
+
+  /* File Pill in Strip */
+  .file-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.75rem;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform 0.1s ease;
+  }
+
+  .file-pill:hover {
+    background: var(--badge-bg);
+  }
+
+  .file-pill.active {
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border-width: 2px;
+    box-shadow: 2px 2px 0px var(--shadow-color);
+  }
+
+  .file-pill-name {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .file-pill-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.1rem 0.35rem;
+    background: var(--card-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .file-pill.active .file-pill-tag {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+  }
+
+  /* Empty state */
+  .raw-empty-state {
+    padding: 2.5rem 1rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+</style>
+
+<!-- ── Client Script for Metadata Viewer ──────────────────── -->
+<script type="module">
+  import { inspectFileMetadata, toDms, formatBytes } from '/src/scripts/metadataViewer.js';
+  import { removeMetadata, downloadBlob } from '/src/scripts/metadataRemover.js';
+
+  const toolContainer  = document.getElementById('metadata-viewer-tool');
+  const t              = JSON.parse(toolContainer?.dataset?.i18n || '{}');
+  const currentLang    = toolContainer?.dataset?.lang || 'pt-BR';
+
+  // DOM elements
+  const dropZone       = document.getElementById('viewer-drop-zone');
+  const fileInput      = document.getElementById('viewer-file-input');
+  const browseBtn      = document.getElementById('viewer-browse-btn');
+  const sampleBtn      = document.getElementById('viewer-sample-btn');
+  const loadingState   = document.getElementById('viewer-loading');
+  const filesStrip     = document.getElementById('viewer-files-strip');
+  const filesStripCount= document.getElementById('files-strip-count');
+  const filesListEl    = document.getElementById('viewer-files-list');
+  const addMoreBtn     = document.getElementById('viewer-add-more-btn');
+  const clearAllBtn    = document.getElementById('viewer-clear-all-btn');
+
+  const resultsView    = document.getElementById('viewer-results');
+  const resFileName    = document.getElementById('res-file-name');
+  const resFileExtBadge= document.getElementById('res-file-ext-badge');
+  const resFileSize    = document.getElementById('res-file-size');
+  const resFileDims    = document.getElementById('res-file-dims');
+  const resFileDate    = document.getElementById('res-file-date');
+  const fileThumbImg   = document.getElementById('file-thumb-img');
+  const fileThumbIcon  = document.getElementById('file-thumb-icon');
+
+  const riskBox        = document.getElementById('privacy-risk-box');
+  const riskTitle      = document.getElementById('risk-status-title');
+  const riskDesc       = document.getElementById('risk-status-desc');
+  const riskIcon       = document.getElementById('risk-status-icon');
+  const riskFindings   = document.getElementById('risk-findings-list');
+
+  const quickCleanBtn  = document.getElementById('quick-clean-btn');
+  const quickCleanText = document.getElementById('quick-clean-text');
+  const copyJsonBtn    = document.getElementById('copy-json-btn');
+  const copyJsonLabel  = document.getElementById('copy-json-label');
+  const exportReportBtn= document.getElementById('export-report-btn');
+
+  // Tab elements
+  const tabBtns        = document.querySelectorAll('.viewer-tab-btn');
+  const tabPanels      = document.querySelectorAll('.viewer-tab-panel');
+  const tabBtnCamera   = document.getElementById('tab-btn-camera');
+  const badgeCamCount  = document.getElementById('badge-camera-count');
+  const tabBtnGps      = document.getElementById('tab-btn-gps');
+  const tabBtnDoc      = document.getElementById('tab-btn-doc');
+  const tabBtnMedia    = document.getElementById('tab-btn-media');
+
+  const gridGeneral    = document.getElementById('grid-general');
+  const gridCamera     = document.getElementById('grid-camera');
+  const gridDoc        = document.getElementById('grid-doc');
+  const gridMedia      = document.getElementById('grid-media');
+
+  // GPS elements
+  const gpsLatVal      = document.getElementById('gps-lat-val');
+  const gpsLatDms      = document.getElementById('gps-lat-dms');
+  const gpsLonVal      = document.getElementById('gps-lon-val');
+  const gpsLonDms      = document.getElementById('gps-lon-dms');
+  const gpsAltVal      = document.getElementById('gps-alt-val');
+  const btnOpenGmaps   = document.getElementById('btn-open-gmaps');
+  const btnOpenOsm     = document.getElementById('btn-open-osm');
+  const btnCopyCoords  = document.getElementById('btn-copy-coords');
+  const gpsMapIframe   = document.getElementById('gps-map-iframe');
+
+  // Raw search elements
+  const rawSearchInput = document.getElementById('raw-search-input');
+  const rawSearchClear = document.getElementById('raw-search-clear-btn');
+  const rawCountLabel  = document.getElementById('raw-count-label');
+  const rawContainer   = document.getElementById('raw-tags-container');
+  const rawTagsList    = document.getElementById('raw-tags-list');
+  const badgeRawCount  = document.getElementById('badge-raw-count');
+
+  /** @type {Array<{ file: File, result: any, thumbUrl?: string }>} */
+  let loadedItems = [];
+  let activeIndex = 0;
+
+  // ── Drag & Drop listeners ─────────────────────────────────
+  if (dropZone) {
+    dropZone.addEventListener('click', (e) => {
+      if (e.target.closest('#viewer-sample-btn')) return;
+      fileInput?.click();
+    });
+
+    ['dragenter', 'dragover'].forEach(name => {
+      dropZone.addEventListener(name, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.add('drag-over');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(name => {
+      dropZone.addEventListener(name, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove('drag-over');
+      });
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      const files = Array.from(e.dataTransfer?.files || []);
+      if (files.length > 0) handleFiles(files);
+    });
+  }
+
+  browseBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    fileInput?.click();
+  });
+
+  addMoreBtn?.addEventListener('click', () => {
+    fileInput?.click();
+  });
+
+  clearAllBtn?.addEventListener('click', () => {
+    loadedItems.forEach(item => {
+      if (item.thumbUrl) URL.revokeObjectURL(item.thumbUrl);
+    });
+    loadedItems = [];
+    activeIndex = 0;
+    if (filesStrip) filesStrip.style.display = 'none';
+    if (resultsView) resultsView.style.display = 'none';
+    if (dropZone) dropZone.style.display = 'block';
+  });
+
+  fileInput?.addEventListener('change', (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) handleFiles(files);
+    fileInput.value = '';
+  });
+
+  // ── Sample Test Button ────────────────────────────────────
+  sampleBtn?.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    try {
+      showLoading(true);
+      const res = await fetch('/sample-exif.jpg');
+      if (!res.ok) throw new Error('Could not load sample image');
+      const blob = await res.blob();
+      const sampleFile = new File([blob], t.sampleFileName || 'sample-photo-sao-paulo.jpg', { type: 'image/jpeg' });
+      await handleFiles([sampleFile]);
+    } catch (err) {
+      alert('Error loading sample: ' + err.message);
+    } finally {
+      showLoading(false);
+    }
+  });
+
+  function showLoading(show) {
+    if (loadingState) loadingState.style.display = show ? 'block' : 'none';
+  }
+
+  // ── Process incoming files ────────────────────────────────
+  async function handleFiles(files) {
+    showLoading(true);
+    try {
+      for (const file of files) {
+        const inspection = await inspectFileMetadata(file, currentLang);
+
+        let thumbUrl = '';
+        if (inspection.isImage && !file.name.endsWith('.svg')) {
+          try {
+            thumbUrl = URL.createObjectURL(file);
+          } catch {}
+        }
+
+        loadedItems.push({
+          file,
+          result: inspection,
+          thumbUrl,
+        });
+      }
+
+      activeIndex = loadedItems.length - files.length;
+      if (activeIndex < 0) activeIndex = 0;
+
+      renderFilesStrip();
+      renderActiveItem();
+
+      resultsView?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      console.error('File inspection error:', err);
+      alert('Error inspecting file: ' + err.message);
+    } finally {
+      showLoading(false);
+    }
+  }
+
+  // ── Render Files Strip ────────────────────────────────────
+  function renderFilesStrip() {
+    if (!filesStrip || !filesListEl) return;
+    if (loadedItems.length <= 1) {
+      filesStrip.style.display = 'none';
+      return;
+    }
+
+    filesStrip.style.display = 'block';
+    if (filesStripCount) {
+      const suffix = loadedItems.length === 1 ? t.filesLoadedSingular : t.filesLoadedPlural;
+      filesStripCount.textContent = `${loadedItems.length} ${suffix}`;
+    }
+
+    filesListEl.innerHTML = '';
+    loadedItems.forEach((item, idx) => {
+      const pill = document.createElement('div');
+      pill.className = `file-pill ${idx === activeIndex ? 'active' : ''}`;
+
+      const icon = item.result.isImage ? '📷' : (item.result.isPdf ? '📄' : '📁');
+      const tagText = item.result.gps ? '📍 GPS' : item.result.assessment.level.toUpperCase();
+
+      pill.innerHTML = `
+        <span aria-hidden="true">${icon}</span>
+        <span class="file-pill-name" title="${item.file.name}">${item.file.name}</span>
+        <span class="file-pill-tag">${tagText}</span>
+      `;
+
+      pill.addEventListener('click', () => {
+        activeIndex = idx;
+        renderFilesStrip();
+        renderActiveItem();
+      });
+
+      filesListEl.appendChild(pill);
+    });
+  }
+
+  // ── Render Active Item ────────────────────────────────────
+  function renderActiveItem() {
+    const item = loadedItems[activeIndex];
+    if (!item) return;
+
+    const res = item.result;
+    if (resultsView) resultsView.style.display = 'block';
+
+    // File info
+    if (resFileName) resFileName.textContent = item.file.name;
+    if (resFileExtBadge) resFileExtBadge.textContent = res.ext.toUpperCase();
+    if (resFileSize) resFileSize.textContent = formatBytes(item.file.size, currentLang);
+    if (resFileDate) resFileDate.textContent = res.general[currentLang === 'en' ? 'Last Modified' : 'Última Modificação'] || '—';
+
+    if (resFileDims) {
+      const dims = res.general[currentLang === 'en' ? 'Dimensions' : 'Dimensões'];
+      if (dims) {
+        resFileDims.textContent = dims;
+        resFileDims.style.display = 'inline-block';
+      } else {
+        resFileDims.style.display = 'none';
+      }
+    }
+
+    // Thumbnail
+    if (item.thumbUrl) {
+      if (fileThumbImg) {
+        fileThumbImg.src = item.thumbUrl;
+        fileThumbImg.style.display = 'block';
+      }
+      if (fileThumbIcon) fileThumbIcon.style.display = 'none';
+    } else {
+      if (fileThumbImg) fileThumbImg.style.display = 'none';
+      if (fileThumbIcon) {
+        fileThumbIcon.style.display = 'block';
+        fileThumbIcon.textContent = res.isImage ? '🖼️' : (res.isPdf ? '📄' : (res.isOffice ? '📑' : (res.isAudio ? '🎵' : '📹')));
+      }
+    }
+
+    // Privacy Risk Assessment
+    if (riskBox) {
+      riskBox.className = `privacy-risk-box risk-${res.assessment.level}`;
+    }
+    if (riskTitle) riskTitle.textContent = res.assessment.title;
+    if (riskDesc) riskDesc.textContent = res.assessment.description;
+    if (riskIcon) {
+      riskIcon.textContent = res.assessment.level === 'danger' ? '🚨' : (res.assessment.level === 'warning' ? '⚠️' : '✅');
+    }
+
+    if (riskFindings) {
+      if (res.assessment.findings && res.assessment.findings.length > 0) {
+        riskFindings.style.display = 'flex';
+        riskFindings.innerHTML = res.assessment.findings
+          .map(f => `<div class="finding-item">• ${f}</div>`)
+          .join('');
+      } else {
+        riskFindings.style.display = 'none';
+        riskFindings.innerHTML = '';
+      }
+    }
+
+    // Reset Clean Button state
+    if (quickCleanBtn && quickCleanText) {
+      quickCleanBtn.classList.remove('done-state');
+      quickCleanBtn.disabled = false;
+      quickCleanText.textContent = t.cleanBtnText;
+    }
+
+    // Render Tab Buttons Visibility
+    const hasCamera = Object.keys(res.camera).length > 0;
+    const hasGps = !!res.gps;
+    const hasDoc = Object.keys(res.documentInfo).length > 0;
+    const hasMedia = Object.keys(res.mediaInfo).length > 0;
+
+    if (tabBtnCamera) {
+      tabBtnCamera.style.display = hasCamera ? 'inline-flex' : 'none';
+      if (badgeCamCount) badgeCamCount.textContent = String(Object.keys(res.camera).length);
+    }
+    if (tabBtnGps) {
+      tabBtnGps.style.display = hasGps ? 'inline-flex' : 'none';
+    }
+    if (tabBtnDoc) {
+      tabBtnDoc.style.display = hasDoc ? 'inline-flex' : 'none';
+    }
+    if (tabBtnMedia) {
+      tabBtnMedia.style.display = hasMedia ? 'inline-flex' : 'none';
+    }
+
+    // Show All Data by default
+    switchTab('tab-raw');
+
+    const totalRawCount = Object.keys(res.rawTags || {}).length;
+    if (badgeRawCount) {
+      badgeRawCount.textContent = String(totalRawCount);
+      badgeRawCount.style.display = 'inline-block';
+    }
+
+    // Populate Grids
+    renderGrid(gridGeneral, res.general);
+    if (hasCamera) renderGrid(gridCamera, res.camera);
+    if (hasDoc) renderGrid(gridDoc, res.documentInfo);
+    if (hasMedia) renderGrid(gridMedia, res.mediaInfo);
+
+    // Populate GPS
+    if (hasGps && res.gps) {
+      if (gpsLatVal) gpsLatVal.textContent = res.gps.latitude.toFixed(6);
+      if (gpsLatDms) gpsLatDms.textContent = res.gps.dmsLat;
+      if (gpsLonVal) gpsLonVal.textContent = res.gps.longitude.toFixed(6);
+      if (gpsLonDms) gpsLonDms.textContent = res.gps.dmsLon;
+      if (gpsAltVal) gpsAltVal.textContent = res.gps.altitude ? `${res.gps.altitude} m` : '—';
+
+      if (btnOpenGmaps) btnOpenGmaps.href = res.gps.googleMapsUrl;
+      if (btnOpenOsm) btnOpenOsm.href = res.gps.osmUrl;
+
+      // Embed map
+      if (gpsMapIframe) {
+        const lat = res.gps.latitude;
+        const lon = res.gps.longitude;
+        const delta = 0.006;
+        const bbox = `${lon - delta}%2C${lat - delta}%2C${lon + delta}%2C${lat + delta}`;
+        gpsMapIframe.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat}%2C${lon}`;
+      }
+    }
+
+    // Populate Raw Tags Table
+    renderRawTags(res.rawTags);
+  }
+
+  // ── Render Helper for Key-Value Grids ─────────────────────
+  function renderGrid(container, obj) {
+    if (!container) return;
+    container.innerHTML = '';
+    const entries = Object.entries(obj);
+    if (entries.length === 0) {
+      container.innerHTML = `<div class="raw-empty-state">${t.emptyCategory}</div>`;
+      return;
+    }
+    entries.forEach(([key, val]) => {
+      const card = document.createElement('div');
+      card.className = 'meta-item-card';
+      card.innerHTML = `
+        <span class="meta-item-key">${key}</span>
+        <span class="meta-item-val">${val}</span>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function formatTagValue(v) {
+    if (v === null || v === undefined) {
+      return { text: '—', copyVal: '' };
+    }
+    if (typeof v === 'boolean') {
+      return { text: v ? 'true' : 'false', copyVal: String(v) };
+    }
+    if (Array.isArray(v)) {
+      if (v.every(item => typeof item === 'string' || typeof item === 'number')) {
+        const joined = v.join(', ');
+        return { text: joined, copyVal: joined };
+      }
+      const json = JSON.stringify(v, null, 2);
+      return { text: json, copyVal: json };
+    }
+    if (typeof v === 'object') {
+      try {
+        const json = JSON.stringify(v, null, 2);
+        return { text: json, copyVal: json };
+      } catch {
+        return { text: String(v), copyVal: String(v) };
+      }
+    }
+    const str = String(v);
+    return { text: str, copyVal: str };
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // ── Render Raw Tags with Live Search ──────────────────────
+  let currentRawObj = {};
+  function renderRawTags(rawObj) {
+    currentRawObj = rawObj || {};
+    filterRawTags('');
+  }
+
+  function filterRawTags(filterTerm) {
+    const listEl = rawTagsList || rawContainer;
+    if (!listEl) return;
+    listEl.innerHTML = '';
+
+    const term = (filterTerm || '').toLowerCase().trim();
+    if (rawSearchClear) {
+      rawSearchClear.style.display = term ? 'inline-flex' : 'none';
+    }
+
+    const entries = Object.entries(currentRawObj).filter(([k, v]) => {
+      if (!term) return true;
+      const kMatch = k.toLowerCase().includes(term);
+      const vMatch = String(v).toLowerCase().includes(term);
+      return kMatch || vMatch;
+    });
+
+    if (rawCountLabel) {
+      rawCountLabel.textContent = `${entries.length} ${t.tagsFound}`;
+    }
+
+    if (entries.length === 0) {
+      listEl.innerHTML = `<div class="raw-empty-state">${t.emptyFilter} "${escapeHtml(filterTerm)}".</div>`;
+      return;
+    }
+
+    entries.forEach(([k, v]) => {
+      const row = document.createElement('div');
+      row.className = 'raw-tag-row';
+      const formatted = formatTagValue(v);
+
+      row.innerHTML = `
+        <div class="raw-tag-key-col">
+          <span class="raw-tag-key">${escapeHtml(k)}</span>
+        </div>
+        <div class="raw-tag-val-col">
+          <span class="raw-tag-val">${escapeHtml(formatted.text)}</span>
+        </div>
+        <div class="raw-tag-act-col">
+          <button class="raw-tag-copy" type="button" title="${currentLang === 'en' ? 'Copy value' : 'Copiar valor'}" aria-label="${currentLang === 'en' ? 'Copy tag value' : 'Copiar valor da tag'}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+          </button>
+        </div>
+      `;
+
+      const copyBtn = row.querySelector('.raw-tag-copy');
+      copyBtn?.addEventListener('click', () => {
+        navigator.clipboard.writeText(formatted.copyVal);
+        copyBtn.innerHTML = `
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        `;
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+          copyBtn.innerHTML = `
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+          `;
+          copyBtn.classList.remove('copied');
+        }, 1500);
+      });
+
+      listEl.appendChild(row);
+    });
+  }
+
+  rawSearchInput?.addEventListener('input', (e) => {
+    filterRawTags(e.target.value);
+  });
+
+  rawSearchClear?.addEventListener('click', () => {
+    if (rawSearchInput) rawSearchInput.value = '';
+    filterRawTags('');
+    rawSearchInput?.focus();
+  });
+
+  // ── Tab Switching Logic ───────────────────────────────────
+  function switchTab(targetTabId) {
+    tabBtns.forEach(btn => {
+      const isActive = btn.dataset.tab === targetTabId;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    tabPanels.forEach(panel => {
+      panel.classList.toggle('active', panel.id === targetTabId);
+    });
+  }
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      switchTab(btn.dataset.tab);
+    });
+  });
+
+  // ── Copy GPS Coords ───────────────────────────────────────
+  btnCopyCoords?.addEventListener('click', () => {
+    const item = loadedItems[activeIndex];
+    if (item?.result?.gps) {
+      const coords = `${item.result.gps.latitude.toFixed(6)}, ${item.result.gps.longitude.toFixed(6)}`;
+      navigator.clipboard.writeText(coords);
+      btnCopyCoords.querySelector('span').textContent = t.copiedCoords;
+      setTimeout(() => {
+        btnCopyCoords.querySelector('span').textContent = t.copyCoords;
+      }, 2000);
+    }
+  });
+
+  // ── Copy JSON ─────────────────────────────────────────────
+  copyJsonBtn?.addEventListener('click', () => {
+    const item = loadedItems[activeIndex];
+    if (!item) return;
+    const jsonStr = JSON.stringify(item.result.rawTags, null, 2);
+    navigator.clipboard.writeText(jsonStr);
+    if (copyJsonLabel) copyJsonLabel.textContent = t.copiedJson;
+    setTimeout(() => {
+      if (copyJsonLabel) copyJsonLabel.textContent = t.copyJson;
+    }, 2000);
+  });
+
+  // ── Export Text Report ────────────────────────────────────
+  exportReportBtn?.addEventListener('click', () => {
+    const item = loadedItems[activeIndex];
+    if (!item) return;
+
+    const res = item.result;
+    let report = `====================================================\n`;
+    report += `${t.reportTitle}\n`;
+    report += `====================================================\n\n`;
+    report += `${t.reportFile}: ${item.file.name}\n`;
+    report += `${t.reportSize}: ${formatBytes(item.file.size, currentLang)}\n`;
+    report += `${t.reportFormat}: ${res.ext.toUpperCase()}\n`;
+    report += `${t.reportDate}: ${new Date().toLocaleString(currentLang === 'en' ? 'en-US' : 'pt-BR')}\n\n`;
+
+    report += `${t.reportRisk}\n`;
+    report += `Status: ${res.assessment.title}\n`;
+    report += `${res.assessment.description}\n`;
+    if (res.assessment.findings?.length) {
+      report += `Findings:\n`;
+      res.assessment.findings.forEach(f => report += ` - ${f}\n`);
+    }
+    report += `\n`;
+
+    if (res.gps) {
+      report += `${t.reportGps}\n`;
+      report += `Latitude: ${res.gps.latitude} (${res.gps.dmsLat})\n`;
+      report += `Longitude: ${res.gps.longitude} (${res.gps.dmsLon})\n`;
+      report += `Altitude: ${res.gps.altitude || 'N/A'}\n`;
+      report += `Google Maps: ${res.gps.googleMapsUrl}\n\n`;
+    }
+
+    report += `${t.reportGeneral}\n`;
+    Object.entries(res.general).forEach(([k, v]) => report += `${k}: ${v}\n`);
+    report += `\n`;
+
+    if (Object.keys(res.camera).length > 0) {
+      report += `${t.reportCamera}\n`;
+      Object.entries(res.camera).forEach(([k, v]) => report += `${k}: ${v}\n`);
+      report += `\n`;
+    }
+
+    if (Object.keys(res.documentInfo).length > 0) {
+      report += `${t.reportDoc}\n`;
+      Object.entries(res.documentInfo).forEach(([k, v]) => report += `${k}: ${v}\n`);
+      report += `\n`;
+    }
+
+    const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
+    downloadBlob(blob, `metadata-report-${item.file.name}.txt`);
+  });
+
+  // ── Quick Clean Button Action ─────────────────────────────
+  quickCleanBtn?.addEventListener('click', async () => {
+    const item = loadedItems[activeIndex];
+    if (!item) return;
+
+    try {
+      quickCleanBtn.disabled = true;
+      if (quickCleanText) quickCleanText.textContent = t.cleaningBtnText;
+
+      const cleaned = await removeMetadata(item.file);
+      downloadBlob(cleaned.blob, cleaned.filename);
+
+      if (quickCleanText) quickCleanText.textContent = `${t.cleanedBtnText} (${cleaned.filename})!`;
+      quickCleanBtn.classList.add('done-state');
+
+      setTimeout(() => {
+        if (quickCleanText) quickCleanText.textContent = t.reDownloadBtnText;
+        quickCleanBtn.disabled = false;
+      }, 3500);
+    } catch (err) {
+      alert('Error cleaning metadata: ' + err.message);
+      if (quickCleanText) quickCleanText.textContent = 'Error cleaning metadata';
+      quickCleanBtn.disabled = false;
+    }
+  });
+</script>

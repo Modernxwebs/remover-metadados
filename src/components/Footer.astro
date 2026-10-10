@@ -58,6 +58,11 @@ const contactUrl = isEn ? '/en/contact/' : '/contato/';
         <h3 class="footer-heading">{isEn ? 'Product' : 'Ferramenta'}</h3>
         <ul class="footer-link-list">
           <li><a href={homeUrl} class="footer-link">{isEn ? 'Metadata Remover' : 'Início & Limpeza'}</a></li>
+          {isEn ? (
+            <li><a href="/en/metadata-viewer/" class="footer-link">Metadata Viewer</a></li>
+          ) : (
+            <li><a href="/ver-metadados/" class="footer-link">Visualizador de Metadados</a></li>
+          )}
           {!isEn && (
             <li><a href="/blog/" class="footer-link">Blog de Privacidade</a></li>
           )}

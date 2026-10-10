@@ -8,6 +8,8 @@ export default defineConfig({
   site: 'https://remover-metadados.com',
   redirects: {
     '/remover-metadados-de-video/': '/guias/remover-metadados-de-video/',
+    '/visualizador-de-metadados/': '/ver-metadados/',
+    '/en/view-metadata/': '/en/metadata-viewer/',
   },
   vite: {
     plugins: [tailwindcss()]

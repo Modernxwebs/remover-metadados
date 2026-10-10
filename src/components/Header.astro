@@ -20,12 +20,14 @@ const navLinks = isEn
   ? [
       { href: isSubpage ? '/en/#how-it-works' : '#how-it-works', label: 'How it works' },
       { href: isSubpage ? '/en/#formats' : '#formats', label: 'Formats' },
+      { href: '/en/metadata-viewer/', label: 'Metadata Viewer' },
       { href: isSubpage ? '/en/#privacy-guide' : '#privacy-guide', label: 'Guide' },
       { href: isSubpage ? '/en/#faq' : '#faq', label: 'FAQ' },
     ]
   : [
       { href: isSubpage ? '/#como-funciona' : '#como-funciona', label: 'Como funciona' },
       { href: isSubpage ? '/#formatos' : '#formatos', label: 'Formatos' },
+      { href: '/ver-metadados/', label: 'Ver Metadados' },
       { href: '/guias/', label: 'Guias' },
       { href: '/blog/', label: 'Blog' },
       { href: isSubpage ? '/#faq' : '#faq', label: 'FAQ' },
@@ -56,6 +58,8 @@ const navLinks = isEn
           const isActive =
             (item.href === '/guias/' && currentPath.startsWith('/guias')) ||
             (item.href === '/blog/' && currentPath.startsWith('/blog')) ||
+            (item.href === '/ver-metadados/' && currentPath.startsWith('/ver-metadados')) ||
+            (item.href === '/en/metadata-viewer/' && currentPath.startsWith('/en/metadata-viewer')) ||
             (item.href === '/en/blog/' && currentPath.startsWith('/en/blog'));
           return (
             <a
@@ -130,6 +134,8 @@ const navLinks = isEn
         const isActive =
           (item.href === '/guias/' && currentPath.startsWith('/guias')) ||
           (item.href === '/blog/' && currentPath.startsWith('/blog')) ||
+          (item.href === '/ver-metadados/' && currentPath.startsWith('/ver-metadados')) ||
+          (item.href === '/en/metadata-viewer/' && currentPath.startsWith('/en/metadata-viewer')) ||
           (item.href === '/en/blog/' && currentPath.startsWith('/en/blog'));
         return (
           <a

@@ -1,0 +1,688 @@
+---
+// ver-metadados.astro — Visualizador de Metadados Online em Português
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MetadataViewerTool from '../components/MetadataViewerTool.astro';
+
+const title = 'Visualizador de Metadados Online — Ver EXIF, GPS e Dados Ocultos';
+const description = 'Visualize metadados EXIF, localização GPS em mapa, modelo de câmera, autor e histórico de fotos, PDFs e documentos grátis e 100% privado no navegador.';
+const canonicalUrl = 'https://remover-metadados.com/ver-metadados/';
+const alternatePt = 'https://remover-metadados.com/ver-metadados/';
+const alternateEn = 'https://remover-metadados.com/en/metadata-viewer/';
+
+// FAQ específico para o visualizador
+const viewerFaqs = [
+  {
+    q: 'O que é um visualizador de metadados online?',
+    a: 'É uma ferramenta que inspeciona arquivos digitais (como fotos JPEG, PNG, HEIC, documentos PDF e Office) e extrai todas as propriedades ocultas gravadas neles — como localização GPS exata, dados da câmera (abertura, ISO, tempo de exposição), nome do autor do documento e data de criação.',
+  },
+  {
+    q: 'Minhas fotos ou documentos são enviados para algum servidor na internet?',
+    a: 'Não! O nosso visualizador funciona 100% no seu próprio navegador através de JavaScript local (File API e WebAssembly). Nenhum byte ou metadado sai do seu celular ou computador. Você tem privacidade total e garantia de conformidade com a LGPD.',
+  },
+  {
+    q: 'Como o visualizador detecta a localização GPS de uma foto?',
+    a: 'Celulares modernos (iPhone e Android) e câmeras com GPS gravam as coordenadas geográficas (latitude, longitude e altitude) no cabeçalho EXIF da imagem. Nosso visualizador decodifica esses bytes e plota o local exato em um mapa interativo do OpenStreetMap.',
+  },
+  {
+    q: 'Quais tipos de metadados posso encontrar em arquivos PDF e Word?',
+    a: 'Em PDFs e documentos Office (DOCX, XLSX, PPTX), os metadados incluem o nome completo do autor, usuário do sistema operacional, empresa/organização, versão do software utilizado (ex: Microsoft Word 2021), tempo total de edição, número de revisões e histórico de salvamentos.',
+  },
+  {
+    q: 'Posso limpar ou remover os metadados após visualizá-los?',
+    a: 'Sim! Na própria tela de resultados do visualizador há o botão "Limpar Metadados Deste Arquivo Agora". Com um clique, nosso algoritmo remove permanentemente todos os dados EXIF, GPS e autoria, disponibilizando o arquivo 100% limpo para download imediato.',
+  },
+  {
+    q: 'A ferramenta é gratuita e tem limite de arquivos?',
+    a: 'É 100% gratuita, sem necessidade de cadastro, e-mail ou instalação de programas. Você pode analisar quantas imagens ou documentos desejar sem limites.',
+  },
+];
+
+const schemaJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': `${canonicalUrl}#webpage`,
+      'url': canonicalUrl,
+      'name': title,
+      'description': description,
+      'inLanguage': 'pt-BR',
+      'isPartOf': {
+        '@type': 'WebSite',
+        '@id': 'https://remover-metadados.com/#website',
+        'name': 'Remover Metadados',
+        'url': 'https://remover-metadados.com/',
+      },
+    },
+    {
+      '@type': 'WebApplication',
+      '@id': `${canonicalUrl}#app`,
+      'name': 'Visualizador de Metadados Online',
+      'url': canonicalUrl,
+      'applicationCategory': 'UtilitiesApplication',
+      'operatingSystem': 'Any (Web Browser)',
+      'browserRequirements': 'Requires JavaScript. Requires HTML5.',
+      'offers': {
+        '@type': 'Offer',
+        'price': '0',
+        'priceCurrency': 'BRL',
+      },
+      'description': 'Ferramenta online gratuita para inspecionar e visualizar metadados EXIF, localização GPS em mapa, modelo de câmera e dados de autoria localmente no navegador com privacidade total.',
+      'featureList': [
+        'Inspeção de dados EXIF e localização GPS em fotos JPG, PNG, HEIC, WebP e TIFF',
+        'Visualização interativa do local da foto em mapa com coordenadas decimais e DMS',
+        'Inspeção de metadados de autoria, empresa e histórico em documentos PDF e Office',
+        'Avaliação automática de risco de privacidade (níveis Alto, Moderado e Limpo)',
+        'Botão para limpar metadados e baixar arquivo higienizado com um clique',
+        'Processamento 100% no navegador sem envio de arquivos para servidores',
+      ],
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumbs`,
+      'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': 'https://remover-metadados.com/' },
+        { '@type': 'ListItem', 'position': 2, 'name': 'Visualizador de Metadados', 'item': canonicalUrl },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      'inLanguage': 'pt-BR',
+      'mainEntity': viewerFaqs.map((faq) => ({
+        '@type': 'Question',
+        'name': faq.q,
+        'acceptedAnswer': {
+          '@type': 'Answer',
+          'text': faq.a,
+        },
+      })),
+    },
+  ],
+};
+---
+
+<Layout
+  title={title}
+  description={description}
+  lang="pt-BR"
+  canonicalUrl={canonicalUrl}
+  alternatePt={alternatePt}
+  alternateEn={alternateEn}
+>
+  <Header lang="pt-BR" ptUrl="/ver-metadados/" enUrl="/en/metadata-viewer/" isSubpage={true} />
+
+  <main id="main-content" class="viewer-main-wrapper">
+
+    <!-- ── Hero Section ────────────────────────────────────── -->
+    <section class="viewer-hero-section">
+      <div class="page-wrap">
+
+        <!-- Breadcrumb Navigation -->
+        <nav class="breadcrumb-bar" aria-label="Navegação estrutural">
+          <a href="/" class="crumb-link">&larr; Início / Ferramenta de Limpeza</a>
+          <span class="crumb-sep">/</span>
+          <span class="crumb-current">Visualizador de Metadados</span>
+        </nav>
+
+        <!-- Headline & Subtitle -->
+        <header class="viewer-header-block">
+          <div class="viewer-badge-row">
+            <span class="badge-tag">INSPEÇÃO PROFISSIONAL</span>
+            <span class="badge-tag-alt">100% LOCAL NO NAVEGADOR</span>
+          </div>
+          <h1 class="hero-viewer-title">
+            Visualizador de Metadados Online — Ver EXIF, GPS e Dados Ocultos
+          </h1>
+          <p class="hero-viewer-subtitle">
+            Descubra o que suas fotos e documentos revelam sobre você. Inspecione coordenadas GPS em mapa, modelo do aparelho, autor original e histórico de edições com total privacidade — nada sai do seu dispositivo.
+          </p>
+        </header>
+
+        <!-- Tool Component Container -->
+        <div class="viewer-tool-box">
+          <MetadataViewerTool />
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Informational / Educational Content Section ──────── -->
+    <section class="viewer-guide-section">
+      <div class="page-wrap">
+
+        <!-- Grid of 3 highlights -->
+        <div class="highlights-grid">
+          <div class="highlight-card">
+            <div class="highlight-icon" aria-hidden="true">📍</div>
+            <h3 class="highlight-title">Coordenadas de GPS Exatas</h3>
+            <p class="highlight-text">
+              Fotos tiradas no iPhone ou Android armazenam a latitude e longitude exatas. Nosso visualizador plota o local no mapa para você conferir antes de compartilhar na internet.
+            </p>
+          </div>
+
+          <div class="highlight-card">
+            <div class="highlight-icon" aria-hidden="true">📷</div>
+            <h3 class="highlight-title">Especificações da Câmera (EXIF)</h3>
+            <p class="highlight-text">
+              Veja a marca e modelo do celular ou câmera, modelo da lente, abertura do diafragma (f-stop), velocidade do obturador, ISO e data/hora original da captura.
+            </p>
+          </div>
+
+          <div class="highlight-card">
+            <div class="highlight-icon" aria-hidden="true">🛡️</div>
+            <h3 class="highlight-title">Autoria e Risco Corporativo</h3>
+            <p class="highlight-text">
+              Documentos PDF, DOCX e XLSX revelam nomes de autores, computadores da rede interna, software utilizado e histórico de revisões que violam normas de compliance e LGPD.
+            </p>
+          </div>
+        </div>
+
+        <!-- In-depth Educational Guide Block -->
+        <article class="educational-article">
+          <div class="article-inner">
+            <span class="article-kicker">GUIA PRÁTICO DE PRIVACIDADE</span>
+            <h2 class="article-h2">O que são metadados e por que inspecioná-los antes de publicar?</h2>
+            
+            <p class="article-p">
+              Quando você tira uma foto com seu smartphone ou salva um documento de texto em um programa de escritório, o arquivo não contém apenas a imagem visível ou o texto digitado. Ele inclui um conjunto substancial de <strong>dados sobre os dados</strong>, denominados tecnicamente de <strong>metadados</strong>.
+            </p>
+
+            <p class="article-p">
+              No caso de fotografias digitais (formatos JPEG, HEIC, PNG, TIFF e WebP), esses metadados seguem o padrão internacional <strong>EXIF (Exchangeable Image File Format)</strong> e <strong>IPTC/XMP</strong>. Em documentos de texto e planilhas (PDF, DOCX, XLSX, PPTX), as propriedades são organizadas pelo esquema <strong>Dublin Core</strong> e <strong>OpenXML Extended Properties</strong>.
+            </p>
+
+            <!-- Dangerous tags comparison table -->
+            <div class="table-container">
+              <h3 class="table-heading">Tabela de Informações Reveladas por Formato</h3>
+              <div class="table-responsive">
+                <table class="neo-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Formato de Arquivo</th>
+                      <th scope="col">Metadados Frequentemente Ocultos</th>
+                      <th scope="col">Nível de Risco</th>
+                      <th scope="col">Impacto na Privacidade</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Fotos JPG / HEIC / TIFF</strong></td>
+                      <td>GPS (Lat/Lon/Alt), Modelo da Câmera, Lente, Data e Hora, Número de Série</td>
+                      <td><span class="table-badge badge-high">Crítico</span></td>
+                      <td>Permite rastrear sua residência, rotina e dispositivo pessoal.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Documentos PDF</strong></td>
+                      <td>Nome do Autor, Título, Software Criador (ex: Acrobat Pro), Data de Modificação</td>
+                      <td><span class="table-badge badge-med">Moderado</span></td>
+                      <td>Expõe a identidade do redator e ferramentas corporativas.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Word / Excel / PowerPoint</strong></td>
+                      <td>Último Autor, Empresa/Organização, Tempo Total de Edição, Revisões Anteriores</td>
+                      <td><span class="table-badge badge-med">Moderado</span></td>
+                      <td>Pode revelar dados sigilosos e tempo gasto em negociações.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Imagens PNG / WebP</strong></td>
+                      <td>Software de edição (Photoshop, Figma, GIMP), Text Chunks de Comentários</td>
+                      <td><span class="table-badge badge-low">Baixo</span></td>
+                      <td>Identifica fluxos de trabalho e possíveis anotações internas.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Áudio MP3 / Vídeos MP4</strong></td>
+                      <td>Tags ID3, Artista, Álbum, Modelo do Gravador, Geotag de Vídeo</td>
+                      <td><span class="table-badge badge-med">Moderado</span></td>
+                      <td>Identifica o equipamento de gravação e localização do take.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Call to action block linking to remover -->
+            <div class="cta-banner-box">
+              <div class="cta-banner-text">
+                <h3 class="cta-banner-h3">Quer limpar metadados de dezenas de arquivos de uma vez?</h3>
+                <p class="cta-banner-p">
+                  Use nossa ferramenta principal de remoção em lote. Arraste quantas fotos ou documentos quiser, apague todas as informações com 1 clique e baixe tudo compactado em ZIP.
+                </p>
+              </div>
+              <a href="/" class="btn-accent cta-banner-btn">
+                Ir para o Removedor em Lote &rarr;
+              </a>
+            </div>
+
+          </div>
+        </article>
+
+        <!-- ── FAQ Section ──────────────────────────────────── -->
+        <section class="viewer-faq-section" id="faq">
+          <div class="faq-header">
+            <span class="badge-tag">TIRE SUAS DÚVIDAS</span>
+            <h2 class="faq-title">Perguntas Frequentes sobre Visualização de Metadados</h2>
+            <p class="faq-subtitle">
+              Respostas claras sobre como a ferramenta funciona, segurança dos dados e compatibilidade de formatos.
+            </p>
+          </div>
+
+          <div class="faq-accordion-list">
+            {viewerFaqs.map((faq, index) => (
+              <details class="faq-accordion-item">
+                <summary class="faq-question">
+                  <span class="faq-q-text">{faq.q}</span>
+                  <span class="faq-arrow" aria-hidden="true">+</span>
+                </summary>
+                <div class="faq-answer">
+                  <p>{faq.a}</p>
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Structured Data JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(schemaJsonLd)} />
+
+  <Footer lang="pt-BR" />
+</Layout>
+
+<style>
+  .viewer-main-wrapper {
+    background-color: var(--bg);
+    color: var(--text);
+  }
+
+  /* ── Hero Section ─────────────────────────────────────────── */
+  .viewer-hero-section {
+    padding: clamp(1.5rem, 3.5vh, 2.5rem) 0 3.5rem;
+  }
+
+  .breadcrumb-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .crumb-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .crumb-link:hover {
+    color: var(--text);
+    text-decoration: underline;
+  }
+
+  .crumb-sep {
+    color: var(--text-faint);
+  }
+
+  .crumb-current {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .viewer-header-block {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .viewer-badge-row {
+    display: inline-flex;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .badge-tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.65rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 1.5px solid var(--border);
+    box-shadow: 1.5px 1.5px 0px var(--shadow-color);
+  }
+
+  .badge-tag-alt {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.65rem;
+    background: var(--card-bg);
+    color: var(--text);
+    border: 1.5px solid var(--border);
+    box-shadow: 1.5px 1.5px 0px var(--shadow-color);
+  }
+
+  .hero-viewer-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.4rem, 4vw, 2.35rem);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    max-width: 960px;
+    margin: 0 auto 1rem;
+    text-wrap: balance;
+  }
+
+  .hero-viewer-subtitle {
+    font-family: var(--font-sans);
+    font-size: clamp(0.88rem, 2vw, 1.05rem);
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 780px;
+    margin: 0 auto;
+    text-wrap: balance;
+  }
+
+  .viewer-tool-box {
+    margin-top: 1.75rem;
+  }
+
+  /* ── Guide & Highlights Section ──────────────────────────── */
+  .viewer-guide-section {
+    border-top: 2px solid var(--border);
+    padding: 4rem 0;
+  }
+
+  .highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+    text-align: left;
+  }
+
+  .highlight-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .highlight-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .highlight-title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .highlight-text {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ── Educational Article ─────────────────────────────────── */
+  .educational-article {
+    background: var(--card-bg);
+    border: 2.5px solid var(--border);
+    box-shadow: var(--neo-shadow-lg);
+    padding: clamp(1.75rem, 4vw, 3rem);
+    text-align: left;
+    margin-bottom: 4rem;
+  }
+
+  .article-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .article-h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 3.5vw, 1.85rem);
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 1.25rem 0;
+    letter-spacing: -0.02em;
+  }
+
+  .article-p {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+  }
+
+  .table-container {
+    margin: 2.25rem 0;
+  }
+
+  .table-heading {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    margin-bottom: 0.85rem;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+  }
+
+  .neo-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+    text-align: left;
+    background: var(--card-bg);
+  }
+
+  .neo-table th,
+  .neo-table td {
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--border-light);
+  }
+
+  .neo-table th {
+    background: var(--bg);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--text);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .table-badge {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.2rem 0.45rem;
+    border: 1px solid var(--border);
+    display: inline-block;
+  }
+
+  .badge-high {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #dc2626;
+  }
+
+  .badge-med {
+    background: #fffbeb;
+    color: #b45309;
+    border-color: #d97706;
+  }
+
+  .badge-low {
+    background: #f0fdf4;
+    color: #16a34a;
+    border-color: #16a34a;
+  }
+
+  /* CTA Banner */
+  .cta-banner-box {
+    background: var(--bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  .cta-banner-text {
+    flex: 1;
+    min-width: 260px;
+  }
+
+  .cta-banner-h3 {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.35rem 0;
+  }
+
+  .cta-banner-p {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .cta-banner-btn {
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.75rem 1.4rem;
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    transition: transform 0.1s ease;
+  }
+
+  .cta-banner-btn:hover {
+    transform: translate(-1.5px, -1.5px);
+  }
+
+  /* ── FAQ Section ─────────────────────────────────────────── */
+  .viewer-faq-section {
+    text-align: left;
+  }
+
+  .faq-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .faq-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 3.5vw, 1.85rem);
+    font-weight: 700;
+    color: var(--text);
+    margin: 0.75rem 0 0.5rem;
+  }
+
+  .faq-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .faq-accordion-list {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .faq-accordion-item {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    transition: transform 0.1s ease;
+  }
+
+  .faq-accordion-item[open] {
+    box-shadow: var(--neo-shadow);
+  }
+
+  .faq-question {
+    padding: 1.15rem 1.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-arrow {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    transition: transform 0.2s ease;
+  }
+
+  .faq-accordion-item[open] .faq-arrow {
+    transform: rotate(45deg);
+  }
+
+  .faq-answer {
+    padding: 0 1.35rem 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    border-top: 1px dashed var(--border-light);
+    margin-top: 0.25rem;
+    padding-top: 0.85rem;
+  }
+</style>
