@@ -1,7 +1,7 @@
 ---
 title: "Metadados Ocultos em PDFs: Riscos Jurídicos, LGPD e Como Limpar Documentos"
 description: "Entenda como nomes de autores, caminhos de pastas internas e históricos de revisão em arquivos PDF vazam dados de empresas e escritórios, e aprenda a limpá-los."
-pubDate: 2026-03-10
+pubDate: 2026-09-18
 author: "Dev Sharma"
 authorRole: "Especialista em Privacidade & Segurança Digital"
 category: "Documentos & PDF"
