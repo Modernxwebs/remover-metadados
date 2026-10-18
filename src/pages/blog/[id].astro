@@ -568,6 +568,17 @@ const blogPostingSchema = {
     text-align: left;
   }
 
+  .post-content :global(img) {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow);
+    border-radius: 4px;
+    margin: 2.25rem 0;
+    background: var(--card-bg);
+    display: block;
+  }
+
   .post-content :global(hr) {
     border: none;
     border-top: 2px solid var(--border);
@@ -661,6 +672,11 @@ const blogPostingSchema = {
   }
 
   @media (max-width: 640px) {
+    .post-content :global(table) {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
     .post-navigation {
       grid-template-columns: 1fr;
     }

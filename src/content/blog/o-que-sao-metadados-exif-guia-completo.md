@@ -14,7 +14,7 @@ draft: false
 coverIcon: "camera"
 coverImage: "/images/blog/guia-metadados-exif-gps.jpg"
 coverAlt: "Ilustração moderna mostrando lente de câmera e celular com metadados EXIF e escudo de privacidade"
-relatedPosts: ["metadados-em-pdf-riscos-e-como-remover"]
+relatedPosts: ["como-ver-metadados-de-uma-foto", "metadados-em-pdf-riscos-e-como-remover"]
 ---
 
 Quando você tira uma foto com seu celular (iPhone ou Android) ou com uma câmera digital, o arquivo gerado não armazena apenas as cores e formas da cena fotografada. De maneira invisível e silenciosa, um conjunto massivo de dados técnicos, temporais e espaciais é gravado dentro do arquivo de imagem. Esse padrão técnico internacional é denominado **EXIF (Exchangeable Image File Format)**.
@@ -89,6 +89,8 @@ Você mesmo pode inspecionar os metadados das suas fotos agora mesmo:
 - **No Mac (macOS)**: Abra a imagem no **Pré-visualização** (Preview) > pressione `Command + I` > selecione a aba `(i)` > clique em **Exif** ou **GPS**.
 - **No iPhone / iPad**: Abra a foto no app **Fotos** e deslize o dedo para cima. Um mapa do Apple Maps mostrará a localização exata do disparo.
 - **No Android**: Abra o **Google Fotos** > abra a imagem e deslize para cima para ver os detalhes da câmera e o mapa de satélite.
+
+Para um tutorial aprofundado com capturas de tela, tabelas de campos técnicos e diferenças entre a tela do app e o arquivo real, leia nosso guia detalhado sobre **[Como Ver Metadados de uma Foto no Celular e no PC](/blog/como-ver-metadados-de-uma-foto/)**.
 
 ---
 

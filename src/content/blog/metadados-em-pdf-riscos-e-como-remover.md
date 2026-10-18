@@ -14,7 +14,7 @@ draft: false
 coverIcon: "file-text"
 coverImage: "/images/blog/guia-metadados-pdf-documentos.jpg"
 coverAlt: "Ilustração mostrando contrato em PDF inspecionado por lupa revelando metadados ocultos e escudo de proteção"
-relatedPosts: ["o-que-sao-metadados-exif-guia-completo"]
+relatedPosts: ["como-ver-metadados-de-uma-foto", "o-que-sao-metadados-exif-guia-completo"]
 ---
 
 No meio corporativo, jurídico e acadêmico brasileiro, o formato PDF (*Portable Document Format*) é o padrão hegemônico para envio de contratos, pareceres advocatícios, demonstrações financeiras, relatórios de auditoria e editais de licitação. A promessa do PDF — congelar o layout visual para que o leitor veja exatamente o que foi diagramado — gera uma **falsa sensação de segurança**.

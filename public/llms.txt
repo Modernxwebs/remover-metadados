@@ -14,6 +14,11 @@
 
 - [Home (PT-BR)](https://remover-metadados.com/): Main tool — Portuguese metadata remover
 - [Home (EN)](https://remover-metadados.com/en/): Main tool — English metadata remover
+- [Visualizador de Metadados (PT-BR)](https://remover-metadados.com/ver-metadados/): Online metadata viewer & GPS inspector
+- [Metadata Viewer (EN)](https://remover-metadados.com/en/metadata-viewer/): Online metadata viewer & GPS inspector in English
+- [Blog Hub (PT-BR)](https://remover-metadados.com/blog/): Privacy & digital security articles
+- [Guia: Como Ver Metadados de Foto (PT-BR)](https://remover-metadados.com/blog/como-ver-metadados-de-uma-foto/): Complete guide to inspecting photo metadata on mobile & PC
+- [Guia: O que são Metadados EXIF (PT-BR)](https://remover-metadados.com/blog/o-que-sao-metadados-exif-guia-completo/): In-depth guide on EXIF & GPS risks
 - [Guias Hub (PT-BR)](https://remover-metadados.com/guias/): Privacy guides & technical tutorials index
 - [Guia de Fotos e Imagens (PT-BR)](https://remover-metadados.com/guias/remover-metadados-de-imagem/): Guide to removing EXIF and GPS from photos
 - [Guia de Vídeos (PT-BR)](https://remover-metadados.com/guias/remover-metadados-de-video/): Guide to removing metadata and GPS from MP4 & MOV videos

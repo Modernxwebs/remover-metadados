@@ -63,6 +63,11 @@ metadata remover, remove metadata from photos, remove EXIF data, strip GPS from 
 ```
 remover-metadados.com/
 ├── /                                    # PT-BR homepage + tool
+├── /ver-metadados/                      # Online metadata & GPS inspector (PT-BR)
+├── /blog/                               # Privacy & security blog hub (PT-BR)
+│   ├── /como-ver-metadados-de-uma-foto/ # Guide: How to view photo metadata on mobile & PC
+│   ├── /o-que-sao-metadados-exif-guia-completo/ # Guide: What is EXIF & GPS risks
+│   └── /metadados-em-pdf-riscos-e-como-remover/ # Guide: PDF metadata & LGPD risks
 ├── /guias/                              # Privacy guides & tutorials hub (PT-BR)
 │   ├── /remover-metadados-de-imagem/    # Photos & EXIF guide
 │   ├── /remover-metadados-de-video/     # Videos & MP4/MOV guide
@@ -72,6 +77,7 @@ remover-metadados.com/
 ├── /termos                              # Terms of service (PT-BR)
 ├── /contato                             # Contact (PT-BR)
 ├── /en/                                 # EN homepage + tool
+├── /en/metadata-viewer/                 # Online metadata & GPS inspector (EN)
 ├── /en/about                            # About us (EN)
 ├── /en/privacy                          # Privacy policy (EN)
 ├── /en/terms                            # Terms of service (EN)
