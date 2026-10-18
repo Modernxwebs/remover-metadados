@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Neo-brutalist hard shadow -->
+  <rect x="56" y="56" width="416" height="416" rx="80" fill="#121110" />
+  <!-- Yellow badge background with thick border -->
+  <rect x="40" y="40" width="416" height="416" rx="80" fill="#fde047" stroke="#121110" stroke-width="32" stroke-linejoin="round" />
+  <!-- Shield with checkmark -->
+  <g transform="translate(67.2, 67.2) scale(14.4)" stroke="#121110" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    <path d="m9 12 2 2 4-4" />
+  </g>
+</svg>
