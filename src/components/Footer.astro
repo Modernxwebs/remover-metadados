@@ -51,6 +51,13 @@ const contactUrl = isEn ? '/en/contact/' : '/contato/';
             {isEn ? 'GDPR / CCPA / LGPD' : 'Conforme LGPD (Brasil)'}
           </span>
         </div>
+
+        <div class="footer-featured-badges">
+          <a href="https://twelve.tools" target="_blank"><img src="https://twelve.tools/badge1-light.svg" alt="Featured on Twelve Tools" width="148" height="40"></a>
+          <a href="https://dododirectory.com" target="_blank" rel="dofollow"><img src="https://dododirectory.com/badge-light.png" alt="Featured on DodoDirectory" width="200" height="54" /></a>
+          <a href="https://dofollow.tools" target="_blank"><img src="https://dofollow.tools/badge/badge_light.svg" alt="Featured on Dofollow.Tools" width="200" height="54" /></a>
+          <a href="https://www.producthunt.com/products/remover-metadados?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-remover-metadados" target="_blank" rel="noopener noreferrer"><img alt="Remover Metadados - Remove EXIF, GPS &amp; hidden metadata privately online | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1284124&amp;theme=light&amp;t=1792318013174"></a>
+        </div>
       </div>
 
       <!-- Col 2: Navigation / Product -->
@@ -192,6 +199,35 @@ const contactUrl = isEn ? '/en/contact/' : '/contato/';
     align-items: flex-start;
     gap: 0.5rem;
     margin-top: 0.25rem;
+  }
+
+  .footer-featured-badges {
+    margin-top: 0.75rem;
+    display: grid;
+    grid-template-columns: repeat(2, 120px);
+    align-items: center;
+    gap: 0.6rem 0.75rem;
+  }
+
+  .footer-featured-badges a {
+    display: block;
+    width: 120px;
+    height: 32px;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  .footer-featured-badges a:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  .footer-featured-badges img {
+    display: block;
+    width: 120px;
+    height: 32px;
+    border-radius: 6px;
   }
 
   /* Columns 2, 3, 4 */
