@@ -1,7 +1,7 @@
 ---
 title: "Como Ver Metadados de uma Foto no Celular e no PC: Guia Passo a Passo"
 description: "Aprenda a ver metadados EXIF e localização GPS de fotos no Android, iPhone, Windows e Mac. Saiba interpretar cada campo técnico e verificar fotos antes de compartilhar."
-pubDate: 2026-03-22
+pubDate: 2026-10-18
 author: "Dev Sharma"
 authorRole: "Especialista em Privacidade & Segurança Digital"
 category: "Fotos & Imagens"
