@@ -70,19 +70,13 @@ const contactUrl = isEn ? '/en/contact/' : '/contato/';
           ) : (
             <li><a href="/ver-metadados/" class="footer-link">Visualizador de Metadados</a></li>
           )}
-          {!isEn && (
-            <li><a href="/blog/" class="footer-link">Blog de Privacidade</a></li>
-          )}
+          <li><a href="/blog/" class="footer-link">{isEn ? 'Privacy Blog' : 'Blog de Privacidade'}</a></li>
           <li><a href={isEn ? '/en/#how-it-works' : '/#como-funciona'} class="footer-link">{isEn ? 'How It Works' : 'Como Funciona'}</a></li>
           <li><a href={isEn ? '/en/#formats' : '/#formatos'} class="footer-link">{isEn ? 'Supported Formats' : 'Formatos Suportados'}</a></li>
-          {!isEn && (
-            <>
-              <li><a href="/guias/" class="footer-link">Central de Guias</a></li>
-              <li><a href="/guias/remover-metadados-de-video/" class="footer-link">Guia: Vídeos MP4 & MOV</a></li>
-              <li><a href="/guias/remover-metadados-de-imagem/" class="footer-link">Guia: Fotos EXIF & GPS</a></li>
-              <li><a href="/guias/remover-metadados-pdf/" class="footer-link">Guia: Documentos PDF</a></li>
-            </>
-          )}
+          <li><a href="/guias/" class="footer-link">{isEn ? 'Guides Hub' : 'Central de Guias'}</a></li>
+          <li><a href="/guias/remover-metadados-de-video/" class="footer-link">{isEn ? 'Guide: MP4 & MOV Videos' : 'Guia: Vídeos MP4 & MOV'}</a></li>
+          <li><a href="/guias/remover-metadados-de-imagem/" class="footer-link">{isEn ? 'Guide: EXIF & GPS Photos' : 'Guia: Fotos EXIF & GPS'}</a></li>
+          <li><a href="/guias/remover-metadados-pdf/" class="footer-link">{isEn ? 'Guide: PDF Documents' : 'Guia: Documentos PDF'}</a></li>
           <li><a href={isEn ? '/en/#faq' : '/#faq'} class="footer-link">{isEn ? 'Frequently Asked' : 'Perguntas Frequentes'}</a></li>
         </ul>
       </div>
@@ -102,9 +96,7 @@ const contactUrl = isEn ? '/en/contact/' : '/contato/';
         <ul class="footer-link-list">
           <li><a href={aboutUrl} class="footer-link">{isEn ? 'About Us' : 'Sobre Nós'}</a></li>
           <li><a href={contactUrl} class="footer-link">{isEn ? 'Contact Us' : 'Fale Conosco'}</a></li>
-          {!isEn && (
-            <li><a href="/rss.xml" class="footer-link">Feed RSS</a></li>
-          )}
+          <li><a href="/rss.xml" class="footer-link">{isEn ? 'RSS Feed' : 'Feed RSS'}</a></li>
         </ul>
       </div>
 
