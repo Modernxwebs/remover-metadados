@@ -24,9 +24,44 @@ async function readAsArrayBuffer(file) {
 }
 
 /**
+ * Check if a file or extension is a convertible image format.
+ * @param {string} fileNameOrExt
+ * @returns {boolean}
+ */
+export function isImageFile(fileNameOrExt) {
+  const ext = (fileNameOrExt.includes('.') ? fileNameOrExt.split('.').pop() : fileNameOrExt)?.toLowerCase() ?? '';
+  return ['jpg', 'jpeg', 'png', 'webp', 'avif', 'heic', 'heif', 'tif', 'tiff', 'bmp', 'gif', 'svg'].includes(ext);
+}
+
+/**
+ * Check if the browser natively supports canvas encoding to a specific MIME type.
+ * @param {string} mime
+ * @returns {boolean}
+ */
+export function canCanvasEncodeMime(mime) {
+  if (typeof document === 'undefined') return false;
+  try {
+    const c = document.createElement('canvas');
+    c.width = 1;
+    c.height = 1;
+    return c.toDataURL(mime).startsWith(`data:${mime}`);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Check if the browser natively supports canvas encoding to AVIF.
+ * @returns {boolean}
+ */
+export function canCanvasEncodeAvif() {
+  return canCanvasEncodeMime('image/avif');
+}
+
+/**
  * Re-encode an image through a canvas to strip metadata.
- * Works for JPEG, PNG, WebP, GIF, BMP, HEIC (after conversion), TIFF (limited).
- * @param {File} file
+ * Works for JPEG, PNG, WebP, AVIF, GIF, BMP, HEIC (after conversion), TIFF (limited).
+ * @param {File | Blob} file
  * @param {string} outputMime
  * @param {number} [quality]
  * @returns {Promise<Blob>}
@@ -40,7 +75,15 @@ function stripViaCanvas(file, outputMime = 'image/jpeg', quality = 0.95) {
       canvas.width = img.naturalWidth;
       canvas.height = img.naturalHeight;
       const ctx = canvas.getContext('2d');
-      if (!ctx) return reject(new Error('Canvas context unavailable'));
+      if (!ctx) {
+        URL.revokeObjectURL(url);
+        return reject(new Error('Canvas context unavailable'));
+      }
+      // If converting transparent pixels to JPEG, paint white background first
+      if (outputMime === 'image/jpeg') {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
       ctx.drawImage(img, 0, 0);
       canvas.toBlob(
         (blob) => {
@@ -58,6 +101,178 @@ function stripViaCanvas(file, outputMime = 'image/jpeg', quality = 0.95) {
     };
     img.src = url;
   });
+}
+
+/**
+ * Load any image File or Blob into an HTMLCanvasElement with EXIF stripped.
+ * Handles JPG, PNG, WebP, AVIF, SVG, BMP, GIF, HEIC/HEIF, TIFF.
+ * @param {File | Blob} file
+ * @returns {Promise<HTMLCanvasElement>}
+ */
+export async function fileToCanvas(file) {
+  const fileName = (file instanceof File) ? file.name : '';
+  const ext = fileName.split('.').pop()?.toLowerCase() ?? '';
+
+  // HEIC / HEIF decoding
+  if (['heic', 'heif'].includes(ext)) {
+    try {
+      const decodeHeic = await getHeicDecoder();
+      if (decodeHeic) {
+        const jpegBlob = await decodeHeic({ blob: file, type: 'image/jpeg', quality: 0.95 });
+        return blobToCanvas(jpegBlob);
+      }
+    } catch (e) {
+      console.warn('HEIC decode fallback:', e);
+    }
+  }
+
+  // TIFF decoding
+  if (['tif', 'tiff'].includes(ext)) {
+    try {
+      const UTIF = await getUtif();
+      if (UTIF) {
+        const buffer = await readAsArrayBuffer(file);
+        const ifds = UTIF.decode(buffer);
+        if (ifds && ifds.length > 0) {
+          const first = ifds[0];
+          UTIF.decodeImage(buffer, first);
+          const rgba = UTIF.toRGBA8(first);
+          const canvas = document.createElement('canvas');
+          canvas.width = first.width;
+          canvas.height = first.height;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            const imgData = ctx.createImageData(first.width, first.height);
+            imgData.data.set(rgba);
+            ctx.putImageData(imgData, 0, 0);
+            return canvas;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('UTIF decode fallback:', e);
+    }
+  }
+
+  return blobToCanvas(file);
+}
+
+function blobToCanvas(blob) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        URL.revokeObjectURL(url);
+        return reject(new Error('Canvas context unavailable'));
+      }
+      ctx.drawImage(img, 0, 0);
+      URL.revokeObjectURL(url);
+      resolve(canvas);
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('Falha ao decodificar imagem para o formato selecionado'));
+    };
+    img.src = url;
+  });
+}
+
+/**
+ * Convert canvas to clean JPEG Blob.
+ * @param {HTMLCanvasElement} canvas
+ * @param {number} [quality=0.95]
+ * @returns {Promise<Blob>}
+ */
+export async function canvasToJpeg(canvas, quality = 0.95) {
+  const exportCanvas = document.createElement('canvas');
+  exportCanvas.width = canvas.width;
+  exportCanvas.height = canvas.height;
+  const ctx = exportCanvas.getContext('2d');
+  if (!ctx) throw new Error('Canvas context unavailable');
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(canvas, 0, 0);
+
+  return new Promise((resolve, reject) => {
+    exportCanvas.toBlob((blob) => {
+      if (blob) resolve(blob);
+      else reject(new Error('Canvas to JPEG failed'));
+    }, 'image/jpeg', quality);
+  });
+}
+
+/**
+ * Convert canvas to clean PNG Blob.
+ * @param {HTMLCanvasElement} canvas
+ * @returns {Promise<Blob>}
+ */
+export async function canvasToPng(canvas) {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) resolve(blob);
+      else reject(new Error('Canvas to PNG failed'));
+    }, 'image/png');
+  });
+}
+
+/**
+ * Convert canvas to clean WebP Blob.
+ * @param {HTMLCanvasElement} canvas
+ * @param {number} [quality=0.95]
+ * @returns {Promise<Blob>}
+ */
+export async function canvasToWebp(canvas, quality = 0.95) {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) resolve(blob);
+      else reject(new Error('Canvas to WebP failed'));
+    }, 'image/webp', quality);
+  });
+}
+
+/**
+ * Convert canvas to clean AVIF Blob with multi-tier fallback (native -> WASM -> WebP fallback).
+ * @param {HTMLCanvasElement} canvas
+ * @param {number} [quality=0.85]
+ * @returns {Promise<Blob>}
+ */
+export async function canvasToAvif(canvas, quality = 0.85) {
+  // Tier 1: Native canvas encoding (supported in Safari 16.4+, Chrome with flags, etc.)
+  if (canCanvasEncodeAvif()) {
+    try {
+      const blob = await new Promise((resolve) => {
+        canvas.toBlob((b) => resolve(b), 'image/avif', quality);
+      });
+      if (blob && blob.type === 'image/avif') {
+        return blob;
+      }
+    } catch (e) {
+      console.warn('Native AVIF canvas encoding failed, trying WASM:', e);
+    }
+  }
+
+  // Tier 2: @jsquash/avif WebAssembly encoder
+  try {
+    const encodeAvif = await getAvifEncoder();
+    if (encodeAvif) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const buffer = await encodeAvif(imgData, { quality: Math.round(quality * 100) });
+        return new Blob([buffer], { type: 'image/avif' });
+      }
+    }
+  } catch (wasmErr) {
+    console.warn('WASM AVIF encode error, using WebP fallback:', wasmErr);
+  }
+
+  // Tier 3: WebP fallback (modern efficient format)
+  return canvasToWebp(canvas, quality);
 }
 
 // ─── PNG chunk stripper ─────────────────────────────────────────────────────
@@ -229,16 +444,75 @@ async function stripOfficeMetadata(buffer) {
 // ─── Main dispatch ──────────────────────────────────────────────────────────
 
 /**
- * Remove metadata from a single File.
+ * Remove metadata from a single File, with optional output format selection.
  * @param {File} file
  * @param {(progress: number) => void} [onProgress]
- * @returns {Promise<{ blob: Blob; filename: string }>}
+ * @param {{ format?: 'original' | 'jpg' | 'png' | 'webp' | 'avif' | 'all', quality?: number }} [options]
+ * @returns {Promise<{ blob: Blob; filename: string; files?: Array<{ blob: Blob; filename: string }> }>}
  */
-export async function removeMetadata(file, onProgress) {
+export async function removeMetadata(file, onProgress, options = {}) {
   const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
   const baseName = file.name.replace(/\.[^.]+$/, '');
+  const targetFormat = options?.format || 'original';
   onProgress?.(10);
 
+  // ── Specific output format conversion for images ─────────
+  if (targetFormat !== 'original' && isImageFile(file.name)) {
+    onProgress?.(25);
+    const canvas = await fileToCanvas(file);
+    onProgress?.(60);
+
+    if (targetFormat === 'jpg' || targetFormat === 'jpeg') {
+      const blob = await canvasToJpeg(canvas, options.quality || 0.95);
+      onProgress?.(100);
+      return { blob, filename: `${baseName}.jpg` };
+    }
+
+    if (targetFormat === 'png') {
+      const blob = await canvasToPng(canvas);
+      onProgress?.(100);
+      return { blob, filename: `${baseName}.png` };
+    }
+
+    if (targetFormat === 'webp') {
+      const blob = await canvasToWebp(canvas, options.quality || 0.95);
+      onProgress?.(100);
+      return { blob, filename: `${baseName}.webp` };
+    }
+
+    if (targetFormat === 'avif') {
+      const blob = await canvasToAvif(canvas, options.quality || 0.85);
+      const outputExt = blob.type === 'image/avif' ? 'avif' : 'webp';
+      onProgress?.(100);
+      return { blob, filename: `${baseName}.${outputExt}` };
+    }
+
+    if (targetFormat === 'all') {
+      const [jpgBlob, pngBlob, webpBlob, avifBlob] = await Promise.all([
+        canvasToJpeg(canvas, options.quality || 0.95),
+        canvasToPng(canvas),
+        canvasToWebp(canvas, options.quality || 0.95),
+        canvasToAvif(canvas, options.quality || 0.85),
+      ]);
+      const avifExt = avifBlob.type === 'image/avif' ? 'avif' : 'webp';
+      const files = [
+        { blob: jpgBlob, filename: `${baseName}.jpg` },
+        { blob: pngBlob, filename: `${baseName}.png` },
+        { blob: webpBlob, filename: `${baseName}.webp` },
+        { blob: avifBlob, filename: `${baseName}.${avifExt}` },
+      ];
+      onProgress?.(90);
+      const zipBlob = await bundleAsZip(files);
+      onProgress?.(100);
+      return {
+        blob: zipBlob,
+        filename: `${baseName}-todos-formatos.zip`,
+        files,
+      };
+    }
+  }
+
+  // ── Default / Original format preservation ───────────────
   // ── Images via canvas re-encode ──────────────────────────
   if (['jpg', 'jpeg'].includes(ext)) {
     const blob = await stripViaCanvas(file, 'image/jpeg', 0.95);
@@ -250,6 +524,15 @@ export async function removeMetadata(file, onProgress) {
     const blob = await stripViaCanvas(file, 'image/webp', 0.95);
     onProgress?.(100);
     return { blob, filename: `${baseName}.webp` };
+  }
+
+  if (ext === 'avif') {
+    onProgress?.(30);
+    const canvas = await fileToCanvas(file);
+    const blob = await canvasToAvif(canvas, 0.85);
+    const outputExt = blob.type === 'image/avif' ? 'avif' : 'webp';
+    onProgress?.(100);
+    return { blob, filename: `${baseName}.${outputExt}` };
   }
 
   if (ext === 'gif') {
@@ -728,9 +1011,42 @@ export async function getUtif() {
   return _utifPromise;
 }
 
+let _avifEncoderPromise = null;
+
+/**
+ * Load @jsquash/avif WebAssembly encoder with local WASM binary fallback.
+ * @returns {Promise<any>}
+ */
+export async function getAvifEncoder() {
+  if (_avifEncoderPromise) return _avifEncoderPromise;
+
+  _avifEncoderPromise = (async () => {
+    try {
+      const mod = await import('@jsquash/avif');
+      const encode = mod.encode || mod.default;
+      if (typeof encode === 'function') {
+        try {
+          if (typeof mod.init === 'function') {
+            await mod.init({ locateFile: () => '/vendor/avif_enc.wasm' });
+          }
+        } catch (initErr) {
+          console.warn('Avif encoder init warning:', initErr);
+        }
+        return encode;
+      }
+    } catch (err) {
+      console.warn('Failed to load @jsquash/avif:', err);
+    }
+    return null;
+  })();
+
+  return _avifEncoderPromise;
+}
+
 /**
  * Bundle multiple processed Blobs into a ZIP for download.
- * @param {Array<{ blob: Blob; filename: string }>} files
+ * Handles nested multi-format items (from 'all' formats).
+ * @param {Array<{ blob: Blob; filename: string; files?: Array<{ blob: Blob; filename: string }> }>} files
  * @returns {Promise<Blob>}
  */
 export async function bundleAsZip(files) {
@@ -738,7 +1054,7 @@ export async function bundleAsZip(files) {
   const zip = new JSZip();
   const usedNames = new Set();
 
-  for (const { blob, filename } of files) {
+  function addFile(filename, blob) {
     let finalName = filename;
     let counter = 1;
     const dotIdx = filename.lastIndexOf('.');
@@ -752,6 +1068,20 @@ export async function bundleAsZip(files) {
     usedNames.add(finalName);
     zip.file(finalName, blob);
   }
+
+  for (const item of files) {
+    if (!item) continue;
+    if (Array.isArray(item.files)) {
+      for (const sub of item.files) {
+        if (sub?.blob && sub?.filename) {
+          addFile(sub.filename, sub.blob);
+        }
+      }
+    } else if (item.blob && item.filename) {
+      addFile(item.filename, item.blob);
+    }
+  }
+
   return zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
 }
 

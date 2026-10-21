@@ -26,6 +26,10 @@ const t = isEn
       cleaningBtnText: "Removing metadata...",
       cleanedBtnText: "✓ Cleaned & Downloaded",
       reDownloadBtnText: "Download Clean File Again",
+      cleanFormatLabel: "Format",
+      cleanFormatTooltip: "Choose format for cleaned file",
+      cleanFormatOriginal: "Original (Default)",
+      cleanFormatAll: "All formats (.zip)",
       copyJson: "Copy JSON",
       copiedJson: "✓ JSON Copied!",
       exportReport: "Export Report",
@@ -91,6 +95,10 @@ const t = isEn
       cleaningBtnText: "Limpando metadados...",
       cleanedBtnText: "✓ Limpo & Baixado",
       reDownloadBtnText: "Baixar Novamente Arquivo Limpo",
+      cleanFormatLabel: "Formato",
+      cleanFormatTooltip: "Escolha o formato do arquivo limpo",
+      cleanFormatOriginal: "Original (Padrão)",
+      cleanFormatAll: "Todos os formatos (.zip)",
       copyJson: "Copiar JSON",
       copiedJson: "✓ JSON Copiado!",
       exportReport: "Exportar Relatório",
@@ -281,7 +289,7 @@ const t = isEn
 
       <!-- Quick Actions Toolbar -->
       <div class="summary-actions-toolbar">
-        <div class="actions-left-group">
+        <div class="actions-left-group" style="display:flex;align-items:center;gap:0.65rem;flex-wrap:wrap;">
           <!-- Quick Clean CTA Button -->
           <button id="quick-clean-btn" class="btn-accent quick-clean-btn" type="button">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -290,6 +298,21 @@ const t = isEn
             </svg>
             <span id="quick-clean-text">{t.cleanBtnText}</span>
           </button>
+
+          <!-- Format selector -->
+          <div id="viewer-format-wrap" class="viewer-format-selector" title={t.cleanFormatTooltip}>
+            <label for="viewer-format-select" class="viewer-format-label">
+              <span>{t.cleanFormatLabel}:</span>
+            </label>
+            <select id="viewer-format-select" class="neo-viewer-select" aria-label={t.cleanFormatLabel}>
+              <option value="original">{t.cleanFormatOriginal}</option>
+              <option value="jpg">JPG (.jpg)</option>
+              <option value="png">PNG (.png)</option>
+              <option value="webp">WebP (.webp)</option>
+              <option value="avif">AVIF (.avif)</option>
+              <option value="all">{t.cleanFormatAll}</option>
+            </select>
+          </div>
         </div>
 
         <div class="actions-right-group">
@@ -986,6 +1009,51 @@ const t = isEn
     border-color: var(--border);
   }
 
+  .viewer-format-selector {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    padding: 0 0.65rem;
+    height: 40px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .viewer-format-selector:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: var(--neo-shadow);
+  }
+  .viewer-format-label {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  .neo-viewer-select {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text);
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 0.15rem 0.2rem 0.15rem 0;
+  }
+  .neo-viewer-select option {
+    background: var(--card-bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+  }
+
   .actions-right-group {
     display: flex;
     gap: 0.5rem;
@@ -1626,7 +1694,7 @@ const t = isEn
 <!-- ── Client Script for Metadata Viewer ──────────────────── -->
 <script type="module">
   import { inspectFileMetadata, toDms, formatBytes } from '/src/scripts/metadataViewer.js';
-  import { removeMetadata, downloadBlob } from '/src/scripts/metadataRemover.js';
+  import { removeMetadata, downloadBlob, isImageFile } from '/src/scripts/metadataRemover.js';
 
   const toolContainer  = document.getElementById('metadata-viewer-tool');
   const t              = JSON.parse(toolContainer?.dataset?.i18n || '{}');
@@ -1865,6 +1933,11 @@ const t = isEn
     if (resFileExtBadge) resFileExtBadge.textContent = res.ext.toUpperCase();
     if (resFileSize) resFileSize.textContent = formatBytes(item.file.size, currentLang);
     if (resFileDate) resFileDate.textContent = res.general[currentLang === 'en' ? 'Last Modified' : 'Última Modificação'] || '—';
+
+    const viewerFormatWrap = document.getElementById('viewer-format-wrap');
+    if (viewerFormatWrap) {
+      viewerFormatWrap.style.display = isImageFile(item.file.name) ? 'inline-flex' : 'none';
+    }
 
     if (resFileDims) {
       const dims = res.general[currentLang === 'en' ? 'Dimensions' : 'Dimensões'];
@@ -2229,7 +2302,10 @@ const t = isEn
       quickCleanBtn.disabled = true;
       if (quickCleanText) quickCleanText.textContent = t.cleaningBtnText;
 
-      const cleaned = await removeMetadata(item.file);
+      const formatSelect = document.getElementById('viewer-format-select');
+      const chosenFormat = formatSelect?.value || 'original';
+
+      const cleaned = await removeMetadata(item.file, () => {}, { format: chosenFormat });
       downloadBlob(cleaned.blob, cleaned.filename);
 
       if (quickCleanText) quickCleanText.textContent = `${t.cleanedBtnText} (${cleaned.filename})!`;

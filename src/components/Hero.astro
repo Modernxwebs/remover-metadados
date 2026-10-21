@@ -40,6 +40,17 @@ const t = isEn
       singularFile: "file",
       pluralFiles: "files",
       dropAria: "Drag files here or click to select from device",
+      formatLabel: "Format",
+      formatTooltip: "Select output format for downloaded files",
+      formatOriginal: "Original (Default)",
+      formatOriginalShort: "Original",
+      formatJpg: "JPG (.jpg)",
+      formatPng: "PNG (.png)",
+      formatWebp: "WebP (.webp)",
+      formatAvif: "AVIF (.avif)",
+      formatAll: "All formats (.zip)",
+      formatAllShort: "All (.zip)",
+      formatDocLocked: "Original document",
     }
   : {
       titleLine1: "Remover Metadados",
@@ -73,6 +84,17 @@ const t = isEn
       singularFile: "arquivo",
       pluralFiles: "arquivos",
       dropAria: "Arraste arquivos aqui ou clique para selecionar",
+      formatLabel: "Formato",
+      formatTooltip: "Selecione o formato de download dos arquivos limpos",
+      formatOriginal: "Original (Padrão)",
+      formatOriginalShort: "Original",
+      formatJpg: "JPG (.jpg)",
+      formatPng: "PNG (.png)",
+      formatWebp: "WebP (.webp)",
+      formatAvif: "AVIF (.avif)",
+      formatAll: "Todos os formatos (.zip)",
+      formatAllShort: "Todos (.zip)",
+      formatDocLocked: "Documento original",
     };
 ---
 
@@ -105,7 +127,7 @@ const t = isEn
       <div class="formats-ticker-lead">
         <span class="formats-ticker-badge">{t.formatsTag}</span>
         <span class="formats-group formats-group-images">
-          JPEG · PNG · WEBP · HEIC · SVG
+          JPEG · PNG · WEBP · AVIF · HEIC · SVG
         </span>
       </div>
       <span class="formats-group-sep" aria-hidden="true">·</span>
@@ -119,7 +141,7 @@ const t = isEn
       type="file"
       id="file-input"
       multiple
-      accept="image/*,.pdf,.docx,.xlsx,.pptx,.odt,.ods,.odp,.mp3,.mp4,.m4v,.mov,.svg,.heic,.heif,.tif,.tiff"
+      accept="image/*,.avif,.pdf,.docx,.xlsx,.pptx,.odt,.ods,.odp,.mp3,.mp4,.m4v,.mov,.svg,.heic,.heif,.tif,.tiff"
       style="display:none;"
       aria-hidden="true"
     />
@@ -179,6 +201,26 @@ const t = isEn
           </svg>
           <span>{t.addMoreBtn}</span>
         </button>
+
+        <!-- Global format selector -->
+        <div class="format-selector-wrap" title={t.formatTooltip}>
+          <label for="global-format-select" class="format-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <span>{t.formatLabel}:</span>
+          </label>
+          <select id="global-format-select" class="neo-format-select" aria-label={t.formatLabel}>
+            <option value="original">{t.formatOriginal}</option>
+            <option value="jpg">{t.formatJpg}</option>
+            <option value="png">{t.formatPng}</option>
+            <option value="webp">{t.formatWebp}</option>
+            <option value="avif">{t.formatAvif}</option>
+            <option value="all">{t.formatAll}</option>
+          </select>
+        </div>
       </div>
       <div class="actions-right">
         <button id="clear-btn" class="btn-ghost" type="button">{t.clearBtn}</button>
@@ -197,21 +239,22 @@ const t = isEn
 </section>
 
 <script type="module">
-  import { removeMetadata, bundleAsZip, downloadBlob } from '/src/scripts/metadataRemover.js';
+  import { removeMetadata, bundleAsZip, downloadBlob, isImageFile } from '/src/scripts/metadataRemover.js';
 
-  const heroSection    = document.getElementById('hero-section');
-  const t              = JSON.parse(heroSection?.dataset?.i18n || '{}');
+  const heroSection         = document.getElementById('hero-section');
+  const t                   = JSON.parse(heroSection?.dataset?.i18n || '{}');
 
-  const dropZone       = document.getElementById('drop-zone');
-  const fileInput      = document.getElementById('file-input');
-  const browseBtn      = document.getElementById('browse-btn');
-  const addMoreBtn     = document.getElementById('add-more-btn');
-  const actionsRow     = document.getElementById('actions-row');
-  const fileList       = document.getElementById('file-list');
-  const fileCards      = document.getElementById('file-cards');
-  const dropCounter    = document.getElementById('drop-counter');
-  const processAllBtn  = document.getElementById('process-all-btn');
-  const clearBtn       = document.getElementById('clear-btn');
+  const dropZone            = document.getElementById('drop-zone');
+  const fileInput           = document.getElementById('file-input');
+  const browseBtn           = document.getElementById('browse-btn');
+  const addMoreBtn          = document.getElementById('add-more-btn');
+  const actionsRow          = document.getElementById('actions-row');
+  const fileList            = document.getElementById('file-list');
+  const fileCards           = document.getElementById('file-cards');
+  const dropCounter         = document.getElementById('drop-counter');
+  const processAllBtn       = document.getElementById('process-all-btn');
+  const clearBtn            = document.getElementById('clear-btn');
+  const globalFormatSelect  = document.getElementById('global-format-select');
 
   /** Helper: fire a GA4 event safely (won't crash if gtag isn't loaded yet) */
   function track(eventName, params = {}) {
@@ -223,7 +266,10 @@ const t = isEn
   /** @type {'process' | 'download' | 'processing'} */
   let buttonMode = 'process';
 
-  /** @type {Map<string, { file: File, status: string, result: null | { blob: Blob, filename: string } }>} */
+  /** @type {string} */
+  let currentGlobalFormat = 'original';
+
+  /** @type {Map<string, { file: File, status: string, format: string, result: null | { blob: Blob, filename: string, files?: Array<{ blob: Blob, filename: string }> } }>} */
   const fileMap = new Map();
 
   function fmt(b) {
@@ -282,6 +328,28 @@ const t = isEn
 
       let statusHtml = '';
       let actionHtml = '';
+      let formatHtml = '';
+
+      if (isImageFile(entry.file.name)) {
+        formatHtml = `
+          <div class="file-format-cell" title="${t.formatTooltip || 'Formato de saída'}">
+            <select class="neo-format-select-card file-format-select" data-id="${id}" aria-label="${t.formatLabel || 'Formato'}">
+              <option value="original" ${entry.format === 'original' ? 'selected' : ''}>${t.formatOriginalShort || 'Original'}</option>
+              <option value="jpg" ${entry.format === 'jpg' ? 'selected' : ''}>JPG</option>
+              <option value="png" ${entry.format === 'png' ? 'selected' : ''}>PNG</option>
+              <option value="webp" ${entry.format === 'webp' ? 'selected' : ''}>WebP</option>
+              <option value="avif" ${entry.format === 'avif' ? 'selected' : ''}>AVIF</option>
+              <option value="all" ${entry.format === 'all' ? 'selected' : ''}>${t.formatAllShort || 'Todos (.zip)'}</option>
+            </select>
+          </div>
+        `;
+      } else {
+        formatHtml = `
+          <div class="file-format-cell" title="${t.formatDocLocked || 'Documento original'}">
+            <span class="file-format-badge-doc">${ext(entry.file.name)}</span>
+          </div>
+        `;
+      }
 
       if (entry.status === 'waiting') {
         statusHtml = `<span class="file-status-text status-waiting">${t.statusWaiting || 'Aguardando'}</span>`;
@@ -312,12 +380,36 @@ const t = isEn
         <span class="file-name-text" title="${entry.file.name}">${entry.file.name}</span>
         <div class="file-right-meta">
           <span class="file-size-text">${fmt(entry.file.size)}</span>
+          ${formatHtml}
           ${statusHtml}
           <span style="display:flex;align-items:center;gap:0.35rem;">${actionHtml}</span>
         </div>
       `;
       fileCards.appendChild(row);
     }
+
+    fileCards.querySelectorAll('.file-format-select').forEach(sel =>
+      sel.addEventListener('change', async e => {
+        const id = e.currentTarget.dataset.id;
+        const entry = fileMap.get(id);
+        if (!entry) return;
+        const newFormat = e.currentTarget.value;
+        if (entry.format === newFormat) return;
+        entry.format = newFormat;
+
+        track('file_format_changed', {
+          format: newFormat,
+          file_type: entry.file?.name.split('.').pop()?.toLowerCase() || 'unknown',
+        });
+
+        // If file already processed, re-convert instantly to the newly selected format
+        if (entry.status === 'done') {
+          await processFile(id, true);
+        } else {
+          renderCards();
+          updateMainButton();
+        }
+      }));
 
     fileCards.querySelectorAll('.process-one-btn').forEach(btn =>
       btn.addEventListener('click', e => processFile(e.currentTarget.dataset.id)));
@@ -330,6 +422,7 @@ const t = isEn
             file_type: entry.file?.name.split('.').pop()?.toLowerCase() || 'unknown',
             file_size_kb: Math.round(entry.file?.size / 1024),
             source: 'card_button',
+            download_format: entry.format,
           });
         }
       }));
@@ -355,6 +448,9 @@ const t = isEn
   function updateUI() {
     const count = fileMap.size;
     dropCounter.textContent = `${count} ${count !== 1 ? (t.pluralFiles || 'arquivos') : (t.singularFile || 'arquivo')}`;
+    if (globalFormatSelect) {
+      globalFormatSelect.value = currentGlobalFormat;
+    }
     if (count === 0) {
       dropZone.style.display = '';
       actionsRow.style.display = 'none';
@@ -368,18 +464,20 @@ const t = isEn
     }
   }
 
-  async function processFile(id) {
+  async function processFile(id, isReformat = false) {
     const entry = fileMap.get(id);
-    if (!entry || entry.status === 'processing' || entry.status === 'done') return;
+    if (!entry || entry.status === 'processing') return;
+    if (!isReformat && entry.status === 'done') return;
     entry.status = 'processing';
     renderCards();
     try {
-      entry.result = await removeMetadata(entry.file, () => {});
+      entry.result = await removeMetadata(entry.file, () => {}, { format: entry.format || currentGlobalFormat });
       entry.status = 'done';
       // ✅ Event: successful metadata removal
       track('metadata_removed', {
         file_type: entry.file.name.split('.').pop()?.toLowerCase() || 'unknown',
         file_size_kb: Math.round(entry.file.size / 1024),
+        output_format: entry.format || currentGlobalFormat,
       });
     } catch (err) {
       console.error(err);
@@ -391,6 +489,7 @@ const t = isEn
       });
     }
     renderCards();
+    updateMainButton();
   }
 
   async function handleMainAction() {
@@ -416,6 +515,7 @@ const t = isEn
         track('file_downloaded', {
           file_type: doneEntries[0].file?.name.split('.').pop()?.toLowerCase() || 'unknown',
           file_size_kb: Math.round(doneEntries[0].file?.size / 1024),
+          download_format: doneEntries[0].format,
         });
         const originalHtml = processAllBtn.innerHTML;
         processAllBtn.innerHTML = t.downloadedSingle || `✓ Baixado`;
@@ -450,7 +550,12 @@ const t = isEn
     for (const f of files) {
       const id = genId(f);
       if (!fileMap.has(id)) {
-        fileMap.set(id, { file: f, status: 'waiting', result: null });
+        fileMap.set(id, {
+          file: f,
+          status: 'waiting',
+          format: isImageFile(f.name) ? currentGlobalFormat : 'original',
+          result: null,
+        });
         newCount++;
         types.add(f.name.split('.').pop()?.toLowerCase() || 'unknown');
       }
@@ -464,6 +569,27 @@ const t = isEn
     }
     updateUI();
   }
+
+  globalFormatSelect?.addEventListener('change', async e => {
+    currentGlobalFormat = e.currentTarget.value;
+    track('global_format_changed', { format: currentGlobalFormat });
+
+    const reprocessList = [];
+    for (const [id, entry] of fileMap) {
+      if (isImageFile(entry.file.name)) {
+        entry.format = currentGlobalFormat;
+        if (entry.status === 'done') {
+          reprocessList.push(processFile(id, true));
+        }
+      }
+    }
+    if (reprocessList.length > 0) {
+      await Promise.all(reprocessList);
+    } else {
+      renderCards();
+      updateMainButton();
+    }
+  });
 
   browseBtn.addEventListener('click', e => { e.stopPropagation(); fileInput.click(); });
   addMoreBtn.addEventListener('click', e => { e.stopPropagation(); fileInput.click(); });
@@ -500,6 +626,8 @@ const t = isEn
   clearBtn.addEventListener('click', () => {
     const count = fileMap.size;
     fileMap.clear();
+    currentGlobalFormat = 'original';
+    if (globalFormatSelect) globalFormatSelect.value = 'original';
     // ✅ Event: user cleared all files
     track('files_cleared', { file_count: count });
     updateUI();
@@ -762,6 +890,94 @@ const t = isEn
     cursor: pointer;
   }
 
+  .format-selector-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--neo-shadow-sm);
+    padding: 0 0.65rem;
+    height: 38px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .format-selector-wrap:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: var(--neo-shadow);
+  }
+  .format-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  .neo-format-select {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text);
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 0.15rem 0.2rem 0.15rem 0;
+  }
+  .neo-format-select option {
+    background: var(--card-bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .file-format-cell {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .neo-format-select-card {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text);
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    box-shadow: 1.5px 1.5px 0px var(--shadow-color);
+    border-radius: 2px;
+    padding: 0.25rem 0.45rem;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .neo-format-select-card:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+  }
+  .neo-format-select-card option {
+    background: var(--card-bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+  }
+  .file-format-badge-doc {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: var(--badge-bg);
+    border: 1.5px solid var(--border);
+    padding: 0.2rem 0.45rem;
+    border-radius: 2px;
+    letter-spacing: 0.04em;
+    user-select: none;
+  }
+
   @media (max-width: 640px) {
     .formats-ticker {
       display: flex;
@@ -803,12 +1019,23 @@ const t = isEn
 
     .actions-left, .actions-right {
       gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     .add-more-btn {
       font-size: 0.78rem;
       padding: 0.5rem 0.85rem;
       min-height: 38px;
+    }
+
+    .format-selector-wrap {
+      font-size: 0.74rem;
+      height: 38px;
+      padding: 0 0.5rem;
+    }
+
+    .neo-format-select {
+      font-size: 0.74rem;
     }
 
     .actions-right button {
@@ -842,6 +1069,15 @@ const t = isEn
 
     .actions-left {
       width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.5rem;
+    }
+
+    .format-selector-wrap {
+      width: 100%;
+      justify-content: space-between;
+      min-height: 42px;
     }
 
     .actions-right {

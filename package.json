@@ -16,6 +16,7 @@
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
+    "@jsquash/avif": "^2.1.1",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.2",
     "exifr": "^7.1.3",
