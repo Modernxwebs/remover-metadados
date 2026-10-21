@@ -76,6 +76,9 @@ const t = isEn
       reportCamera: "[CAMERA AND EXIF]",
       reportDoc: "[DOCUMENT PROPERTIES]",
       sampleFileName: "sample-photo-sao-paulo.jpg",
+      globalDropTitle: "Drop your files anywhere to inspect",
+      globalDropSubtitle: "Release anywhere on the screen to view EXIF, GPS & hidden metadata",
+      globalDropFormatsHint: "Photos, Images, PDFs, Documents, Videos & Audio · 100% Client-Side",
     }
   : {
       privacyBadge: "100% PRIVADO · LEITURA LOCAL NO NAVEGADOR",
@@ -145,6 +148,9 @@ const t = isEn
       reportCamera: "[CÂMERA E EXIF]",
       reportDoc: "[PROPRIEDADES DO DOCUMENTO]",
       sampleFileName: "foto-exemplo-sao-paulo.jpg",
+      globalDropTitle: "Solte seus arquivos em qualquer lugar para inspecionar",
+      globalDropSubtitle: "Solte em qualquer parte da tela para ver EXIF, GPS e dados ocultos",
+      globalDropFormatsHint: "Fotos, Imagens, PDFs, Documentos, Vídeos e Áudio · 100% no seu navegador",
     };
 ---
 
@@ -507,6 +513,30 @@ const t = isEn
 
     </div>
 
+  </div>
+
+  <!-- Global Fullscreen Drop Overlay for Viewer -->
+  <div id="viewer-global-drop-overlay" class="global-drop-overlay" aria-hidden="true" style="display:none;">
+    <div class="global-drop-backdrop"></div>
+    <div class="global-drop-modal">
+      <div class="global-drop-badge">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span>{t.privacyBadge}</span>
+      </div>
+      <div class="global-drop-icon-box" aria-hidden="true">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          <path d="M11 8v6"/>
+          <path d="M8 11h6"/>
+        </svg>
+      </div>
+      <h2 class="global-drop-title">{t.globalDropTitle}</h2>
+      <p class="global-drop-sub">{t.globalDropSubtitle}</p>
+      <div class="global-drop-formats">
+        <span>{t.globalDropFormatsHint}</span>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -1771,33 +1801,105 @@ const t = isEn
   let activeIndex = 0;
 
   // ── Drag & Drop listeners ─────────────────────────────────
+  const viewerGlobalDropOverlay = document.getElementById('viewer-global-drop-overlay');
+  let viewerDragCounter = 0;
+
+  function showViewerDropOverlay(show) {
+    if (!viewerGlobalDropOverlay) return;
+    if (show) {
+      viewerGlobalDropOverlay.style.display = 'flex';
+      requestAnimationFrame(() => {
+        viewerGlobalDropOverlay.classList.add('active');
+      });
+    } else {
+      viewerGlobalDropOverlay.classList.remove('active');
+      setTimeout(() => {
+        if (!viewerGlobalDropOverlay.classList.contains('active')) {
+          viewerGlobalDropOverlay.style.display = 'none';
+        }
+      }, 150);
+    }
+  }
+
+  function isDragWithFiles(e) {
+    if (!e.dataTransfer) return false;
+    const types = e.dataTransfer.types;
+    if (!types) return false;
+    for (let i = 0; i < types.length; i++) {
+      if (types[i] === 'Files') return true;
+    }
+    return false;
+  }
+
   if (dropZone) {
     dropZone.addEventListener('click', (e) => {
       if (e.target.closest('#viewer-sample-btn')) return;
       fileInput?.click();
     });
-
-    ['dragenter', 'dragover'].forEach(name => {
-      dropZone.addEventListener(name, (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropZone.classList.add('drag-over');
-      });
-    });
-
-    ['dragleave', 'drop'].forEach(name => {
-      dropZone.addEventListener(name, (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropZone.classList.remove('drag-over');
-      });
-    });
-
-    dropZone.addEventListener('drop', (e) => {
-      const files = Array.from(e.dataTransfer?.files || []);
-      if (files.length > 0) handleFiles(files);
-    });
   }
+
+  // Window-level listeners so dropping anywhere on the screen works reliably
+  window.addEventListener('dragenter', (e) => {
+    if (!isDragWithFiles(e)) return;
+    e.preventDefault();
+    viewerDragCounter++;
+    if (viewerDragCounter === 1) {
+      showViewerDropOverlay(true);
+      if (dropZone) dropZone.classList.add('drag-over');
+    }
+  });
+
+  window.addEventListener('dragover', (e) => {
+    if (!isDragWithFiles(e)) return;
+    e.preventDefault();
+    if (e.dataTransfer) {
+      try { e.dataTransfer.dropEffect = 'copy'; } catch {}
+    }
+  });
+
+  window.addEventListener('dragleave', (e) => {
+    if (!isDragWithFiles(e)) return;
+    e.preventDefault();
+    if (e.clientX <= 0 || e.clientY <= 0 || e.clientX >= window.innerWidth || e.clientY >= window.innerHeight || !e.relatedTarget) {
+      viewerDragCounter = 0;
+      showViewerDropOverlay(false);
+      if (dropZone) dropZone.classList.remove('drag-over');
+      return;
+    }
+    viewerDragCounter--;
+    if (viewerDragCounter <= 0) {
+      viewerDragCounter = 0;
+      showViewerDropOverlay(false);
+      if (dropZone) dropZone.classList.remove('drag-over');
+    }
+  });
+
+  window.addEventListener('drop', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    viewerDragCounter = 0;
+    showViewerDropOverlay(false);
+    if (dropZone) dropZone.classList.remove('drag-over');
+
+    const files = Array.from(e.dataTransfer?.files || []);
+    if (files.length > 0) {
+      handleFiles(files);
+    }
+  });
+
+  window.addEventListener('dragend', () => {
+    viewerDragCounter = 0;
+    showViewerDropOverlay(false);
+    if (dropZone) dropZone.classList.remove('drag-over');
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      viewerDragCounter = 0;
+      showViewerDropOverlay(false);
+      if (dropZone) dropZone.classList.remove('drag-over');
+    }
+  });
 
   browseBtn?.addEventListener('click', (e) => {
     e.stopPropagation();

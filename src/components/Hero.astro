@@ -51,6 +51,9 @@ const t = isEn
       formatAll: "All formats (.zip)",
       formatAllShort: "All (.zip)",
       formatDocLocked: "Original document",
+      globalDropTitle: "Drop your files anywhere",
+      globalDropSubtitle: "Release anywhere on the screen to remove metadata instantly",
+      globalDropFormatsHint: "Photos, Images, PDFs, Documents, Videos & Audio · 100% Client-Side",
     }
   : {
       titleLine1: "Remover Metadados",
@@ -95,6 +98,9 @@ const t = isEn
       formatAll: "Todos os formatos (.zip)",
       formatAllShort: "Todos (.zip)",
       formatDocLocked: "Documento original",
+      globalDropTitle: "Solte seus arquivos em qualquer lugar",
+      globalDropSubtitle: "Solte em qualquer parte da tela para remover metadados instantaneamente",
+      globalDropFormatsHint: "Fotos, Imagens, PDFs, Documentos, Vídeos e Áudio · 100% no seu navegador",
     };
 ---
 
@@ -236,6 +242,29 @@ const t = isEn
     </div>
 
   </div>
+
+  <!-- Global Fullscreen Drop Overlay -->
+  <div id="global-drop-overlay" class="global-drop-overlay" aria-hidden="true" style="display:none;">
+    <div class="global-drop-backdrop"></div>
+    <div class="global-drop-modal">
+      <div class="global-drop-badge">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span>{t.badgePrivacy}</span>
+      </div>
+      <div class="global-drop-icon-box" aria-hidden="true">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </div>
+      <h2 class="global-drop-title">{t.globalDropTitle}</h2>
+      <p class="global-drop-sub">{t.globalDropSubtitle}</p>
+      <div class="global-drop-formats">
+        <span>{t.globalDropFormatsHint}</span>
+      </div>
+    </div>
+  </div>
 </section>
 
 <script type="module">
@@ -255,6 +284,7 @@ const t = isEn
   const processAllBtn       = document.getElementById('process-all-btn');
   const clearBtn            = document.getElementById('clear-btn');
   const globalFormatSelect  = document.getElementById('global-format-select');
+  const globalDropOverlay   = document.getElementById('global-drop-overlay');
 
   /** Helper: fire a GA4 event safely (won't crash if gtag isn't loaded yet) */
   function track(eventName, params = {}) {
@@ -602,24 +632,134 @@ const t = isEn
     fileInput.value = '';
   });
 
-  dropZone.addEventListener('dragenter', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
-  dropZone.addEventListener('dragleave', e => { if (!dropZone.contains(e.relatedTarget)) dropZone.classList.remove('drag-over'); });
-  dropZone.addEventListener('dragover', e => e.preventDefault());
-  dropZone.addEventListener('drop', e => {
+  let windowDragCounter = 0;
+
+  function showGlobalDropOverlay(show) {
+    if (!globalDropOverlay) return;
+    if (show) {
+      globalDropOverlay.style.display = 'flex';
+      requestAnimationFrame(() => {
+        globalDropOverlay.classList.add('active');
+      });
+    } else {
+      globalDropOverlay.classList.remove('active');
+      setTimeout(() => {
+        if (!globalDropOverlay.classList.contains('active')) {
+          globalDropOverlay.style.display = 'none';
+        }
+      }, 150);
+    }
+  }
+
+  function isDragWithFiles(e) {
+    if (!e.dataTransfer) return false;
+    const types = e.dataTransfer.types;
+    if (!types) return false;
+    for (let i = 0; i < types.length; i++) {
+      if (types[i] === 'Files') return true;
+    }
+    return false;
+  }
+
+  function handleIncomingFiles(files) {
+    if (!files || !files.length) return;
+    addFiles(files);
+    if (heroSection) {
+      const rect = heroSection.getBoundingClientRect();
+      if (rect.top < -50 || rect.bottom > window.innerHeight + 100) {
+        heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }
+
+  // Window-level drag & drop so dropping anywhere on the entire screen works reliably
+  window.addEventListener('dragenter', e => {
+    if (!isDragWithFiles(e)) return;
     e.preventDefault();
-    dropZone.classList.remove('drag-over');
-    const files = Array.from(e.dataTransfer?.files ?? []);
-    if (files.length) addFiles(files);
+    windowDragCounter++;
+    if (windowDragCounter === 1) {
+      showGlobalDropOverlay(true);
+      if (dropZone) dropZone.classList.add('drag-over');
+    }
   });
 
-  // Allow dropping files anywhere in hero section even when drop-zone is hidden
-  heroSection.addEventListener('dragover', e => e.preventDefault());
-  heroSection.addEventListener('drop', e => {
+  window.addEventListener('dragover', e => {
+    if (!isDragWithFiles(e)) return;
     e.preventDefault();
-    if (dropZone.classList.contains('drag-over')) dropZone.classList.remove('drag-over');
-    const files = Array.from(e.dataTransfer?.files ?? []);
-    if (files.length) addFiles(files);
+    if (e.dataTransfer) {
+      try { e.dataTransfer.dropEffect = 'copy'; } catch {}
+    }
   });
+
+  window.addEventListener('dragleave', e => {
+    if (!isDragWithFiles(e)) return;
+    e.preventDefault();
+    if (e.clientX <= 0 || e.clientY <= 0 || e.clientX >= window.innerWidth || e.clientY >= window.innerHeight || !e.relatedTarget) {
+      windowDragCounter = 0;
+      showGlobalDropOverlay(false);
+      if (dropZone) dropZone.classList.remove('drag-over');
+      return;
+    }
+    windowDragCounter--;
+    if (windowDragCounter <= 0) {
+      windowDragCounter = 0;
+      showGlobalDropOverlay(false);
+      if (dropZone) dropZone.classList.remove('drag-over');
+    }
+  });
+
+  window.addEventListener('drop', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    windowDragCounter = 0;
+    showGlobalDropOverlay(false);
+    if (dropZone) dropZone.classList.remove('drag-over');
+
+    const files = Array.from(e.dataTransfer?.files ?? []);
+    if (files.length > 0) {
+      handleIncomingFiles(files);
+    }
+  });
+
+  window.addEventListener('dragend', () => {
+    windowDragCounter = 0;
+    showGlobalDropOverlay(false);
+    if (dropZone) dropZone.classList.remove('drag-over');
+  });
+
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      windowDragCounter = 0;
+      showGlobalDropOverlay(false);
+      if (dropZone) dropZone.classList.remove('drag-over');
+    }
+  });
+
+  // Check if user dropped files on another page that stashed them for the hero tool
+  try {
+    if (window.indexedDB) {
+      const req = indexedDB.open('remover_metadados_drop_db', 1);
+      req.onupgradeneeded = () => {
+        if (!req.result.objectStoreNames.contains('incoming_files')) {
+          req.result.createObjectStore('incoming_files', { keyPath: 'id' });
+        }
+      };
+      req.onsuccess = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains('incoming_files')) return;
+        const tx = db.transaction('incoming_files', 'readwrite');
+        const store = tx.objectStore('incoming_files');
+        const getReq = store.get('pending');
+        getReq.onsuccess = () => {
+          const item = getReq.result;
+          if (item && item.files && item.files.length && (Date.now() - item.timestamp < 30000)) {
+            store.clear();
+            handleIncomingFiles(item.files);
+          }
+        };
+      };
+    }
+  } catch {}
 
   processAllBtn.addEventListener('click', handleMainAction);
 
@@ -1098,6 +1238,133 @@ const t = isEn
       min-height: 42px;
       font-size: 0.78rem;
     }
+  }
+
+  /* ── Fullscreen Global Drag & Drop Overlay ─────────────────── */
+  .global-drop-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    pointer-events: auto;
+  }
+
+  .global-drop-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.15s ease-out;
+  }
+
+  .global-drop-overlay.active .global-drop-backdrop {
+    opacity: 1;
+  }
+
+  .global-drop-modal {
+    position: relative;
+    z-index: 2;
+    background: var(--card-bg, #ffffff);
+    color: var(--text, #121110);
+    border: 3.5px solid var(--border, #121110);
+    box-shadow: 10px 10px 0px var(--border, #121110);
+    padding: clamp(2rem, 5vw, 3.25rem) clamp(1.5rem, 4vw, 2.75rem);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    pointer-events: none; /* Crucial: eliminates child element drag flicker */
+    transform: scale(0.92);
+    opacity: 0;
+    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.15s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1rem;
+  }
+
+  .global-drop-overlay.active .global-drop-modal {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  .global-drop-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 0.32rem 0.8rem;
+    background: #dcfce7;
+    color: #166534;
+    border: 1.5px solid #166534;
+  }
+
+  :global(html.dark) .global-drop-badge {
+    background: #14532d;
+    color: #86efac;
+    border-color: #86efac;
+  }
+
+  .global-drop-badge .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #16a34a;
+    display: inline-block;
+  }
+
+  .global-drop-icon-box {
+    width: 84px;
+    height: 84px;
+    background: var(--btn-accent, #fde047);
+    color: #121110;
+    border: 3px solid var(--border, #121110);
+    box-shadow: 5px 5px 0px var(--border, #121110);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: neoDropBounce 1.2s ease-in-out infinite alternate;
+  }
+
+  @keyframes neoDropBounce {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-9px); }
+  }
+
+  .global-drop-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.35rem, 4vw, 2.1rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--text, #121110);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  .global-drop-sub {
+    font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+    color: var(--text-muted, #5c5955);
+    margin: 0;
+    max-width: 460px;
+    line-height: 1.45;
+  }
+
+  .global-drop-formats {
+    margin-top: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--text, #121110);
+    background: var(--bg, #f4f1ea);
+    border: 1.5px dashed var(--border, #121110);
+    padding: 0.45rem 0.9rem;
   }
 </style>
 

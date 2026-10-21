@@ -352,5 +352,54 @@ if (!isHomepage) {
   <body>
     <LanguageSuggestion isEn={isEn} ptUrl={ptRelativeUrl} enUrl={enRelativeUrl} />
     <slot />
+
+    <!-- Global fallback drag & drop handler for non-tool pages: prevents browser navigation & forwards files to tool -->
+    <script is:inline define:vars={{ isEn }}>
+      (function() {
+        window.addEventListener('dragover', function(e) {
+          if (document.getElementById('hero-section') || document.getElementById('metadata-viewer-tool')) return;
+          e.preventDefault();
+          if (e.dataTransfer) {
+            try { e.dataTransfer.dropEffect = 'copy'; } catch (_) {}
+          }
+        });
+
+        window.addEventListener('drop', function(e) {
+          if (document.getElementById('hero-section') || document.getElementById('metadata-viewer-tool')) return;
+          e.preventDefault();
+          const files = Array.from(e.dataTransfer?.files || []);
+          if (!files.length) return;
+
+          try {
+            if (window.indexedDB) {
+              const req = indexedDB.open('remover_metadados_drop_db', 1);
+              req.onupgradeneeded = function() {
+                if (!req.result.objectStoreNames.contains('incoming_files')) {
+                  req.result.createObjectStore('incoming_files', { keyPath: 'id' });
+                }
+              };
+              req.onsuccess = function() {
+                const db = req.result;
+                const tx = db.transaction('incoming_files', 'readwrite');
+                const store = tx.objectStore('incoming_files');
+                store.put({ id: 'pending', files: files, timestamp: Date.now() });
+                tx.oncomplete = function() {
+                  window.location.href = isEn ? '/en/' : '/';
+                };
+                tx.onerror = function() {
+                  window.location.href = isEn ? '/en/' : '/';
+                };
+              };
+              req.onerror = function() {
+                window.location.href = isEn ? '/en/' : '/';
+              };
+              return;
+            }
+          } catch (_) {}
+
+          window.location.href = isEn ? '/en/' : '/';
+        });
+      })();
+    </script>
   </body>
 </html>

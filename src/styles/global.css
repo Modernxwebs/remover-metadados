@@ -437,3 +437,130 @@ html.dark .status-processing { color: #fbbf24; }
     font-size: 0.7rem;
   }
 }
+
+/* ── Fullscreen Global Drag & Drop Overlay ─────────────────── */
+.global-drop-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  pointer-events: auto;
+}
+
+.global-drop-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+}
+
+.global-drop-overlay.active .global-drop-backdrop {
+  opacity: 1;
+}
+
+.global-drop-modal {
+  position: relative;
+  z-index: 2;
+  background: var(--card-bg, #ffffff);
+  color: var(--text, #121110);
+  border: 3.5px solid var(--border, #121110);
+  box-shadow: 10px 10px 0px var(--border, #121110);
+  padding: clamp(2rem, 5vw, 3.25rem) clamp(1.5rem, 4vw, 2.75rem);
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  pointer-events: none; /* Crucial: eliminates child element drag flicker */
+  transform: scale(0.92);
+  opacity: 0;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.15s ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.global-drop-overlay.active .global-drop-modal {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.global-drop-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.32rem 0.8rem;
+  background: #dcfce7;
+  color: #166534;
+  border: 1.5px solid #166534;
+}
+
+html.dark .global-drop-badge {
+  background: #14532d;
+  color: #86efac;
+  border-color: #86efac;
+}
+
+.global-drop-badge .live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #16a34a;
+  display: inline-block;
+}
+
+.global-drop-icon-box {
+  width: 84px;
+  height: 84px;
+  background: var(--btn-accent, #fde047);
+  color: #121110;
+  border: 3px solid var(--border, #121110);
+  box-shadow: 5px 5px 0px var(--border, #121110);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: neoDropBounce 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes neoDropBounce {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-9px); }
+}
+
+.global-drop-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.35rem, 4vw, 2.1rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text, #121110);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.global-drop-sub {
+  font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+  color: var(--text-muted, #5c5955);
+  margin: 0;
+  max-width: 460px;
+  line-height: 1.45;
+}
+
+.global-drop-formats {
+  margin-top: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--text, #121110);
+  background: var(--bg, #f4f1ea);
+  border: 1.5px dashed var(--border, #121110);
+  padding: 0.45rem 0.9rem;
+}
