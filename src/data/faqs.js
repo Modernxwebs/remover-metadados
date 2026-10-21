@@ -28,6 +28,10 @@ export const faqs = [
     a: "Os mais críticos são as coordenadas de geolocalização GPS (que revelam onde você mora ou trabalha), dados biométricos de câmera, o nome do proprietário registrado no computador, o histórico de revisões anteriores de documentos e comentários marcados como 'excluídos' em arquivos Word e PDFs.",
   },
   {
+    q: "Posso soltar arquivos em qualquer lugar da tela e escolher o formato de download?",
+    a: "Sim! Você pode soltar fotos, PDFs ou documentos em qualquer ponto da tela (não precisa mirar em uma caixa minúscula). Além disso, nosso sistema permite escolher se deseja baixar a imagem no formato original ou convertê-la instantaneamente para JPG, PNG, WebP, AVIF ou baixar todos os formatos em um arquivo ZIP. Todo o processamento e conversão acontecem 100% no seu dispositivo, sem envio a servidores.",
+  },
+  {
     q: "Preciso pagar ou criar uma conta para tirar metadados?",
     a: "Não. O Remover Metadados é um serviço gratuito, sem cadastro, sem assinaturas e sem limites de quantidade de arquivos. Nossa missão é democratizar a privacidade digital e fornecer uma ferramenta rápida e acessível para todos os brasileiros.",
   },

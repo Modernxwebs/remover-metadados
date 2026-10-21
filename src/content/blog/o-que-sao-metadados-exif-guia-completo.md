@@ -112,8 +112,10 @@ Diferente de outros sites da internet que exigem o upload das suas fotos para um
 
 - **Processamento no seu dispositivo**: A limpeza dos cabeçalhos binários (EXIF, GPS, IPTC, XMP) ocorre na memória do seu próprio navegador.
 - **Zero envio a servidores**: Suas fotos nunca viajam pela internet nem saem do seu computador ou celular.
+- **Arraste e solte em qualquer lugar da tela**: Solte fotos em qualquer ponto da janela sem se preocupar em acertar caixas de upload restritas.
+- **Escolha do formato de download**: Mantenha o formato original ou converta instantaneamente para JPG, PNG, WebP, AVIF ou baixe todos em ZIP.
 - **Qualidade original preservada**: Os pixels e a resolução gráfica original permanecem intactos.
-- **Limpeza em lote com download em ZIP**: Você pode arrastar 10, 20 ou 50 fotos de uma só vez e baixar todas higienizadas em segundos.
+- **Limpeza em lote com download em ZIP**: Você pode soltar 10, 20 ou 50 fotos de uma só vez e baixar todas higienizadas em segundos.
 
 Acesse a **[ferramenta na página inicial](/)**, selecione suas fotos e baixe suas imagens 100% limpas e anônimas agora mesmo. Se você também lida com contratos, laudos e documentos corporativos, leia em seguida nosso artigo sobre **[Metadados Ocultos em PDFs e Riscos perante a LGPD](/blog/metadados-em-pdf-riscos-e-como-remover/)**.
 

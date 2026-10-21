@@ -31,14 +31,14 @@ Se você não quer navegar por menus complexos do sistema operacional ou precisa
 
 | Dispositivo / Sistema | Método Rápido Nativo | O Que Mostra |
 | :--- | :--- | :--- |
-| **Qualquer aparelho (Web)** | Arrastar a foto no **[Visualizador de Metadados](/ver-metadados/)** | EXIF completo, GPS no mapa interativo, IPTC, XMP, sem upload |
+| **Qualquer aparelho (Web)** | Arrastar a foto em **qualquer lugar da tela** no **[Visualizador de Metadados](/ver-metadados/)** | EXIF completo, GPS no mapa interativo, IPTC, XMP, sem upload |
 | **Android (Google Fotos)** | Abrir foto e **deslizar o dedo para cima** | Data, câmera, resolução, mapa (se houver GPS gravado) |
 | **Android (Galeria Samsung)** | Abrir foto e tocar no **ícone "Detalhes" ou deslizar para cima** | Data, modelo, configurações de lente e localização |
 | **iPhone / iPad (iOS)** | Abrir foto e tocar no **botão "i" (Informações)** | Câmera, lente, ISO, velocidade, miniatura do Apple Maps |
 | **Windows 11 / 10** | Botão direito na foto > **Propriedades > aba Detalhes** | Tabela completa de propriedades de câmera e coordenadas GPS |
 | **Mac (macOS)** | Abrir no **Pré-visualização** > atalho `Command + I` | Janela de Inspetor com abas dedicadas para Exif, GPS e TIFF |
 
-> 💡 **Privacidade Garantida**: Nosso visualizador funciona 100% no seu próprio navegador via JavaScript local. A imagem nunca sai do seu dispositivo e nenhum dado é transmitido para servidores remotos, garantindo total conformidade com a LGPD.
+> 💡 **Privacidade e Praticidade Exclusivas**: Nosso visualizador funciona 100% no seu próprio navegador via JavaScript local e aceita que você **arraste e solte fotos em qualquer parte da tela** (sem precisar mirar em uma caixa minúscula). A imagem nunca sai do seu dispositivo e nenhum dado é transmitido para servidores remotos, garantindo total conformidade com a LGPD.
 
 ---
 
@@ -233,6 +233,34 @@ Antes de enviar fotos para plataformas de venda online (como OLX, Mercado Livre 
    - **Localização GPS**: A seção de GPS deve indicar *"Nenhuma coordenada geográfica detectada"* e o mapa não deve ser exibido.
    - **Aparelho e Autoria**: Os campos de Fabricante, Modelo e Número de Série devem estar em branco ou ausentes.
    - **Integridade Visual**: Verifique se a foto preservou a resolução total e nitidez original (diferente de um print, a imagem tratada mantém suas dimensões de pixels intactas sem distorções).
+
+---
+
+## Recursos Exclusivos: Arraste em Qualquer Lugar da Tela e Escolha o Formato de Download
+
+Ao comparar ferramentas online de inspeção e remoção de metadados, você perceberá que a maioria das opções existentes na web é limitada, desatualizada e muitas vezes envia seus arquivos confidenciais para servidores em outros países.
+
+Para entregar uma experiência moderna, segura e superior, desenvolvemos dois recursos pioneiros que não estão disponíveis em outros serviços:
+
+### 1. Arraste e Solte em Qualquer Lugar da Tela (Full-Screen Drag & Drop)
+A maioria dos sites impõe uma caixinha minúscula de upload. Se você tentar arrastar uma foto do explorador de arquivos e soltá-la 1 centímetro fora da área delimitada, o navegador tenta abrir o arquivo em tela cheia como uma URL local (`file:///...`), saindo da página e fazendo você perder todo o progresso.
+
+No **Remover Metadados**, a tela inteira é uma zona ativa de recebimento:
+- **Solte em qualquer pixel da tela**: Arraste suas fotos para o cabeçalho, para o meio deste artigo, para as margens ou para o rodapé.
+- **Detecção Inteligente com Overlay**: Assim que a imagem sobrevoa a janela do navegador, uma camada visual de confirmação surge com animação fluida, indicando que o arquivo pode ser solto onde você quiser.
+- **Funciona inclusive enquanto você lê este artigo**: Se você tiver uma foto agora mesmo no seu computador, basta arrastá-la e soltá-la sobre este texto! Nosso sistema intercepta o arquivo localmente, guarda-o temporariamente em memória protegida e abre a ferramenta já com a análise iniciada.
+
+### 2. Escolha o Formato de Download no Seu Dispositivo (Original, JPG, PNG, WebP, AVIF ou Todos em .ZIP)
+Outro diferencial decisivo que nos destaca dos concorrentes é a flexibilidade de formatos na hora de baixar a foto limpa:
+
+- **Original (Padrão Selecionado Automaticamente)**: Mantém o formato nativo da sua foto (ex.: JPEG continua JPEG, PNG continua PNG, WebP continua WebP), limpando os metadados com zero recompressão.
+- **JPG (.jpg)**: Converte para o padrão de compatibilidade universal, aceito por qualquer órgão público, sistema judicial, cartório digital ou rede social.
+- **PNG (.png)**: Ideal para capturas de tela e imagens com texto, preservando bordas nítidas com compressão sem perda de qualidade (*lossless*).
+- **WebP (.webp)**: Formato moderno desenvolvido pelo Google que economiza até 35% de tamanho em relação ao JPEG com qualidade visual idêntica, acelerando páginas web e e-commerces.
+- **AVIF (.avif)**: O padrão de última geração em eficiência de imagem, alcançando a maior taxa de compressão do mercado com suporte a profundidade de cor de 10 bits e HDR.
+- **Todos os formatos (.zip)**: Baixe com um só clique um arquivo ZIP compactado contendo a imagem limpa exportada em todos os formatos citados acima simultaneamente.
+
+> 🔒 **100% no seu dispositivo (Zero Upload a Servidores)**: Todas as operações de conversão de formato, geração de arquivos ZIP e higienização binária são executadas pelo processador do seu próprio dispositivo, via WebAssembly e Canvas local. Seus arquivos nunca trafegam pela internet e nunca são salvos em servidores na nuvem, garantindo total conformidade com a LGPD e privacidade rigorosa.
 
 ---
 

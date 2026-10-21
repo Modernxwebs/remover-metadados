@@ -28,6 +28,10 @@ export const faqsEn = [
     a: "Yes, it is 100% safe. Because all processing executes locally on your device with zero cloud transmission, your sensitive legal contracts, proprietary blueprints, financial records, and medical PDFs never touch a server or third-party database.",
   },
   {
+    q: "Can I drop files anywhere on the screen and choose my download format?",
+    a: "Yes! You can drop photos, PDFs, or documents anywhere on the screen (no need to aim inside a tiny box). In addition, you can choose whether to download your clean file in its original format or convert it to JPG, PNG, WebP, AVIF, or download all formats packaged in a single ZIP. All processing and conversion happens 100% on your device with zero server uploads.",
+  },
+  {
     q: "Is Metadata Remover completely free, or is registration required?",
     a: "Metadata Remover is 100% free with no registration, no subscriptions, no file size paywalls, and no batch limits. Our mission is to make digital privacy fast, simple, and accessible to everyone worldwide.",
   },
