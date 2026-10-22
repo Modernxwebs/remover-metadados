@@ -117,5 +117,5 @@ Diferente de outros sites da internet que exigem o upload das suas fotos para um
 - **Qualidade original preservada**: Os pixels e a resolução gráfica original permanecem intactos.
 - **Limpeza em lote com download em ZIP**: Você pode soltar 10, 20 ou 50 fotos de uma só vez e baixar todas higienizadas em segundos.
 
-Acesse a **[ferramenta na página inicial](/)**, selecione suas fotos e baixe suas imagens 100% limpas e anônimas agora mesmo. Se você também lida com contratos, laudos e documentos corporativos, leia em seguida nosso artigo sobre **[Metadados Ocultos em PDFs e Riscos perante a LGPD](/blog/metadados-em-pdf-riscos-e-como-remover/)**.
+Acesse a **[ferramenta na página inicial](/)**, selecione suas fotos e baixe as cópias processadas e confira os [testes e limitações](/verificacao/) antes de compartilhá-las. Se você também lida com contratos, laudos e documentos corporativos, leia em seguida nosso artigo sobre **[Metadados Ocultos em PDFs e Riscos perante a LGPD](/blog/metadados-em-pdf-riscos-e-como-remover/)**.
 

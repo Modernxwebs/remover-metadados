@@ -396,7 +396,7 @@ export async function inspectFileMetadata(file, lang = 'pt-BR') {
   /** @type {Record<string, string>} */
   const mediaInfo = {};
 
-  /** @type {{ latitude: number, longitude: number, altitude?: number, dmsLat: string, dmsLon: string, googleMapsUrl: string, osmUrl: string } | null} */
+  /** @type {{ latitude: number, longitude: number, altitude?: number, dmsLat: string, dmsLon: string } | null} */
   let gps = null;
 
   /** @type {Record<string, any>} */
@@ -504,8 +504,6 @@ export async function inspectFileMetadata(file, lang = 'pt-BR') {
             altitude: alt ? Number(alt) : undefined,
             dmsLat: toDms(lat, true, lang),
             dmsLon: toDms(lon, false, lang),
-            googleMapsUrl: `https://www.google.com/maps?q=${lat},${lon}`,
-            osmUrl: `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=16/${lat}/${lon}`,
           };
         }
       } catch (err) {

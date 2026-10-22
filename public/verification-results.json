@@ -1,0 +1,246 @@
+{
+  "generatedAt": "2026-10-22T09:07:09.379Z",
+  "engineSha256": "209cb24616f2a9334a34861eb4bba0d06e28a65ea7dac5c4bee1a447e7e81d2d",
+  "environment": {
+    "browser": "Chrome/155.0.8059.85",
+    "exiftool": "13.59",
+    "sharp": "0.35.5",
+    "node": "v26.12.0"
+  },
+  "method": "Maintainer-run browser fixtures, checked with ExifTool, sharp and direct ZIP/byte inspection. Not a third-party security audit or proof for every file.",
+  "checks": [
+    "jpg: selected personal tags removed",
+    "jpg: documented default output",
+    "png: selected personal tags removed",
+    "png: documented default output",
+    "png: fixture pixels preserved",
+    "PNG: original IDAT bytes preserved",
+    "webp: selected personal tags removed",
+    "webp: documented default output",
+    "avif: selected personal tags removed",
+    "avif: documented default output",
+    "tiff: selected personal tags removed",
+    "tiff: documented default output",
+    "gif: selected personal tags removed",
+    "gif: documented default output",
+    "gif: fixture pixels preserved",
+    "bmp: selected personal tags removed",
+    "bmp: documented default output",
+    "bmp: fixture pixels preserved",
+    "svg: selected personal tags removed",
+    "svg: documented default output",
+    "heic: selected personal tags removed",
+    "heic: documented default output",
+    "PNG → jpg: personal tags absent",
+    "PNG → png: personal tags absent",
+    "PNG → webp: personal tags absent",
+    "PNG → avif: personal tags absent",
+    "gif: default PNG has one frame/page",
+    "tiff: default PNG has one frame/page",
+    "JPEG conversion composites transparency on white",
+    "docx: document properties cleared",
+    "xlsx: document properties cleared",
+    "pptx: document properties cleared",
+    "odt: document properties cleared",
+    "ods: document properties cleared",
+    "odp: document properties cleared",
+    "PDF: standard author and title cleared",
+    "MP3: ID3v1/v2 envelopes removed; audio bytes preserved",
+    "/ver-metadados/: no map request before consent",
+    "/ver-metadados/: request shares selected coordinates only after consent",
+    "/ver-metadados/: switching files resets consent",
+    "/en/metadata-viewer/: no map request before consent",
+    "/en/metadata-viewer/: request shares selected coordinates only after consent",
+    "/en/metadata-viewer/: switching files resets consent"
+  ],
+  "results": [
+    {
+      "format": "jpg",
+      "output": "jpg",
+      "mime": "image/jpeg",
+      "before": {
+        "IFD0:Artist": "Audit Test Author",
+        "GPS:GPSLatitude": 23.55,
+        "GPS:GPSLongitude": 46.63,
+        "Composite:GPSLatitude": -23.55,
+        "Composite:GPSLongitude": -46.63
+      },
+      "after": {},
+      "pixelComparison": "4457 of 6144 channel values changed",
+      "inputSha256": "77a0bf590df2a806024a1d51243ebff4082175e558fca1439acf283fcd366ee0",
+      "outputSha256": "049a644ef54052a08d3d7f2dd63baaadb3a33d8e42fc331a12d334c35a1eb61d"
+    },
+    {
+      "format": "png",
+      "output": "png",
+      "mime": "image/png",
+      "before": {
+        "PNG:Artist": "Audit Test Author",
+        "IFD0:Artist": "Audit Test Author",
+        "GPS:GPSLatitude": 23.55,
+        "GPS:GPSLongitude": 46.63,
+        "Composite:GPSLatitude": -23.55,
+        "Composite:GPSLongitude": -46.63
+      },
+      "after": {},
+      "pixelComparison": "0 of 6144 channel values changed",
+      "inputSha256": "c13d56a6b1de23bc344513006ec617f5ce756e743c6acea7d498ba5e6992bb8f",
+      "outputSha256": "104b478ee1cda9caced31a0ff30328c46888349f1037af47c27a1fecec9348c8"
+    },
+    {
+      "format": "webp",
+      "output": "webp",
+      "mime": "image/webp",
+      "before": {
+        "IFD0:Artist": "Audit Test Author",
+        "GPS:GPSLatitude": 23.55,
+        "GPS:GPSLongitude": 46.63,
+        "Composite:GPSLatitude": -23.55,
+        "Composite:GPSLongitude": -46.63
+      },
+      "after": {},
+      "pixelComparison": "4433 of 6144 channel values changed",
+      "inputSha256": "a9cf7b7f566c26fd9c188a6450d0fd2012890100188354882899fc73d2b8091b",
+      "outputSha256": "8217f945f9769844e196abdb2a6821a0209051ff43da8398fe35acf8bc65b915"
+    },
+    {
+      "format": "avif",
+      "output": "avif",
+      "mime": "image/avif",
+      "before": {
+        "IFD0:Artist": "Audit Test Author",
+        "GPS:GPSLatitude": 23.55,
+        "GPS:GPSLongitude": 46.63,
+        "Composite:GPSLatitude": -23.55,
+        "Composite:GPSLongitude": -46.63
+      },
+      "after": {},
+      "pixelComparison": "4573 of 6144 channel values changed",
+      "inputSha256": "df303fbe49e281ef8b5d249ffca805dc8ab006bac71f7ea97006937afbdc3fe7",
+      "outputSha256": "1183bda0bc022829b86f4dc8ba5c7b2933cacb59f513768a5560085cbe1923ad"
+    },
+    {
+      "format": "tiff",
+      "output": "png",
+      "mime": "image/png",
+      "before": {
+        "IFD0:Artist": "Audit Test Author",
+        "GPS:GPSLatitude": 23.55,
+        "GPS:GPSLongitude": 46.63,
+        "Composite:GPSLatitude": -23.55,
+        "Composite:GPSLongitude": -46.63
+      },
+      "after": {},
+      "pixelComparison": "4525 of 6144 channel values changed",
+      "inputSha256": "f8ad425b86db7fc5f537cada07fe51380d5e25b9c37294f571ceeb7292f343fc",
+      "outputSha256": "d520431df8b780b98dcf5fb20ab964b484fcf852d6c05c050c0b6e74584ec039"
+    },
+    {
+      "format": "gif",
+      "output": "png",
+      "mime": "image/png",
+      "before": {
+        "File:Comment": "Audit Test Comment"
+      },
+      "after": {},
+      "pixelComparison": "0 of 6144 channel values changed",
+      "inputSha256": "376c13acf7086ed2874e295e84d95894f88e50959ce1c61a0871934b3837240f",
+      "outputSha256": "7a84ff3840fd667fff3e26cf7d0fcf59ef8006657a225a639b923bf8751842f6"
+    },
+    {
+      "format": "bmp",
+      "output": "png",
+      "mime": "image/png",
+      "before": {},
+      "after": {},
+      "pixelComparison": "0 of 6144 channel values changed",
+      "inputSha256": "9cc754afaf0286779499ad19d859738bb9de7139f6af9f543ae549fedc603fc9",
+      "outputSha256": "71b9cd1e7ba27994654e7dc08fbb4b61eea9cc7abc16c1ff1494b1302dd0cf05"
+    },
+    {
+      "format": "svg",
+      "output": "svg",
+      "mime": "image/svg+xml",
+      "before": {
+        "SVG:Title": "Audit Test Author"
+      },
+      "after": {},
+      "pixelComparison": "not compared",
+      "inputSha256": "ada48abc4759ebad3c66dec651e08480db5a526194e4677cdcee732af9e4d4eb",
+      "outputSha256": "88cb551289f7eb312542e20b6d12ed408cda96dbcfe8c53d34454641abb01275"
+    },
+    {
+      "format": "heic",
+      "output": "jpg",
+      "mime": "image/jpeg",
+      "before": {
+        "IFD0:Artist": "Audit Test Author"
+      },
+      "after": {},
+      "pixelComparison": "not compared",
+      "inputSha256": "eb3b9e8ca3235207570b9de8d53217c9d25f16df4412b90ce80f5e3e04467932",
+      "outputSha256": "a25b396692179a8e4acbb3a23c9a76e5d73408d5f0b2694096aad4526e1dcc8e"
+    },
+    {
+      "format": "docx",
+      "output": "docx",
+      "verified": "Synthetic package properties cleared; comment entry retained. Not a full document compatibility test."
+    },
+    {
+      "format": "xlsx",
+      "output": "xlsx",
+      "verified": "Synthetic package properties cleared; comment entry retained. Not a full document compatibility test."
+    },
+    {
+      "format": "pptx",
+      "output": "pptx",
+      "verified": "Synthetic package properties cleared; comment entry retained. Not a full document compatibility test."
+    },
+    {
+      "format": "odt",
+      "output": "odt",
+      "verified": "Synthetic package properties cleared; comment entry retained. Not a full document compatibility test."
+    },
+    {
+      "format": "ods",
+      "output": "ods",
+      "verified": "Synthetic package properties cleared; comment entry retained. Not a full document compatibility test."
+    },
+    {
+      "format": "odp",
+      "output": "odp",
+      "verified": "Synthetic package properties cleared; comment entry retained. Not a full document compatibility test."
+    },
+    {
+      "format": "pdf",
+      "output": "pdf",
+      "before": {
+        "PDF:Producer": "pdf-lib (https://github.com/Hopding/pdf-lib)",
+        "PDF:Creator": "pdf-lib (https://github.com/Hopding/pdf-lib)",
+        "PDF:Author": "Audit Test Author",
+        "PDF:Title": "Audit Test Title"
+      },
+      "after": {
+        "PDF:Producer": "",
+        "PDF:Creator": "",
+        "PDF:Author": "",
+        "PDF:Title": "",
+        "PDF:Subject": ""
+      },
+      "customSecretRemains": true,
+      "detachedXmpBytesRemain": true
+    },
+    {
+      "format": "mp3",
+      "output": "mp3",
+      "verified": "Synthetic ID3v1/v2 envelopes removed; enclosed bytes unchanged. Other tag families and playback not checked."
+    }
+  ],
+  "notVerified": [
+    "Every C2PA variant or AI generator",
+    "Watermarks or steganography",
+    "Every browser, color profile, malformed file or encryption mode",
+    "Full Office application compatibility",
+    "Video playback and complete metadata coverage"
+  ]
+}

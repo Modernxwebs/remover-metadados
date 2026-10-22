@@ -4,7 +4,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
 const title = 'Guias para Remover Metadados | Fotos, Vídeos e PDFs';
-const description = 'Aprenda a remover metadados de vídeos (MP4, MOV), imagens (EXIF, GPS) e PDFs online. Guias práticos com limpeza 100% no navegador e total privacidade.';
+const description = 'Aprenda a remover metadados de vídeos (MP4, MOV), imagens (EXIF, GPS) e PDFs online. Guias práticos com limpeza 100% no navegador e processamento local de arquivos.';
 const canonicalUrl = 'https://remover-metadados.com/guias/';
 
 const guides = [
@@ -18,7 +18,7 @@ const guides = [
     readTime: '4 min de leitura',
     icon: 'image',
     badge: 'Mais Acessado',
-    summary: 'Veja quais dados EXIF fotos de celular e câmeras carregam e aprenda a criar cópias 100% limpas sem expor a localização da sua casa ou trabalho.',
+    summary: 'Veja quais dados EXIF fotos de celular e câmeras carregam e aprenda a criar cópias com os campos compatíveis removidos sem expor a localização da sua casa ou trabalho.',
     highlights: [
       'Apaga geolocalização exata (latitude, longitude, altitude)',
       'Remove modelo da câmera, número de série, lente e ISO',
@@ -54,10 +54,10 @@ const guides = [
     readTime: '3 min de leitura',
     icon: 'pdf',
     badge: 'LGPD & Compliance',
-    summary: 'Remova autor, título, aplicativo criador, histórico de revisões e fluxos XMP de contratos, petições, relatórios e currículos.',
+    summary: 'Limpe campos padrão de autor, título e aplicativo criador. Comentários, anexos e histórico no conteúdo podem permanecer.',
     highlights: [
       'Exclui nome do autor, empresa e pastas do computador',
-      'Higieniza histórico de edições e comentários excluídos',
+      'Limpa propriedades padrão; comentários e revisões permanecem',
       'Preserva a formatação, páginas e o layout do PDF intactos',
     ],
     formats: ['PDF', 'DOCX', 'XLSX', 'PPTX'],
@@ -71,7 +71,7 @@ const faqs = [
   },
   {
     q: 'A ferramenta reduz a qualidade da imagem ou do vídeo ao limpar?',
-    a: 'Não. A ferramenta remove exclusivamente os cabeçalhos de metadados embutidos nos contêineres do arquivo (como blocos EXIF, XMP e átomos MP4). A renderização gráfica, pixels e streams de áudio são preservados com a mais alta fidelidade.',
+    a: 'Depende do formato. PNG normalmente preserva os dados de imagem comprimidos; JPEG, WebP e AVIF são recodificados e podem perder qualidade. HEIC vira JPEG; GIF e TIFF perdem animação ou páginas adicionais. Vídeos não são recomprimidos, mas a limpeza cobre apenas caixas específicas. Veja a página de verificação.',
   },
   {
     q: 'Por que o processamento local no navegador é mais seguro que outros sites?',
@@ -104,26 +104,23 @@ const breadcrumbSchema = {
 
 const collectionSchema = {
   '@context': 'https://schema.org',
-  '@type': 'CollectionPage',
-  '@id': 'https://remover-metadados.com/guias/#collection',
-  'url': 'https://remover-metadados.com/guias/',
+  '@type': 'ItemList',
+  '@id': 'https://remover-metadados.com/guias/#guides',
   'name': 'Guias Práticos para Remover Metadados | Remover Metadados',
   'description': description,
-  'inLanguage': 'pt-BR',
-  'mainEntity': {
-    '@type': 'ItemList',
-    'itemListElement': guides.map((guide, idx) => ({
+  'itemListElement': guides.map((guide, idx) => ({
       '@type': 'ListItem',
       'position': idx + 1,
       'url': `https://remover-metadados.com${guide.slug}`,
       'name': guide.title,
       'description': guide.summary,
-    })),
-  },
+  })),
 };
 ---
 
 <Layout
+  pageType="CollectionPage"
+  mainEntityId="https://remover-metadados.com/guias/#guides"
   title={title}
   description={description}
   lang="pt-BR"
@@ -135,6 +132,7 @@ const collectionSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(collectionSchema)} />
 
   <Header lang="pt-BR" ptUrl="/guias/" enUrl="/en/" isSubpage={true} />
+  <p class="page-wrap" style="padding-top: 1rem; font-size: 0.85rem;"><a href="/verificacao/">Veja a cobertura real por formato, os testes e as limitações antes de compartilhar arquivos.</a></p>
 
   <main class="guides-main">
     <div class="page-wrap guides-container">
@@ -173,7 +171,7 @@ const collectionSchema = {
           <div class="metric-divider" aria-hidden="true"></div>
           <div class="metric-item">
             <span class="metric-icon" aria-hidden="true">🛡️</span>
-            <span class="metric-text"><strong>Conforme LGPD</strong> & Privacidade Absoluta</span>
+            <span class="metric-text"><strong>Arquivos locais</strong> & Sem Upload</span>
           </div>
         </div>
       </header>
@@ -417,7 +415,7 @@ const collectionSchema = {
           <span>✓ Sem Envio a Servidores</span>
           <span>✓ 100% Gratuito</span>
           <span>✓ Sem Cadastro ou Login</span>
-          <span>✓ Sem Perda de Qualidade</span>
+          <span>✓ Qualidade depende do formato</span>
         </div>
       </section>
 

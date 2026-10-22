@@ -17,6 +17,8 @@ export interface Props {
   noindex?: boolean;
   ogImage?: string;
   ogType?: string;
+  pageType?: 'WebPage' | 'AboutPage' | 'ContactPage' | 'CollectionPage';
+  mainEntityId?: string;
 }
 
 const currentLang = Astro.props.lang || Astro.currentLocale || 'pt-BR';
@@ -29,8 +31,8 @@ const {
     ? 'Metadata Remover — Remove EXIF Data & GPS from Photos Free'
     : 'Remover Metadados Online — Limpe EXIF e GPS de Fotos e PDFs',
   description = isEn
-    ? 'Remove metadata from photos, PDFs, and documents online free. Remove EXIF data, GPS location, and author info locally in your browser with 100% privacy.'
-    : 'Remova metadados de fotos, PDFs e documentos online e grátis. Apague GPS, dados EXIF e autoria direto no navegador com 100% de privacidade (sem envio a servidores).',
+    ? 'Remove metadata from photos, PDFs, and documents free. Process files locally in your browser without uploading them.'
+    : 'Remova metadados de fotos, PDFs e documentos grátis. Processe seus arquivos localmente no navegador, sem envio a servidores.',
   canonicalUrl,
   alternatePt,
   alternateEn,
@@ -120,15 +122,16 @@ const schemaData: any = {
       '@type': 'WebSite',
       '@id': `${siteUrl}/#website`,
       'url': `${siteUrl}/`,
-      'name': isEn ? 'Metadata Remover' : 'Remover Metadados',
+      'name': 'Remover Metadados',
+      'alternateName': 'Metadata Remover',
       'description': isEn
-        ? 'Free, 100% private online metadata remover running entirely in your browser.'
-        : 'Removedor de metadados gratuito e 100% privado direto no navegador.',
-      'inLanguage': isEn ? 'en' : 'pt-BR',
+        ? 'Free metadata removal with local file processing in your browser.'
+        : 'Remoção gratuita de metadados com processamento local de arquivos no navegador.',
+      'inLanguage': ['pt-BR', 'en'],
       'publisher': {
         '@type': 'Organization',
         '@id': `${siteUrl}/#organization`,
-        'name': isEn ? 'Metadata Remover' : 'Remover Metadados',
+        'name': 'Remover Metadados',
         'url': `${siteUrl}/`,
         'logo': {
           '@type': 'ImageObject',
@@ -138,9 +141,10 @@ const schemaData: any = {
     },
     {
       '@type': 'WebApplication',
-      '@id': isEn ? `${siteUrl}/en/#app` : `${siteUrl}/#app`,
-      'name': isEn ? 'Metadata Remover' : 'Remover Metadados',
-      'url': pageUrl,
+      '@id': `${siteUrl}/#app`,
+      'name': 'Remover Metadados',
+      'alternateName': 'Metadata Remover',
+      'url': `${siteUrl}/`,
       'applicationCategory': 'SecurityApplication',
       'operatingSystem': 'Any (Web Browser, Windows, macOS, Linux, Android, iOS)',
       'browserRequirements': 'Requires JavaScript. Requires HTML5.',
@@ -150,25 +154,25 @@ const schemaData: any = {
         'priceCurrency': isEn ? 'USD' : 'BRL',
       },
       'description': isEn
-        ? 'Free and 100% private online metadata remover. Clean EXIF data, GPS coordinates, author history, and AI credentials locally in your browser without uploading files to remote servers.'
-        : 'Removedor de metadados online gratuito e 100% privado. Permite limpar metadados de fotos, documentos, PDFs e vídeos localmente no navegador, sem envio de dados para a internet.',
+        ? 'Free metadata removal for supported image and document fields, processed locally without file uploads. Coverage and quality depend on format.'
+        : 'Remoção gratuita de campos de metadados em imagens e documentos compatíveis, com processamento local sem envio de arquivos. A cobertura e a qualidade dependem do formato.',
       'featureList': isEn
         ? [
             'Strip EXIF data and GPS geolocation from JPEG, PNG, WebP, and HEIC photos',
             'Full-screen drag and drop: release photos or files anywhere on screen to process instantly',
             'Export cleaned files in your choice of format (Original, JPG, PNG, WebP, AVIF, or all in .ZIP)',
-            'Clean author metadata and revision history from PDF and Office files (DOCX, XLSX, PPTX)',
-            'Remove AI generation parameters and C2PA Content Credentials manifests',
-            '100% in-browser processing (zero server upload) with total privacy compliance',
+            'Clear standard PDF and Office document properties (DOCX, XLSX, PPTX)',
+            'Image re-encoding and PNG metadata chunk removal; format-specific limitations apply',
+            'Local file processing without uploading files',
             'Single file or bulk download bundled as a clean .zip archive',
             'Free with no registration, no subscriptions, and no file limits',
           ]
         : [
             'Remoção de dados EXIF e geolocalização GPS em fotos JPEG, PNG, WebP e HEIC',
             'Arrastar e soltar em tela cheia: solte fotos ou arquivos em qualquer parte da tela',
-            'Escolha o formato de saída dos arquivos limpos (Original, JPG, PNG, WebP, AVIF ou Todos em .ZIP)',
-            'Limpeza de metadados de autoria e histórico em documentos PDF e Office (DOCX, XLSX, PPTX)',
-            'Processamento 100% no navegador (sem envio a servidores) com conformidade à LGPD',
+            'Escolha o formato de saída dos arquivos limpos (Saída padrão, JPG, PNG, WebP, AVIF ou Todos em .ZIP)',
+            'Limpeza de propriedades padrão de documentos PDF e Office (DOCX, XLSX, PPTX)',
+            'Processamento local no navegador sem envio de arquivos a servidores',
             'Download individual ou em lote compactado em arquivo .zip',
             'Gratuito e sem necessidade de cadastro ou instalação',
           ],
@@ -196,8 +200,8 @@ const schemaData: any = {
         ? 'How to Remove Metadata from Photos, PDFs, and Documents Online'
         : 'Como Remover Metadados de Fotos, PDFs e Documentos Online',
       'description': isEn
-        ? 'Learn how to remove EXIF data, GPS coordinates, camera specs, and author history from files locally in your browser.'
-        : 'Aprenda como limpar dados EXIF, coordenadas GPS, dados de câmera e histórico de autoria de arquivos direto no navegador.',
+        ? 'Learn how to remove EXIF data, GPS coordinates, camera specs, and supported author properties from files locally in your browser.'
+        : 'Aprenda como limpar dados EXIF, coordenadas GPS, dados de câmera e propriedades de autoria compatíveis de arquivos direto no navegador.',
       'inLanguage': isEn ? 'en' : 'pt-BR',
       'totalTime': 'PT10S',
       'step': isEn
@@ -213,14 +217,14 @@ const schemaData: any = {
               '@type': 'HowToStep',
               'position': 2,
               'name': 'Instant In-Browser Sanitization',
-              'text': 'The tool removes EXIF tags, GPS location, and author data completely inside your browser without uploading files to remote servers.',
+              'text': 'The tool removes supported EXIF tags, GPS location and author properties inside your browser without uploading files to remote servers.',
               'url': `${siteUrl}/en/#how-it-works`,
             },
             {
               '@type': 'HowToStep',
               'position': 3,
               'name': 'Choose Format & Download Clean Files',
-              'text': 'Select your preferred download format (Original, JPG, PNG, WebP, AVIF, or All Formats .ZIP) and download clean files with zero metadata.',
+              'text': 'Select the default output or JPG, PNG, WebP, AVIF, or all formats in a ZIP. Check the format-specific coverage and quality notes before sharing.',
               'url': `${siteUrl}/en/#hero-section`,
             },
           ]
@@ -236,14 +240,14 @@ const schemaData: any = {
               '@type': 'HowToStep',
               'position': 2,
               'name': 'Limpeza Automática no Navegador',
-              'text': 'A ferramenta apaga dados EXIF, GPS e histórico de autoria diretamente no seu navegador, sem envio para servidores externos.',
+              'text': 'A ferramenta apaga campos compatíveis de EXIF, GPS e autoria diretamente no seu navegador, sem envio para servidores externos.',
               'url': `${siteUrl}/#como-funciona`,
             },
             {
               '@type': 'HowToStep',
               'position': 3,
               'name': 'Escolha o Formato e Baixe com Segurança',
-              'text': 'Escolha o formato de saída desejado (Original, JPG, PNG, WebP, AVIF ou Todos em .ZIP) e baixe seus arquivos limpos e higienizados.',
+              'text': 'Escolha o formato de saída desejado (Saída padrão, JPG, PNG, WebP, AVIF ou Todos em .ZIP) e baixe seus arquivos limpos e higienizados.',
               'url': `${siteUrl}/#hero-section`,
             },
           ],
@@ -256,9 +260,21 @@ const schemaData: any = {
 const isHomepage = pageUrl === `${siteUrl}/` || pageUrl === `${siteUrl}/en/`;
 if (!isHomepage) {
   schemaData['@graph'] = schemaData['@graph'].filter(
-    (entity: { '@type': string }) => entity['@type'] !== 'FAQPage' && entity['@type'] !== 'HowTo',
+    (entity: { '@type': string }) => !['FAQPage', 'HowTo', 'WebApplication'].includes(entity['@type']),
   );
 }
+schemaData['@graph'].push({
+  '@type': Astro.props.pageType || 'WebPage',
+  '@id': `${pageUrl}#webpage`,
+  url: pageUrl,
+  name: title,
+  description,
+  inLanguage: currentLang,
+  isPartOf: { '@id': `${siteUrl}/#website` },
+  ...(isHomepage || Astro.props.mainEntityId
+    ? { mainEntity: { '@id': Astro.props.mainEntityId || `${siteUrl}/#app` } }
+    : {}),
+});
 ---
 
 <!DOCTYPE html>

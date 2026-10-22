@@ -38,7 +38,7 @@ Se você não quer navegar por menus complexos do sistema operacional ou precisa
 | **Windows 11 / 10** | Botão direito na foto > **Propriedades > aba Detalhes** | Tabela completa de propriedades de câmera e coordenadas GPS |
 | **Mac (macOS)** | Abrir no **Pré-visualização** > atalho `Command + I` | Janela de Inspetor com abas dedicadas para Exif, GPS e TIFF |
 
-> 💡 **Privacidade e Praticidade Exclusivas**: Nosso visualizador funciona 100% no seu próprio navegador via JavaScript local e aceita que você **arraste e solte fotos em qualquer parte da tela** (sem precisar mirar em uma caixa minúscula). A imagem nunca sai do seu dispositivo e nenhum dado é transmitido para servidores remotos, garantindo total conformidade com a LGPD.
+> 💡 **Privacidade e Praticidade Exclusivas**: Nosso visualizador funciona 100% no seu próprio navegador via JavaScript local e aceita que você **arraste e solte fotos em qualquer parte da tela** (sem precisar mirar em uma caixa minúscula). O arquivo não é enviado para processamento remoto. O site usa Google Analytics e fontes externas; mapas só compartilham coordenadas após sua escolha. Consulte a [política de privacidade](/privacidade/).
 
 ---
 
@@ -215,7 +215,7 @@ Se você nunca concedeu permissão de localização para o aplicativo de câmera
 Tirar uma captura de tela (print) da tela do celular ou computador cria um arquivo de imagem totalmente novo gerado pelo subsistema gráfico do aparelho. Esse print não herda o EXIF da foto original.
 
 ### 5. Arquivo Higienizado Previamente
-A imagem pode já ter sido processada por uma ferramenta de limpeza de metadados, como o **[Remover Metadados Online](/)**, que zera completamente todos os campos técnicos.
+A imagem pode já ter sido processada por uma ferramenta de limpeza de metadados, como o **[Remover Metadados Online](/)**, que remove campos compatíveis. A ausência de dados no visualizador não comprova anonimização completa.
 
 ---
 
@@ -253,14 +253,14 @@ No **Remover Metadados**, a tela inteira é uma zona ativa de recebimento:
 ### 2. Escolha o Formato de Download no Seu Dispositivo (Original, JPG, PNG, WebP, AVIF ou Todos em .ZIP)
 Outro diferencial decisivo que nos destaca dos concorrentes é a flexibilidade de formatos na hora de baixar a foto limpa:
 
-- **Original (Padrão Selecionado Automaticamente)**: Mantém o formato nativo da sua foto (ex.: JPEG continua JPEG, PNG continua PNG, WebP continua WebP), limpando os metadados com zero recompressão.
+- **Saída padrão por tipo de arquivo**: JPEG e WebP são recodificados com possível perda de qualidade. PNG normalmente mantém os dados IDAT comprimidos. HEIC vira JPEG; GIF, BMP e TIFF viram PNG com um quadro/página. Veja a [cobertura, os testes e as limitações](/verificacao/).
 - **JPG (.jpg)**: Converte para o padrão de compatibilidade universal, aceito por qualquer órgão público, sistema judicial, cartório digital ou rede social.
 - **PNG (.png)**: Ideal para capturas de tela e imagens com texto, preservando bordas nítidas com compressão sem perda de qualidade (*lossless*).
 - **WebP (.webp)**: Formato moderno desenvolvido pelo Google que economiza até 35% de tamanho em relação ao JPEG com qualidade visual idêntica, acelerando páginas web e e-commerces.
 - **AVIF (.avif)**: O padrão de última geração em eficiência de imagem, alcançando a maior taxa de compressão do mercado com suporte a profundidade de cor de 10 bits e HDR.
 - **Todos os formatos (.zip)**: Baixe com um só clique um arquivo ZIP compactado contendo a imagem limpa exportada em todos os formatos citados acima simultaneamente.
 
-> 🔒 **100% no seu dispositivo (Zero Upload a Servidores)**: Todas as operações de conversão de formato, geração de arquivos ZIP e higienização binária são executadas pelo processador do seu próprio dispositivo, via WebAssembly e Canvas local. Seus arquivos nunca trafegam pela internet e nunca são salvos em servidores na nuvem, garantindo total conformidade com a LGPD e privacidade rigorosa.
+> 🔒 **100% no seu dispositivo (Zero Upload a Servidores)**: Todas as operações de conversão de formato, geração de arquivos ZIP e higienização binária são executadas pelo processador do seu próprio dispositivo, via WebAssembly e Canvas local. Seus arquivos nunca trafegam pela internet e nunca são salvos em servidores na nuvem, sem upload do conteúdo dos arquivos. Isso não garante anonimização completa nem elimina as conexões normais do site com analytics e provedores externos.
 
 ---
 
@@ -272,4 +272,4 @@ Saber inspecionar os metadados das suas fotos dá a você controle real sobre a 
 - **[Metadados Ocultos em PDFs: Riscos Jurídicos e LGPD](/blog/metadados-em-pdf-riscos-e-como-remover/)**: Descubra como contratos e documentos corporativos vazam nomes de autores, históricos e pastas internas da sua empresa.
 - **[Guia Prático para Remover Metadados de Imagem](/guias/remover-metadados-de-imagem/)**: Instruções detalhadas para higienizar JPEG, PNG, WebP e HEIC em lote.
 
-Use agora o **[Visualizador de Metadados](/ver-metadados/)** para checar seus arquivos ou acesse a **[página inicial do removedor](/)** para limpar suas imagens com total privacidade.
+Use agora o **[Visualizador de Metadados](/ver-metadados/)** para checar seus arquivos ou acesse a **[página inicial do removedor](/)** para limpar suas imagens com processamento local de arquivos.

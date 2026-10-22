@@ -4,7 +4,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
 const title = 'Como Remover Metadados de Imagem e Foto | EXIF e GPS';
-const description = 'Aprenda a remover dados EXIF, coordenadas de GPS e informações da câmera de fotos JPEG, PNG, WebP e HEIC no navegador com 100% de privacidade e grátis.';
+const description = 'Aprenda a remover dados EXIF, coordenadas de GPS e informações da câmera de fotos JPEG, PNG, WebP e HEIC no navegador com processamento local de arquivos e grátis.';
 const canonicalUrl = 'https://remover-metadados.com/guias/remover-metadados-de-imagem/';
 
 const faqItems = [
@@ -14,11 +14,11 @@ const faqItems = [
   },
   {
     question: 'Remover EXIF apaga a localização geográfica da foto?',
-    answer: 'Sim. A ferramenta apaga todas as tags de geolocalização GPS (latitude, longitude, altitude e direção da bússola) gravadas pelo sensor do aparelho, impossibilitando que terceiros descubram onde a fotografia foi capturada.',
+    answer: 'A ferramenta remove os campos GPS nos formatos e caminhos de processamento compatíveis. Isso não impede inferência do local pelo conteúdo visual ou por dados externos. Verifique a cópia baixada.',
   },
   {
     question: 'A imagem perde resolução ou qualidade após a remoção?',
-    answer: 'Não para o olho humano. Em formatos de vetor ou blocos estruturados como PNG, os metadados são retirados sem tocar nos pixels. Em JPEG e WebP, o arquivo é regravado na resolução nativa máxima sem compressão agressiva, mantendo nitidez e cores fiéis.',
+    answer: 'Depende do formato. PNG normalmente preserva os dados comprimidos IDAT, mas remove o perfil ICC. JPEG, WebP e AVIF são recodificados com possível perda de qualidade e mudanças de cor. HEIC vira JPEG; GIF, BMP e TIFF viram PNG com um quadro ou página. Consulte os testes e limitações.',
   },
   {
     question: 'Tirar print (captura de tela) é suficiente para apagar metadados?',
@@ -26,11 +26,11 @@ const faqItems = [
   },
   {
     question: 'Minhas fotografias são enviadas para servidores na internet?',
-    answer: 'Nunca. Nossa tecnologia funciona de maneira 100% local através do seu navegador. As fotos são processadas na memória RAM do seu aparelho e o download é gerado diretamente para você, sem tráfego de rede ou armazenamento externo.',
+    answer: 'Nunca. Nossa tecnologia funciona de maneira 100% local através do seu navegador. As fotos são processadas na memória RAM do seu aparelho e o download é gerado diretamente para você, sem envio do conteúdo das fotos. O site também usa analytics e fontes externas; consulte a política de privacidade.',
   },
   {
     question: 'Posso escolher o formato da imagem limpa e arrastar para qualquer lugar da tela?',
-    answer: 'Sim! Você pode soltar suas imagens em qualquer ponto da janela (sem se preocupar com caixas restritas). Além disso, você pode manter o formato original da foto ou convertê-la para JPG, PNG, WebP, AVIF ou baixar todas as variações em um arquivo ZIP limpo, tudo 100% no seu navegador.',
+    answer: 'Sim! Você pode soltar suas imagens em qualquer ponto da janela (sem se preocupar com caixas restritas). Além disso, você pode usar a saída padrão de cada tipo de arquivo ou convertê-la para JPG, PNG, WebP, AVIF ou baixar todas as variações em um arquivo ZIP limpo, tudo 100% no seu navegador.',
   },
 ];
 
@@ -47,6 +47,8 @@ const breadcrumbSchema = {
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'TechArticle',
+  '@id': `${canonicalUrl}#article`,
+  'mainEntityOfPage': { '@id': `${canonicalUrl}#webpage` },
   'headline': title,
   'description': description,
   'url': canonicalUrl,
@@ -99,7 +101,7 @@ const howToSchema = {
       '@type': 'HowToStep',
       'position': 4,
       'name': 'Escolha o formato e baixe suas imagens limpas',
-      'text': 'Mantenha o formato original ou escolha JPG, PNG, WebP, AVIF ou baixe todas reunidas em um arquivo ZIP protegido.',
+      'text': 'Use a saída padrão de cada tipo de arquivo ou escolha JPG, PNG, WebP, AVIF ou baixe todas reunidas em um arquivo ZIP protegido.',
       'url': 'https://remover-metadados.com/#hero-section',
     },
   ],
@@ -124,6 +126,7 @@ const faqSchema = {
   description={description}
   lang="pt-BR"
   canonicalUrl={canonicalUrl}
+  mainEntityId={`${canonicalUrl}#article`}
   includeHreflang={false}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
@@ -132,6 +135,7 @@ const faqSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
   <Header lang="pt-BR" ptUrl="/guias/remover-metadados-de-imagem/" enUrl="/en/" isSubpage={true} />
+  <p class="page-wrap" style="padding-top: 1rem; font-size: 0.85rem;"><a href="/verificacao/">Veja a cobertura real por formato, os testes e as limitações antes de compartilhar arquivos.</a></p>
 
   <main class="guide-main">
     <div class="page-wrap guide-container">
@@ -242,7 +246,7 @@ const faqSchema = {
                 <div class="terminal-header">
                   <span class="term-dot dot-green" aria-hidden="true"></span>
                   <span class="term-title">foto_higienizada.jpg [LIMPO]</span>
-                  <span class="term-badge-ok">100% HIGIENIZADO</span>
+                  <span class="term-badge-ok">EXEMPLO ILUSTRATIVO</span>
                 </div>
                 <div class="terminal-body">
                   <div class="term-line safe-line"><span>GPS Latitude / Longitude:</span> [REMOVIDO COMPLETAMENTE]</div>
@@ -250,7 +254,7 @@ const faqSchema = {
                   <div class="term-line safe-line"><span>Lente e Configurações:</span> [APAGADOS]</div>
                   <div class="term-line safe-line"><span>Número de Série:</span> [HIGIENIZADO]</div>
                   <div class="term-line safe-line"><span>Data & Timestamp:</span> [ZERADOS]</div>
-                  <div class="term-line safe-line"><span>Qualidade & Resolução:</span> 100% Preservada para visualização</div>
+                  <div class="term-line safe-line"><span>Qualidade:</span> Depende do formato e da recodificação</div>
                 </div>
               </div>
             </div>
@@ -371,31 +375,31 @@ const faqSchema = {
                     <td><strong>JPEG / JPG</strong></td>
                     <td><code>.jpg</code>, <code>.jpeg</code></td>
                     <td>EXIF, GPS, IPTC, XMP e miniatura interna</td>
-                    <td><span class="table-badge-ok">Alta Fidelidade</span></td>
+                    <td><span class="table-badge-ok">Recodificação com possível perda</span></td>
                   </tr>
                   <tr>
                     <td><strong>PNG</strong></td>
                     <td><code>.png</code></td>
-                    <td>Blocos eXIf, tEXt, zTXt, iTXt, pHYs</td>
-                    <td><span class="table-badge-ok">Sem perda de qualidade (100% fiel)</span></td>
+                    <td>Blocos eXIf, tEXt, zTXt e iTXt; pHYs é preservado</td>
+                    <td><span class="table-badge-ok">Dados IDAT preservados; perfil ICC removido</span></td>
                   </tr>
                   <tr>
                     <td><strong>WebP</strong></td>
                     <td><code>.webp</code></td>
                     <td>Chunks EXIF e XMP embutidos no container RIFF</td>
-                    <td><span class="table-badge-ok">Alta Fidelidade</span></td>
+                    <td><span class="table-badge-ok">Recodificação com possível perda</span></td>
                   </tr>
                   <tr>
                     <td><strong>Apple HEIC / HEIF</strong></td>
                     <td><code>.heic</code>, <code>.heif</code></td>
                     <td>Metadados de câmera iOS, Live Photos, GPS</td>
-                    <td><span class="table-badge-ok">Convertido / Limpo</span></td>
+                    <td><span class="table-badge-ok">Convertido para JPEG com perdas</span></td>
                   </tr>
                   <tr>
                     <td><strong>GIF</strong></td>
                     <td><code>.gif</code></td>
                     <td>Comentários de aplicação e autor</td>
-                    <td><span class="table-badge-ok">Sem Perda</span></td>
+                    <td><span class="table-badge-ok">PNG estático; animação perdida</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -460,7 +464,7 @@ const faqSchema = {
                 <div class="rel-card-info">
                   <span class="rel-tag">DOCUMENTOS & PDF</span>
                   <h3 class="rel-title">Remover metadados de PDF</h3>
-                  <p class="rel-desc">Elimine nomes de autores, histórico de revisões e dados de empresas em documentos PDF.</p>
+                  <p class="rel-desc">Limpe propriedades padrão de autoria e confira as limitações para documentos PDF.</p>
                 </div>
               </a>
 
@@ -533,7 +537,7 @@ const faqSchema = {
 
       <!-- Bottom High-Impact Callout -->
       <section class="guide-bottom-cta">
-        <div class="bottom-cta-badge">PRIVACIDADE ABSOLUTA</div>
+        <div class="bottom-cta-badge">PROCESSAMENTO LOCAL</div>
         <h2>Pronto para postar suas fotos com total segurança?</h2>
         <p>Arraste suas imagens e gere cópias higienizadas em segundos no seu navegador.</p>
         <div class="bottom-cta-btns">

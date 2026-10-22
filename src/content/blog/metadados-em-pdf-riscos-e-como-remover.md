@@ -86,7 +86,7 @@ Para assegurar que seus documentos estejam verdadeiramente limpos antes do envio
    - Dicionários `/Author`, `/Creator`, `/Producer`, `/Keywords`, `/Subject`.
    - Datas de criação `/CreationDate` e modificação `/ModDate`.
    - Fluxos de metadados XML (XMP).
-3. **Sem Envio para a Nuvem**: Como o processamento acontece **100% no seu próprio navegador via JavaScript**, seus contratos confidenciais e petições jurídicas nunca trafegam pela internet e não são gravados em nenhum servidor externo, respeitando seus acordos de confidencialidade (NDAs) e a LGPD.
+3. **Sem Envio para a Nuvem**: Como o processamento acontece **100% no seu próprio navegador via JavaScript**, seus contratos confidenciais e petições jurídicas nunca trafegam pela internet e não são gravados em nenhum servidor externo, sem upload do arquivo. A ferramenta não garante remoção de todo dado pessoal: propriedades personalizadas, bytes XMP desvinculados, anexos e comentários podem permanecer. Veja os [testes e limitações](/verificacao/).
 
 Acesse a **[ferramenta na página inicial](/)** ou a seção de **[Guias de PDF](/guias/remover-metadados-pdf/)** para limpar seus arquivos PDF gratuitamente em poucos segundos. Se seu escritório ou empresa também anexa fotografias e vistorias em relatórios, confira também nosso **[Guia Completo sobre Metadados EXIF e Coordenadas de GPS](/blog/o-que-sao-metadados-exif-guia-completo/)**.
 

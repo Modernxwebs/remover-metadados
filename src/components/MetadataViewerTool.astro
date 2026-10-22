@@ -1,4 +1,5 @@
 ---
+import OutputNotes from './OutputNotes.astro';
 // MetadataViewerTool.astro — Neo-Brutalist 100% Client-Side Metadata Viewer (supports pt-BR and en)
 export interface Props {
   lang?: string;
@@ -9,7 +10,7 @@ const isEn = currentLocale === 'en';
 
 const t = isEn
   ? {
-      privacyBadge: "100% PRIVATE · LOCAL IN-BROWSER INSPECTION",
+      privacyBadge: "LOCAL INSPECTION · NO FILE UPLOADS",
       dropTitle: "Drag & drop photos or documents here",
       dropDesc: "or click to browse files from your computer or phone",
       browseBtn: "Choose Files",
@@ -28,7 +29,7 @@ const t = isEn
       reDownloadBtnText: "Download Clean File Again",
       cleanFormatLabel: "Format",
       cleanFormatTooltip: "Choose format for cleaned file",
-      cleanFormatOriginal: "Original (Default)",
+      cleanFormatOriginal: "Default output (by file type)",
       cleanFormatAll: "All formats (.zip)",
       copyJson: "Copy JSON",
       copiedJson: "✓ JSON Copied!",
@@ -56,7 +57,9 @@ const t = isEn
       copyCoords: "📋 Copy Coordinates",
       copiedCoords: "✓ Coordinates Copied!",
       mapTitle: "Location Preview on Map",
-      mapTag: "OpenStreetMap (Zero Tracking)",
+      mapTag: "Optional external connection",
+      mapSharing: "Loading this map sends these GPS coordinates and your IP address to OpenStreetMap. Opening a map in a new tab shares them with the selected provider. Maps stay off until you choose to load or open one.",
+      loadMap: "Share coordinates & load OpenStreetMap",
       docSectionTitle: "Document Metadata & Properties",
       docSectionSub: "Author identity, creating application, revision cycles, and editing history.",
       mediaSectionTitle: "Media File Tags & Attributes",
@@ -81,7 +84,7 @@ const t = isEn
       globalDropFormatsHint: "Photos, Images, PDFs, Documents, Videos & Audio · 100% Client-Side",
     }
   : {
-      privacyBadge: "100% PRIVADO · LEITURA LOCAL NO NAVEGADOR",
+      privacyBadge: "LEITURA LOCAL · SEM ENVIO DE ARQUIVOS",
       dropTitle: "Arraste e solte fotos ou documentos aqui",
       dropDesc: "ou clique para selecionar arquivos do seu celular ou computador",
       browseBtn: "Escolher Arquivos",
@@ -89,7 +92,7 @@ const t = isEn
       sampleHint: "Testar visualizador com foto de exemplo contendo GPS e EXIF",
       formatsNote: "Suporta fotos (JPG, PNG, HEIC, WebP, TIFF), documentos (PDF, DOCX, XLSX, PPTX) e mídias (MP4, MP3)",
       loadingText: "Lendo metadados localmente no navegador...",
-      loadingSub: "Nenhum dado sai do seu dispositivo.",
+      loadingSub: "Seus arquivos são lidos no próprio dispositivo.",
       filesLoadedPlural: "arquivos carregados",
       filesLoadedSingular: "arquivo carregado",
       addMore: "+ Adicionar Mais",
@@ -100,7 +103,7 @@ const t = isEn
       reDownloadBtnText: "Baixar Novamente Arquivo Limpo",
       cleanFormatLabel: "Formato",
       cleanFormatTooltip: "Escolha o formato do arquivo limpo",
-      cleanFormatOriginal: "Original (Padrão)",
+      cleanFormatOriginal: "Saída padrão (por tipo de arquivo)",
       cleanFormatAll: "Todos os formatos (.zip)",
       copyJson: "Copiar JSON",
       copiedJson: "✓ JSON Copiado!",
@@ -128,7 +131,9 @@ const t = isEn
       copyCoords: "📋 Copiar Coordenadas",
       copiedCoords: "✓ Coordenadas Copiadas!",
       mapTitle: "Visualização do Local no Mapa",
-      mapTag: "OpenStreetMap (Zero Rastreamento)",
+      mapTag: "Conexão externa opcional",
+      mapSharing: "Carregar este mapa envia estas coordenadas GPS e seu endereço IP ao OpenStreetMap. Abrir um mapa em outra aba compartilha esses dados com o provedor escolhido. Os mapas ficam desativados até você escolher carregar ou abrir um deles.",
+      loadMap: "Compartilhar coordenadas e carregar OpenStreetMap",
       docSectionTitle: "Propriedades e Metadados do Documento",
       docSectionSub: "Informações de autoria corporativa, software gerador, histórico de edição e revisões.",
       mediaSectionTitle: "Tags e Informações do Arquivo de Mídia",
@@ -342,6 +347,8 @@ const t = isEn
       </div>
     </div>
 
+    <OutputNotes lang={currentLocale} />
+
     <!-- ── Tab Navigation ──────────────────────────────────── -->
     <div class="viewer-tabs-bar" role="tablist" aria-label="Metadata tabs">
       <button id="tab-btn-raw" class="viewer-tab-btn active" role="tab" aria-selected="true" data-tab="tab-raw">
@@ -460,12 +467,12 @@ const t = isEn
 
             <!-- External Map Buttons -->
             <div class="gps-buttons-row">
-              <a id="btn-open-gmaps" class="btn-main gps-ext-btn" href="#" target="_blank" rel="noopener noreferrer">
+              <button id="btn-open-gmaps" class="btn-main gps-ext-btn" type="button" aria-describedby="map-sharing-notice">
                 <span>{t.openGoogleMaps}</span>
-              </a>
-              <a id="btn-open-osm" class="btn-secondary gps-ext-btn" href="#" target="_blank" rel="noopener noreferrer">
+              </button>
+              <button id="btn-open-osm" class="btn-secondary gps-ext-btn" type="button" aria-describedby="map-sharing-notice">
                 <span>{t.openOsm}</span>
-              </a>
+              </button>
               <button id="btn-copy-coords" class="btn-secondary gps-ext-btn" type="button">
                 <span>{t.copyCoords}</span>
               </button>
@@ -478,12 +485,16 @@ const t = isEn
               <span class="map-frame-title">{t.mapTitle}</span>
               <span class="map-frame-tag">{t.mapTag}</span>
             </div>
+            <div id="gps-map-consent" class="map-consent">
+              <p id="map-sharing-notice">{t.mapSharing}</p>
+              <button id="btn-load-map" class="btn-secondary gps-ext-btn" type="button" aria-describedby="map-sharing-notice">{t.loadMap}</button>
+            </div>
             <iframe
               id="gps-map-iframe"
               class="gps-map-iframe"
-              title="Map showing coordinates from image"
-              loading="lazy"
-              src="about:blank"
+              title={t.mapTitle}
+              referrerpolicy="no-referrer"
+              hidden
             ></iframe>
           </div>
         </div>
@@ -1405,6 +1416,11 @@ const t = isEn
     background: #e5e7eb;
   }
 
+  .gps-map-iframe[hidden] { display: none; }
+  #btn-load-map[hidden] { display: none; }
+  .map-consent { padding: 1rem; }
+  .map-consent p { margin: 0 0 1rem; line-height: 1.6; color: var(--text-muted); }
+
   /* ── Raw Tags Panel (Spacious & Unsqueezed) ──────────────── */
   .raw-search-toolbar {
     display: flex;
@@ -1787,6 +1803,41 @@ const t = isEn
   const btnOpenOsm     = document.getElementById('btn-open-osm');
   const btnCopyCoords  = document.getElementById('btn-copy-coords');
   const gpsMapIframe   = document.getElementById('gps-map-iframe');
+  const loadMapBtn     = document.getElementById('btn-load-map');
+
+  function resetMap() {
+    gpsMapIframe?.removeAttribute('src');
+    if (gpsMapIframe) gpsMapIframe.hidden = true;
+    if (loadMapBtn) loadMapBtn.hidden = false;
+  }
+
+  // Consent applies only to the currently selected file. Do not persist it.
+  loadMapBtn?.addEventListener('click', () => {
+    const gps = loadedItems[activeIndex]?.result?.gps;
+    if (!gps || !gpsMapIframe) return;
+    const { latitude: lat, longitude: lon } = gps;
+    const delta = 0.006;
+    const params = new URLSearchParams({
+      bbox: `${lon - delta},${lat - delta},${lon + delta},${lat + delta}`,
+      layer: 'mapnik', marker: `${lat},${lon}`,
+    });
+    gpsMapIframe.src = `https://www.openstreetmap.org/export/embed.html?${params}`;
+    gpsMapIframe.hidden = false;
+    loadMapBtn.hidden = true;
+  });
+
+  // Buttons avoid analytics' automatic outbound-link URL collection of GPS data.
+  btnOpenGmaps?.addEventListener('click', () => openExternalMap('google'));
+  btnOpenOsm?.addEventListener('click', () => openExternalMap('osm'));
+  function openExternalMap(provider) {
+    const gps = loadedItems[activeIndex]?.result?.gps;
+    if (!gps) return;
+    const { latitude: lat, longitude: lon } = gps;
+    const url = provider === 'google'
+      ? `https://www.google.com/maps?q=${lat},${lon}`
+      : `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=16/${lat}/${lon}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
 
   // Raw search elements
   const rawSearchInput = document.getElementById('raw-search-input');
@@ -1911,6 +1962,7 @@ const t = isEn
   });
 
   clearAllBtn?.addEventListener('click', () => {
+    resetMap();
     loadedItems.forEach(item => {
       if (item.thumbUrl) URL.revokeObjectURL(item.thumbUrl);
     });
@@ -2024,6 +2076,7 @@ const t = isEn
 
   // ── Render Active Item ────────────────────────────────────
   function renderActiveItem() {
+    resetMap();
     const item = loadedItems[activeIndex];
     if (!item) return;
 
@@ -2138,17 +2191,6 @@ const t = isEn
       if (gpsLonDms) gpsLonDms.textContent = res.gps.dmsLon;
       if (gpsAltVal) gpsAltVal.textContent = res.gps.altitude ? `${res.gps.altitude} m` : '—';
 
-      if (btnOpenGmaps) btnOpenGmaps.href = res.gps.googleMapsUrl;
-      if (btnOpenOsm) btnOpenOsm.href = res.gps.osmUrl;
-
-      // Embed map
-      if (gpsMapIframe) {
-        const lat = res.gps.latitude;
-        const lon = res.gps.longitude;
-        const delta = 0.006;
-        const bbox = `${lon - delta}%2C${lat - delta}%2C${lon + delta}%2C${lat + delta}`;
-        gpsMapIframe.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat}%2C${lon}`;
-      }
     }
 
     // Populate Raw Tags Table
@@ -2372,7 +2414,7 @@ const t = isEn
       report += `Latitude: ${res.gps.latitude} (${res.gps.dmsLat})\n`;
       report += `Longitude: ${res.gps.longitude} (${res.gps.dmsLon})\n`;
       report += `Altitude: ${res.gps.altitude || 'N/A'}\n`;
-      report += `Google Maps: ${res.gps.googleMapsUrl}\n\n`;
+      report += `\n`;
     }
 
     report += `${t.reportGeneral}\n`;

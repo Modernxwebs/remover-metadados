@@ -13,7 +13,7 @@ export const faqsEn = [
   },
   {
     q: "Does removing EXIF metadata reduce photo or video quality?",
-    a: "No. Metadata removal operates strictly on the header and metadata blocks of the file. The image pixel matrix, visual resolution, color depth, and audio streams remain 100% untouched. You get identical visual quality with zero personal tracking data attached.",
+    a: "It depends on the format. PNG normally keeps compressed pixel data while removing metadata chunks. JPEG and WebP are re-encoded at quality 0.95; AVIF uses 0.85 and may fall back to WebP. Pixels and colors can change. HEIC becomes JPEG; GIF, BMP and TIFF become PNG with one frame or page. Format conversions also re-encode the image. Video streams are not re-compressed, but metadata coverage is limited. See the verification page and review downloaded copies.",
   },
   {
     q: "Can I remove metadata from multiple files in bulk?",
@@ -21,15 +21,15 @@ export const faqsEn = [
   },
   {
     q: "Does this tool remove AI metadata and C2PA Content Credentials?",
-    a: "Yes. When you generate images using AI tools like Midjourney, DALL-E, Stable Diffusion, or ChatGPT, generator parameters, prompt text, and C2PA Content Credentials manifests are embedded in the file headers. Our metadata cleaner re-encodes images through a clean HTML5 canvas to strip all non-visual metadata packets, including AI provenance tags.",
+    a: "Re-encoding images and removing PNG text or metadata chunks can remove embedded prompts and provenance data in those containers. We have not verified every generator or C2PA variant. Visible or invisible watermarks, steganography and external provenance records are outside this tool’s scope. No universal AI metadata removal guarantee is made.",
   },
   {
     q: "Is it safe to remove metadata from confidential legal, financial, or medical PDFs here?",
-    a: "Yes, it is 100% safe. Because all processing executes locally on your device with zero cloud transmission, your sensitive legal contracts, proprietary blueprints, financial records, and medical PDFs never touch a server or third-party database.",
+    a: "Files are processed locally without uploads. This does not guarantee complete anonymization: comments, tracked changes, attachments and visible personal information can remain in documents. The website uses Google Analytics and Google Fonts; external maps receive coordinates only after your choice. Review the privacy policy and format-specific tests before sharing confidential documents.",
   },
   {
     q: "Can I drop files anywhere on the screen and choose my download format?",
-    a: "Yes! You can drop photos, PDFs, or documents anywhere on the screen (no need to aim inside a tiny box). In addition, you can choose whether to download your clean file in its original format or convert it to JPG, PNG, WebP, AVIF, or download all formats packaged in a single ZIP. All processing and conversion happens 100% on your device with zero server uploads.",
+    a: "Yes! You can drop photos, PDFs, or documents anywhere on the screen (no need to aim inside a tiny box). In addition, you can choose whether to download your clean file with the default output for its file type or convert it to JPG, PNG, WebP, AVIF, or download all formats packaged in a single ZIP. All processing and conversion happens 100% on your device with zero server uploads.",
   },
   {
     q: "Is Metadata Remover completely free, or is registration required?",

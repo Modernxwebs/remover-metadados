@@ -37,8 +37,8 @@ const contactUrl = isEn ? '/en/contact/' : '/contato/';
 
         <p class="footer-description">
           {isEn
-            ? '100% private, client-side metadata sanitization for photos, PDFs, and office documents. Your files never leave your device.'
-            : 'Removedor de metadados 100% privado e local para fotos, PDFs e documentos. Seus arquivos nunca saem do seu computador ou celular.'}
+            ? 'Local metadata removal for photos, PDFs and documents, without file uploads. See coverage and privacy details.'
+            : 'Remoção local de metadados de fotos, PDFs e documentos, sem envio de arquivos. Consulte a cobertura e a política de privacidade.'}
         </p>
 
         <div class="footer-brand-badges">
@@ -86,6 +86,7 @@ const contactUrl = isEn ? '/en/contact/' : '/contato/';
         <h3 class="footer-heading">{isEn ? 'Legal & Privacy' : 'Legal & Privacidade'}</h3>
         <ul class="footer-link-list">
           <li><a href={privacyUrl} class="footer-link">{isEn ? 'Privacy Policy' : 'Política de Privacidade'}</a></li>
+          <li><a href={isEn ? '/en/verification/' : '/verificacao/'} class="footer-link">{isEn ? 'Tests & Limitations' : 'Testes e Limitações'}</a></li>
           <li><a href={termsUrl} class="footer-link">{isEn ? 'Terms & Conditions' : 'Termos de Uso'}</a></li>
         </ul>
       </div>
@@ -108,13 +109,13 @@ const contactUrl = isEn ? '/en/contact/' : '/contato/';
         <span class="copyright-tag">&copy; {year} remover-metadados.com</span>
         <span class="footer-subtext">
           {isEn
-            ? 'All rights reserved. 100% Client-Side Private Metadata Cleaner.'
+            ? 'All rights reserved. Local file processing without uploads.'
             : 'Todos os direitos reservados. Limpeza 100% local no navegador.'}
         </span>
       </div>
       <div class="footer-bottom-right">
         <span class="footer-pill-notice">
-          {isEn ? '🔒 No Tracking Cookies • No Server Logs' : '🔒 Sem Cookies de Rastreamento • Sem Logs'}
+          {isEn ? '🔒 Local Files • Optional Maps' : '🔒 Arquivos Locais • Mapas Opcionais'}
         </span>
       </div>
     </div>

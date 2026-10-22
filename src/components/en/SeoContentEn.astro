@@ -60,7 +60,7 @@
         Most online tools claiming to <strong>remove metadata from photos or PDFs</strong> force you to upload confidential files to third-party cloud servers. This introduces substantial security vulnerabilities: you cannot verify who inspects the server, where files are stored, or whether permanent copies are retained for surveillance or ad targeting.
       </p>
       <p class="seo-text" style="margin-top: 0.85rem;">
-        Our <strong>metadata remover</strong> operates on an entirely different privacy paradigm. Utilizing high-performance client-side Web APIs (HTML5 Canvas pixel sanitization and in-memory binary sanitization), all EXIF stripping, PDF trailer reconstruction, and document sanitization executes <strong>100% locally inside your browser</strong>. Your files never leave your device, never transmit across external networks, and work completely offline once the page is loaded.
+        Our <strong>metadata remover</strong> operates on an entirely different privacy paradigm. Utilizing high-performance client-side Web APIs (HTML5 Canvas pixel sanitization and in-memory binary sanitization), all EXIF stripping, PDF trailer reconstruction, and document sanitization executes <strong>100% locally inside your browser</strong>. Your files never leave your device, never transmit across external networks, and are processed locally. Processing libraries and codecs may load on demand; the website also connects to analytics and external fonts.
       </p>
     </div>
 
@@ -91,7 +91,7 @@
           <div class="format-seo-tag">History & AI</div>
           <h4 class="format-seo-heading">Revisions & AI Credentials</h4>
           <p class="format-seo-desc">
-            Draft revision histories, deleted comments, internal drive paths, and embedded C2PA Content Credentials or AI generation prompts (Midjourney/DALL-E).
+            Standard document properties are cleared. Comments, tracked changes and embedded content remain. AI prompt and provenance removal varies by container and is not universally verified.
           </p>
         </div>
       </div>
@@ -110,7 +110,7 @@
           <strong style="color: var(--text);">1. Drag & drop your files:</strong> Drop photos (JPEG, PNG, WebP, HEIC), documents (PDF, DOCX, XLSX, PPTX), or media directly into the drop zone above. There are no file count limits or hidden quotas.
         </li>
         <li style="margin-bottom: 0.65rem;">
-          <strong style="color: var(--text);">2. Instant local processing:</strong> The tool immediately analyzes binary headers in your browser memory and removes all EXIF, XMP, GPS, and author metadata without quality loss.
+          <strong style="color: var(--text);">2. Instant local processing:</strong> The tool immediately analyzes binary headers in your browser memory and removes supported metadata fields. Image re-encoding can change pixels and quality; review the format-specific notes.
         </li>
         <li>
           <strong style="color: var(--text);">3. Download your clean files:</strong> Save cleaned files one-by-one or click <em>Download all (.zip)</em> to receive a single, clean ZIP archive ready for secure sharing.

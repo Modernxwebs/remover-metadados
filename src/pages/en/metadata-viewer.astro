@@ -6,7 +6,7 @@ import Footer from '../../components/Footer.astro';
 import MetadataViewerTool from '../../components/MetadataViewerTool.astro';
 
 const title = 'Metadata Viewer Online — View EXIF Data, GPS Location & Hidden Properties Free';
-const description = 'Inspect EXIF metadata, GPS coordinates on map, camera model, author, and edit history from photos, PDFs, and documents free with 100% in-browser privacy.';
+const description = 'Inspect EXIF metadata, GPS coordinates on map, camera model, author and document properties from photos, PDFs, and documents free locally without file uploads. Maps are optional.';
 const canonicalUrl = 'https://remover-metadados.com/en/metadata-viewer/';
 const alternatePt = 'https://remover-metadados.com/ver-metadados/';
 const alternateEn = 'https://remover-metadados.com/en/metadata-viewer/';
@@ -15,15 +15,15 @@ const alternateEn = 'https://remover-metadados.com/en/metadata-viewer/';
 const viewerFaqsEn = [
   {
     q: 'What is an online metadata viewer?',
-    a: 'An online metadata viewer is a privacy utility that analyzes digital files (photos like JPEG, PNG, HEIC, documents like PDF and Word, audio, and video) and reveals all hidden data recorded inside them — including precise GPS coordinates, camera specs (aperture, shutter speed, ISO), author names, and revision history.',
+    a: 'An online metadata viewer is a privacy utility that analyzes digital files (photos like JPEG, PNG, HEIC, documents like PDF and Word, audio, and video) and reveals supported hidden fields — including precise GPS coordinates, camera specs (aperture, shutter speed, ISO), author names, and revision properties.',
   },
   {
     q: 'Are my files uploaded to remote servers or stored in the cloud?',
-    a: 'No! All processing runs 100% locally inside your web browser using client-side JavaScript, File APIs, and WebAssembly. No files, bytes, or personal metadata ever leave your computer or phone. Your data remains strictly confidential with zero server uploads.',
+    a: 'No! All processing runs 100% locally inside your web browser using client-side JavaScript, File APIs, and WebAssembly. Files are not uploaded. The website uses Google Analytics and Google Fonts. External maps receive coordinates and your IP address only when you choose to load or open one.',
   },
   {
     q: 'How does the tool detect GPS coordinates in photos?',
-    a: 'Modern smartphones (iPhone and Android) and GPS-enabled cameras embed latitude, longitude, and altitude coordinates directly into the EXIF header of your photos. Our tool reads these binary markers and plots the exact position on an interactive, private OpenStreetMap view.',
+    a: 'Modern smartphones (iPhone and Android) and GPS-enabled cameras embed latitude, longitude, and altitude coordinates directly into the EXIF header of your photos. Our tool reads these binary markers and shows the coordinates locally. You can choose to share them with OpenStreetMap to load a map.',
   },
   {
     q: 'What hidden metadata can be found in PDF and Word documents?',
@@ -31,11 +31,11 @@ const viewerFaqsEn = [
   },
   {
     q: 'Can I sanitize or remove the metadata after inspecting it?',
-    a: 'Yes! Right inside the inspection results panel, click the "Clean Metadata from This File Now" button. With one click, our engine strips all EXIF, GPS, and author properties permanently, and downloads the completely sanitized file immediately.',
+    a: 'Yes! Right inside the inspection results panel, click the "Clean Metadata from This File Now" button. With one click, the tool removes supported metadata fields and downloads a copy. Comments, tracked changes and embedded content may remain; see the coverage and test results.',
   },
   {
     q: 'Can I drop photos anywhere on screen and choose the output format?',
-    a: 'Yes! You can drag and drop your photo anywhere across the browser viewport — our full-screen drop technology detects the file immediately without forcing you to aim into a tiny box. When cleaning your photo, you can keep the original format or choose JPG, PNG, WebP, AVIF, or download all formats packaged in a single ZIP archive.',
+    a: 'Yes! You can drag and drop your photo anywhere across the browser viewport — our full-screen drop technology detects the file immediately without forcing you to aim into a tiny box. When cleaning your photo, you can use the default output for each file type or choose JPG, PNG, WebP, AVIF, or download all formats packaged in a single ZIP archive.',
   },
   {
     q: 'Is this tool free, and is there any file size or batch limit?',
@@ -47,24 +47,10 @@ const schemaJsonLdEn = {
   '@context': 'https://schema.org',
   '@graph': [
     {
-      '@type': 'WebPage',
-      '@id': `${canonicalUrl}#webpage`,
-      'url': canonicalUrl,
-      'name': title,
-      'description': description,
-      'inLanguage': 'en',
-      'isPartOf': {
-        '@type': 'WebSite',
-        '@id': 'https://remover-metadados.com/en/#website',
-        'name': 'Metadata Remover',
-        'url': 'https://remover-metadados.com/en/',
-      },
-    },
-    {
       '@type': 'WebApplication',
-      '@id': `${canonicalUrl}#app`,
+      '@id': 'https://remover-metadados.com/ver-metadados/#app',
       'name': 'Online Metadata Viewer',
-      'url': canonicalUrl,
+      'url': 'https://remover-metadados.com/ver-metadados/',
       'applicationCategory': 'UtilitiesApplication',
       'operatingSystem': 'Any (Web Browser)',
       'browserRequirements': 'Requires JavaScript. Requires HTML5.',
@@ -73,11 +59,11 @@ const schemaJsonLdEn = {
         'price': '0',
         'priceCurrency': 'USD',
       },
-      'description': 'Free, 100% private in-browser metadata viewer. Inspect EXIF data, GPS coordinates on map, camera hardware specifications, and author properties without uploading files to remote servers.',
+      'description': 'Free metadata viewer with local file inspection and optional external maps. Inspect EXIF data, GPS coordinates on map, camera hardware specifications, and author properties without uploading files to remote servers.',
       'featureList': [
         'Inspect EXIF tags and GPS geolocation coordinates in JPEG, PNG, HEIC, WebP, and TIFF images',
-        'View photo location on an embedded interactive map with decimal and DMS coordinates',
-        'Analyze author names, corporate organization, and editing history in PDF and Office files',
+        'Read decimal and DMS coordinates locally; optionally share them to load a map',
+        'Analyze author names, corporate organization and standard editing properties in PDF and Office files',
         'Automated privacy risk assessment (High Risk, Moderate Risk, Clean)',
         'One-click metadata removal button to download sanitized files instantly',
         '100% client-side browser processing with zero cloud uploads',
@@ -113,6 +99,7 @@ const schemaJsonLdEn = {
   description={description}
   lang="en"
   canonicalUrl={canonicalUrl}
+  mainEntityId="https://remover-metadados.com/ver-metadados/#app"
   alternatePt={alternatePt}
   alternateEn={alternateEn}
 >
@@ -141,7 +128,7 @@ const schemaJsonLdEn = {
             Metadata Viewer Online — View EXIF, GPS & Hidden File Properties
           </h1>
           <p class="hero-viewer-subtitle">
-            Uncover what your photos, PDFs, and documents reveal about you. Inspect exact GPS location on an interactive map, camera hardware details, author identity, and revision history with complete privacy — nothing ever leaves your device.
+            Uncover what your photos, PDFs, and documents reveal about you. Inspect exact GPS location on an interactive map, camera hardware details, author identity, and revision properties locally without file uploads. External maps are optional and share coordinates only after your choice.
           </p>
         </header>
 

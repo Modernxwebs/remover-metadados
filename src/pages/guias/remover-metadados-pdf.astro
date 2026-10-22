@@ -4,7 +4,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
 const title = 'Como Remover Metadados de PDF Online Grátis | Autor e Datas';
-const description = 'Remova nomes de autores, título, datas de criação e histórico XMP de documentos PDF no navegador. 100% privado, sem envio a servidores e grátis.';
+const description = 'Remova nomes de autores, título, datas de criação e histórico XMP de documentos PDF no navegador. processamento local, sem envio a servidores e grátis.';
 const canonicalUrl = 'https://remover-metadados.com/guias/remover-metadados-pdf/';
 
 const faqItems = [
@@ -14,7 +14,7 @@ const faqItems = [
   },
   {
     question: 'A ferramenta apaga o texto, tabelas ou páginas do documento?',
-    answer: 'Não. O processo remove exclusivamente as propriedades e tabelas de metadados binários (como Info Dictionaries e XMP Metadata Streams). O texto legível, fontes, imagens, vetores, páginas e o layout visual permanecem 100% idênticos ao original.',
+    answer: 'A ferramenta altera propriedades padrão e desvincula XMP do catálogo, sem fazer redação do conteúdo visível. Propriedades personalizadas, comentários, anexos e bytes XMP podem permanecer. Revise o documento e guarde o original; assinaturas podem ser invalidadas.',
   },
   {
     question: 'Posso higienizar um PDF assinado digitalmente (com certificado ICP-Brasil)?',
@@ -26,7 +26,7 @@ const faqItems = [
   },
   {
     question: 'Meu documento confidencial é enviado para algum servidor?',
-    answer: 'Não. Todo o processamento ocorre 100% localmente no seu navegador através de bibliotecas WebAssembly e manipulação binária de arquivos. Seu PDF nunca é transmitido para servidores remotos nem armazenado na internet, garantindo sigilo absoluto e conformidade com a LGPD.',
+    answer: 'Não. Todo o processamento ocorre 100% localmente no seu navegador através de bibliotecas WebAssembly e manipulação binária de arquivos. Seu PDF nunca é transmitido para servidores remotos nem armazenado na internet, sem upload do arquivo. O site usa analytics e recursos externos; veja a política de privacidade.',
   },
 ];
 
@@ -43,6 +43,8 @@ const breadcrumbSchema = {
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'TechArticle',
+  '@id': `${canonicalUrl}#article`,
+  'mainEntityOfPage': { '@id': `${canonicalUrl}#webpage` },
   'headline': title,
   'description': description,
   'url': canonicalUrl,
@@ -120,6 +122,7 @@ const faqSchema = {
   description={description}
   lang="pt-BR"
   canonicalUrl={canonicalUrl}
+  mainEntityId={`${canonicalUrl}#article`}
   includeHreflang={false}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
@@ -128,6 +131,7 @@ const faqSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
   <Header lang="pt-BR" ptUrl="/guias/remover-metadados-pdf/" enUrl="/en/" isSubpage={true} />
+  <p class="page-wrap" style="padding-top: 1rem; font-size: 0.85rem;"><a href="/verificacao/">Veja a cobertura real por formato, os testes e as limitações antes de compartilhar arquivos.</a></p>
 
   <main class="guide-main">
     <div class="page-wrap guide-container">
@@ -151,7 +155,7 @@ const faqSchema = {
         <h1 class="guide-hero-h1">Como Remover Metadados de PDF Online</h1>
 
         <p class="guide-hero-lead">
-          Antes de enviar um contrato, petição jurídica, proposta comercial ou currículo, verifique se o seu PDF não está expondo <strong>nomes de autores, razão social da empresa, histórico de edições e versões anteriores</strong>. Aprenda a higienizar seus documentos direto no navegador, com total privacidade e sem envio a servidores.
+          Antes de enviar um contrato, petição jurídica, proposta comercial ou currículo, verifique se o seu PDF não está expondo <strong>nomes de autores, razão social da empresa, histórico de edições e versões anteriores</strong>. Aprenda a higienizar seus documentos direto no navegador, com processamento local de arquivos e sem envio a servidores.
         </p>
 
         <!-- Quick Specs Strip -->
@@ -163,7 +167,7 @@ const faqSchema = {
           <div class="spec-divider" aria-hidden="true"></div>
           <div class="spec-pill">
             <span class="spec-label">PRIVACIDADE:</span>
-            <span class="spec-val">100% Local (Conforme LGPD)</span>
+            <span class="spec-val">Local, sem upload do arquivo</span>
           </div>
           <div class="spec-divider" aria-hidden="true"></div>
           <div class="spec-pill">
@@ -191,7 +195,7 @@ const faqSchema = {
             <span>Remover Metadados do Meu PDF Agora</span>
             <span aria-hidden="true">→</span>
           </a>
-          <p class="hero-cta-trust">✓ Processamento seguro no navegador · Sem envio a servidores · Total conformidade LGPD</p>
+          <p class="hero-cta-trust">✓ Processamento seguro no navegador · Sem envio a servidores · Confira cobertura e limitações</p>
         </div>
       </header>
 
@@ -241,7 +245,7 @@ const faqSchema = {
                 <div class="terminal-header">
                   <span class="term-dot dot-green" aria-hidden="true"></span>
                   <span class="term-title">contrato_proposta_limpo.pdf [HIGIENIZADO]</span>
-                  <span class="term-badge-ok">100% PROTEGIDO</span>
+                  <span class="term-badge-ok">EXEMPLO ILUSTRATIVO</span>
                 </div>
                 <div class="terminal-body">
                   <div class="term-line safe-line"><span>Autor / Criador:</span> [REMOVIDO COMPLETAMENTE]</div>
@@ -371,25 +375,25 @@ const faqSchema = {
                     <td><strong>Documento PDF</strong></td>
                     <td><code>.pdf</code></td>
                     <td>Autor, Criador, Produtor, Título, Assunto, Datas, XMP</td>
-                    <td><span class="table-badge-ok">Totalmente Conforme</span></td>
+                    <td><span class="table-badge-ok">Cobertura limitada</span></td>
                   </tr>
                   <tr>
                     <td><strong>Microsoft Word</strong></td>
                     <td><code>.docx</code></td>
                     <td>Autor, Último Salvo Por, Tempo de Edição, Comentários ocultos</td>
-                    <td><span class="table-badge-ok">Totalmente Conforme</span></td>
+                    <td><span class="table-badge-ok">Cobertura limitada</span></td>
                   </tr>
                   <tr>
                     <td><strong>Microsoft Excel</strong></td>
                     <td><code>.xlsx</code></td>
-                    <td>Nome da Empresa, Gerente, Histórico de Revisões</td>
-                    <td><span class="table-badge-ok">Totalmente Conforme</span></td>
+                    <td>Propriedades padrão de autoria; revisões não são removidas</td>
+                    <td><span class="table-badge-ok">Cobertura limitada</span></td>
                   </tr>
                   <tr>
                     <td><strong>PowerPoint</strong></td>
                     <td><code>.pptx</code></td>
                     <td>Propriedades da apresentação e notas do apresentador</td>
-                    <td><span class="table-badge-ok">Totalmente Conforme</span></td>
+                    <td><span class="table-badge-ok">Cobertura limitada</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -505,7 +509,7 @@ const faqSchema = {
               </li>
               <li>
                 <span class="check-mark">✓</span>
-                <span>Totalmente compatível com a LGPD</span>
+                <span>Confira cobertura e limitações</span>
               </li>
             </ul>
 
@@ -514,7 +518,7 @@ const faqSchema = {
                 <span>Limpar Meu PDF Agora</span>
                 <span aria-hidden="true">→</span>
               </a>
-              <p class="sidebar-subtext">Sem envio a servidores · Sem cadastro · 100% privado</p>
+              <p class="sidebar-subtext">Sem envio a servidores · Sem cadastro · processamento local</p>
             </div>
 
             <div class="sidebar-help">

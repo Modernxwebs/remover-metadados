@@ -14,7 +14,7 @@ const isEn = currentLocale === 'en';
       <div class="privacy-header">
         <span class="privacy-badge">
           <span class="privacy-dot"></span>
-          {isEn ? '100% IN YOUR BROWSER · COMPLETELY PRIVATE' : '100% no seu navegador · Totalmente privado'}
+          {isEn ? 'LOCAL FILE PROCESSING · NO FILE UPLOADS' : 'PROCESSAMENTO LOCAL · SEM ENVIO DE ARQUIVOS'}
         </span>
         <span class="privacy-subtag">
           {isEn ? '// LOCAL PROCESSING // NO REGISTRATION' : '// PROCESSAMENTO LOCAL // SEM CADASTRO'}
@@ -29,8 +29,9 @@ const isEn = currentLocale === 'en';
 
       <p class="privacy-desc">
         {isEn
-          ? 'Metadata Remover operates entirely inside your web browser via local binary parsing. Not a single byte is ever transmitted to remote servers. Free, instant, and strictly zero-log.'
-          : 'O Remover Metadados opera inteiramente no seu próprio navegador via manipulação binária local. Nenhum byte é transmitido para servidores remotos. Gratuito, instantâneo e em conformidade total com a LGPD.'}
+          ? 'Your files are processed locally without uploads. The website also connects to Google Analytics and Google Fonts; library fallbacks may load from jsDelivr. External maps share coordinates only when you choose to load or open them.'
+          : 'Seus arquivos são processados localmente, sem envio a servidores. O site também se conecta ao Google Analytics e Google Fonts; alternativas de bibliotecas podem carregar pelo jsDelivr. Mapas externos compartilham coordenadas apenas quando você escolhe carregar ou abrir um deles.'}
+        <a href={isEn ? '/en/privacy/' : '/privacidade/'}>{isEn ? 'Privacy details' : 'Detalhes de privacidade'}</a>
       </p>
     </div>
   </div>

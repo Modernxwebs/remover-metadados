@@ -26,25 +26,25 @@ Metadata is hidden information embedded inside files that can expose sensitive d
 All processing runs exclusively in the user's browser. No files are transmitted to any server.
 
 ### Image Processing (JPEG/PNG/WebP/GIF)
-- JPEG: Uses `piexifjs` to parse and zero-out all EXIF IFD blocks, then re-encodes using HTML5 Canvas `toBlob()` API.
-- PNG: Re-drawn on Canvas without any tEXt, iTXt, or zTXt chunks.
-- WebP/GIF: Processed via Canvas redraw to strip embedded metadata.
+- JPEG: Re-encodes through HTML5 Canvas at quality 0.95. Pixels can change; this is not lossless metadata-only editing.
+- PNG: Normally strips metadata chunks while retaining IDAT bytes; pHYs and selected color/rendering chunks remain. ICC is removed. Canvas is a fallback.
+- WebP: Re-encoded at quality 0.95. AVIF uses 0.85 with WebP fallback. GIF/BMP/TIFF become PNG with one frame/page; HEIC becomes JPEG. Conversions use raster re-encoding.
 
 ### PDF Processing
-- Uses `pdf-lib` (WebAssembly-based) to load the PDF, clear `PDFDocument.setTitle('')`, `setAuthor('')`, `setSubject('')`, `setKeywords([])`, `setProducer('')`, `setCreator('')`, and save a fresh copy.
+- Uses `pdf-lib` (JavaScript) to load the PDF, clear `PDFDocument.setTitle('')`, `setAuthor('')`, `setSubject('')`, `setKeywords([])`, `setProducer('')`, `setCreator('')`, and save a fresh copy.
 
 ### Office Documents (DOCX, XLSX, PPTX)
 - Uses `jszip` to unzip the Open XML container, locate `docProps/core.xml` and `docProps/app.xml`, strip all metadata fields, and re-zip the file for download.
 
 ---
 
-## Privacy Guarantee
+## File processing and website connections
 
 - **No server uploads**: Files are processed in-memory using browser JavaScript APIs.
-- **No cookies** for tracking or profiling.
-- **No analytics** that identify individual users.
+- **Google Analytics 4** loads on page open and may use cookies and send usage/device information to Google.
+- **External resources**: Google Fonts and possible jsDelivr decoder fallbacks. Maps share GPS coordinates only after an explicit user choice.
 - **No accounts** required.
-- Files are automatically garbage-collected by the browser when the tab is closed.
+- Browser memory management is browser-dependent. Downloads and exported reports remain where the user saves them.
 
 ---
 
@@ -113,3 +113,9 @@ remover-metadados.com/
 ---
 
 *Last updated: September 2026*
+
+## Coverage and verification
+
+Office processing clears standard package properties, custom properties and selected thumbnails. Comments, tracked changes and embedded files remain. PDF processing clears standard Info fields and detaches catalog XMP; custom properties and unreferenced metadata bytes may remain. MP3 targets ID3v1/v2. MP4/MOV targets selected udta and XMP boxes; other metadata can remain. No universal C2PA, AI provenance or anonymization guarantee is made.
+
+See https://remover-metadados.com/en/verification/ and /verification-results.json for maintainer-run fixture evidence, environment and limitations. These checks are not a third-party security audit.

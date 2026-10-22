@@ -1,6 +1,6 @@
 # Remover Metadados / Metadata Remover
 
-> A free, 100% client-side online tool to permanently remove metadata (EXIF, IPTC, XMP) from photos, PDFs, and documents — directly in your browser. No uploads, no servers, no data leaves your device.
+> A free, 100% client-side online tool to permanently remove metadata (EXIF, IPTC, XMP) from photos, PDFs, and documents — directly in your browser. No file uploads for processing. The website uses Google Analytics, Google Fonts and optional external maps. Removal coverage depends on format.
 
 ## Key Facts
 
@@ -22,7 +22,7 @@
 - [Guias Hub (PT-BR)](https://remover-metadados.com/guias/): Privacy guides & technical tutorials index
 - [Guia de Fotos e Imagens (PT-BR)](https://remover-metadados.com/guias/remover-metadados-de-imagem/): Guide to removing EXIF and GPS from photos
 - [Guia de Vídeos (PT-BR)](https://remover-metadados.com/guias/remover-metadados-de-video/): Guide to removing metadata and GPS from MP4 & MOV videos
-- [Guia de Documentos PDF (PT-BR)](https://remover-metadados.com/guias/remover-metadados-pdf/): Guide to stripping author and revision metadata from PDFs
+- [Guia de Documentos PDF (PT-BR)](https://remover-metadados.com/guias/remover-metadados-pdf/): Guide to clearing standard PDF properties, with limitations
 - [About (PT-BR)](https://remover-metadados.com/sobre): About us in Portuguese
 - [About (EN)](https://remover-metadados.com/en/about): About us in English
 - [Privacy Policy (PT-BR)](https://remover-metadados.com/privacidade): Privacy policy in Portuguese
@@ -35,3 +35,5 @@
 ## Optional
 
 - [llms-full.txt](https://remover-metadados.com/llms-full.txt): Full documentation for LLM consumption
+
+- [Verification and limitations](https://remover-metadados.com/en/verification/): Format-specific behavior and maintainer-run test evidence.

@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
 const title = 'Sobre Nós — Remover Metadados | Nossa História e Missão';
-const description = 'Conheça o Remover Metadados e o desenvolvedor Dev Sharma. Uma ferramenta independente criada para garantir privacidade radical no Brasil e no mundo, 100% no navegador.';
+const description = 'Conheça o Remover Metadados e o desenvolvedor Dev Sharma. Uma ferramenta independente com processamento local de arquivos no navegador, sem upload.';
 const canonicalUrl = 'https://remover-metadados.com/sobre/';
 const alternatePt = 'https://remover-metadados.com/sobre/';
 const alternateEn = 'https://remover-metadados.com/en/about/';
@@ -15,6 +15,7 @@ const linkedInUrl = 'https://www.linkedin.com/in/dev000111/';
 ---
 
 <Layout
+  pageType="AboutPage"
   title={title}
   description={description}
   lang="pt-BR"
@@ -94,7 +95,7 @@ const linkedInUrl = 'https://www.linkedin.com/in/dev000111/';
           <span class="pillar-num">04</span>
           <h3 class="pillar-title">Respeito e Ética</h3>
           <p class="pillar-desc">
-            Sem anúncios invasivos, sem popups enganosos, sem cookies de rastreamento e em total conformidade com a LGPD no Brasil e leis globais.
+            Os arquivos são processados localmente. A política de privacidade explica Google Analytics, fontes externas, mapas opcionais e limitações por formato.
           </p>
         </div>
       </div>

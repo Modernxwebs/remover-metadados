@@ -1,4 +1,5 @@
 ---
+import OutputNotes from './OutputNotes.astro';
 // Hero — headline + formats line + drop zone, privmeta-style
 export interface Props {
   lang?: string;
@@ -10,10 +11,10 @@ const isEn = currentLocale === 'en';
 const t = isEn
   ? {
       titleLine1: "Metadata Remover",
-      titleLine2: "Remove EXIF, GPS & AI from Photos",
-      subtitle: "Free, instant, and 100% private. Clean hidden location, camera details, and author history directly in your browser — nothing ever leaves your device.",
+      titleLine2: "Remove EXIF & GPS from Photos",
+      subtitle: "Remove supported location, camera and author metadata directly in your browser. Free, with no file uploads.",
       formatsTag: "FORMATS",
-      badgePrivacy: "100% PRIVATE · NOTHING LEAVES YOUR DEVICE",
+      badgePrivacy: "LOCAL FILE PROCESSING · NO FILE UPLOADS",
       dropPrompt: "Drag & drop your files here",
       dropOr: "or",
       browseBtn: "select from device",
@@ -42,15 +43,15 @@ const t = isEn
       dropAria: "Drag files here or click to select from device",
       formatLabel: "Format",
       formatTooltip: "Select output format for downloaded files",
-      formatOriginal: "Original (Default)",
-      formatOriginalShort: "Original",
+      formatOriginal: "Default output (by file type)",
+      formatOriginalShort: "Default output",
       formatJpg: "JPG (.jpg)",
       formatPng: "PNG (.png)",
       formatWebp: "WebP (.webp)",
       formatAvif: "AVIF (.avif)",
       formatAll: "All formats (.zip)",
       formatAllShort: "All (.zip)",
-      formatDocLocked: "Original document",
+      formatDocLocked: "Processed document",
       globalDropTitle: "Drop your files anywhere",
       globalDropSubtitle: "Release anywhere on the screen to remove metadata instantly",
       globalDropFormatsHint: "Photos, Images, PDFs, Documents, Videos & Audio · 100% Client-Side",
@@ -58,9 +59,9 @@ const t = isEn
   : {
       titleLine1: "Remover Metadados",
       titleLine2: "Apague GPS, EXIF e Dados Ocultos",
-      subtitle: "Grátis, instantâneo e 100% privado. Apague localização, dados de câmera e autoria ocultos direto no navegador — nada sai do seu dispositivo.",
+      subtitle: "Remova metadados compatíveis de localização, câmera e autoria direto no navegador. Grátis e sem envio de arquivos.",
       formatsTag: "FORMATOS",
-      badgePrivacy: "100% PRIVADO · NADA SAI DO SEU DISPOSITIVO",
+      badgePrivacy: "PROCESSAMENTO LOCAL · SEM ENVIO DE ARQUIVOS",
       dropPrompt: "Arraste e solte seus arquivos aqui",
       dropOr: "ou",
       browseBtn: "selecionar do dispositivo",
@@ -89,15 +90,15 @@ const t = isEn
       dropAria: "Arraste arquivos aqui ou clique para selecionar",
       formatLabel: "Formato",
       formatTooltip: "Selecione o formato de download dos arquivos limpos",
-      formatOriginal: "Original (Padrão)",
-      formatOriginalShort: "Original",
+      formatOriginal: "Saída padrão (por tipo de arquivo)",
+      formatOriginalShort: "Saída padrão",
       formatJpg: "JPG (.jpg)",
       formatPng: "PNG (.png)",
       formatWebp: "WebP (.webp)",
       formatAvif: "AVIF (.avif)",
       formatAll: "Todos os formatos (.zip)",
       formatAllShort: "Todos (.zip)",
-      formatDocLocked: "Documento original",
+      formatDocLocked: "Documento processado",
       globalDropTitle: "Solte seus arquivos em qualquer lugar",
       globalDropSubtitle: "Solte em qualquer parte da tela para remover metadados instantaneamente",
       globalDropFormatsHint: "Fotos, Imagens, PDFs, Documentos, Vídeos e Áudio · 100% no seu navegador",
@@ -235,6 +236,8 @@ const t = isEn
         </button>
       </div>
     </div>
+
+    <OutputNotes lang={currentLocale} />
 
     <!-- File list (appears after files are added) -->
     <div id="file-list" style="display:none; margin-top: 0.5rem;" aria-live="polite">
@@ -375,7 +378,7 @@ const t = isEn
         `;
       } else {
         formatHtml = `
-          <div class="file-format-cell" title="${t.formatDocLocked || 'Documento original'}">
+          <div class="file-format-cell" title="${t.formatDocLocked || 'Documento processado'}">
             <span class="file-format-badge-doc">${ext(entry.file.name)}</span>
           </div>
         `;

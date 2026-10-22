@@ -1,0 +1,16 @@
+---
+export interface Props { lang?: string; }
+const isEn = Astro.props.lang === 'en';
+---
+<p class="output-notes">
+  {isEn
+    ? 'Default output depends on file type. JPEG, WebP and AVIF are re-encoded with possible quality loss. HEIC becomes JPEG; GIF, BMP and TIFF become PNG (one frame/page). PNG normally keeps its compressed image data. Conversions can change color, transparency and animation.'
+    : 'A saída padrão depende do arquivo. JPEG, WebP e AVIF são recodificados com possível perda de qualidade. HEIC vira JPEG; GIF, BMP e TIFF viram PNG (um quadro/página). PNG normalmente mantém os dados de imagem comprimidos. Conversões podem alterar cor, transparência e animação.'}
+  <a href={isEn ? '/en/verification/' : '/verificacao/'}>{isEn ? 'Coverage, tests & limitations' : 'Cobertura, testes e limitações'}</a>
+  <br />
+  {isEn ? 'Documents: comments, tracked changes, attachments and some metadata can remain. Review downloaded copies before sharing.' : 'Documentos: comentários, alterações controladas, anexos e alguns metadados podem permanecer. Revise as cópias antes de compartilhar.'}
+</p>
+<style>
+  .output-notes { font-size: 0.8rem; line-height: 1.6; color: var(--text-muted); margin: 1rem 0; }
+  a { color: var(--text); text-decoration: underline; }
+</style>

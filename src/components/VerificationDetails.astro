@@ -1,0 +1,71 @@
+---
+import report from '../../public/verification-results.json';
+export interface Props { lang?: string; }
+const isEn = Astro.props.lang === 'en';
+const coverage = isEn ? [
+  ['JPEG / WebP / AVIF', 'Decode and re-encode pixels. JPEG/WebP quality 0.95; AVIF 0.85, with WebP fallback.', 'Lossy output, color/profile changes and animation loss are possible. This is not metadata-only editing.'],
+  ['PNG / APNG', 'Keep selected rendering/animation chunks and original compressed IDAT/fdAT data. Drop text, EXIF, XMP, ICC and unknown chunks.', 'pHYs and selected rendering information remain. Removing ICC can change appearance. Canvas fallback re-encodes the image and can lose animation.'],
+  ['HEIC / HEIF', 'Decode and export JPEG; default path can encode JPEG twice.', 'Lossy conversion. Extra frames, depth, HDR and original color information may be lost. One real HEIC sample was tested; HEIF variants are not all verified.'],
+  ['GIF / BMP / TIFF', 'Export a raster PNG from one frame/page.', 'GIF animation and extra TIFF pages are lost. TIFF decoder/color differences can change pixels. PNG export does not restore lost source quality.'],
+  ['SVG', 'Remove metadata, title, desc, script elements and selected root editor attributes.', 'Not a complete SVG sanitizer. Other attributes, comments, external references and identifying drawing content can remain.'],
+  ['PDF', 'Clear standard Info title, author, subject, keywords, producer and creator; set dates to the Unix epoch. Detach catalog Metadata/PieceInfo references.', 'Tests confirm custom Info properties and detached XMP bytes can remain in the output. Comments, attachments, page/image metadata and visible content are not redacted. Re-saving can invalidate signatures.'],
+  ['DOCX / XLSX / PPTX / ODT / ODS / ODP', 'Replace standard property XML, remove custom Office properties and selected thumbnails.', 'Comments, tracked changes, embedded files and their metadata remain. ZIP relationships, full application compatibility and every document variant have not been verified.'],
+  ['MP3 / MP4 / MOV / M4V', 'MP3: remove leading ID3v2 and trailing ID3v1 tags. Video: target selected user-data and XMP UUID boxes.', 'Other audio tags, dates, track/vendor metadata can remain. MP3 checks use synthetic envelopes; real media playback and video output validity have not been verified. Review videos before use.'],
+] : [
+  ['JPEG / WebP / AVIF', 'Decodifica e recodifica os pixels. Qualidade JPEG/WebP 0,95; AVIF 0,85, com alternativa WebP.', 'Pode haver perdas, alterações de cor/perfil e perda de animação. Não é uma edição apenas de metadados.'],
+  ['PNG / APNG', 'Mantém blocos selecionados de renderização/animação e dados IDAT/fdAT comprimidos. Descarta texto, EXIF, XMP, ICC e blocos desconhecidos.', 'pHYs e informações de renderização selecionadas permanecem. Remover ICC pode alterar a aparência. A alternativa via canvas recodifica e pode perder animação.'],
+  ['HEIC / HEIF', 'Decodifica e exporta JPEG; o caminho padrão pode codificar JPEG duas vezes.', 'Conversão com perdas. Quadros extras, profundidade, HDR e informações de cor podem ser perdidos. Uma amostra HEIC real foi testada; nem todas as variantes HEIF foram verificadas.'],
+  ['GIF / BMP / TIFF', 'Exporta um PNG raster a partir de um quadro/página.', 'Animação GIF e páginas adicionais TIFF são perdidas. Diferenças no decodificador e na cor TIFF podem alterar pixels. Exportar PNG não recupera a qualidade perdida na origem.'],
+  ['SVG', 'Remove elementos metadata, title, desc, script e atributos selecionados de editor na raiz.', 'Não é uma sanitização completa de SVG. Outros atributos, comentários, referências externas e conteúdo identificável do desenho podem permanecer.'],
+  ['PDF', 'Limpa título, autor, assunto, palavras-chave, produtor e criador Info padrão; define datas para a época Unix. Desvincula Metadata/PieceInfo do catálogo.', 'Os testes confirmam que propriedades Info personalizadas e bytes XMP desvinculados podem permanecer. Comentários, anexos, metadados de página/imagem e conteúdo visível não são apagados. Salvar novamente pode invalidar assinaturas.'],
+  ['DOCX / XLSX / PPTX / ODT / ODS / ODP', 'Substitui XML de propriedades padrão, remove propriedades Office personalizadas e miniaturas selecionadas.', 'Comentários, alterações controladas, arquivos embutidos e seus metadados permanecem. Relações ZIP, compatibilidade completa com aplicativos e todas as variantes não foram verificadas.'],
+  ['MP3 / MP4 / MOV / M4V', 'MP3: remove ID3v2 inicial e ID3v1 final. Vídeo: trata caixas selecionadas de dados de usuário e XMP UUID.', 'Outras tags de áudio, datas e metadados de faixas/fabricantes podem permanecer. Os testes MP3 usam blocos sintéticos; reprodução real e validade dos vídeos não foram verificadas. Revise vídeos antes de usar.'],
+];
+---
+<header>
+  <h1>{isEn ? 'Removal coverage, tests & limitations' : 'Cobertura de remoção, testes e limitações'}</h1>
+  <p>{isEn ? 'A successful download means the supported processing path finished. It does not certify that a file is anonymous or that every metadata field is gone. Keep originals and review the downloaded copy before sharing.' : 'Um download concluído indica que o processamento compatível terminou. Não certifica que o arquivo está anônimo ou que todos os metadados foram apagados. Guarde os originais e revise a cópia baixada antes de compartilhar.'}</p>
+</header>
+<p class="scroll-hint">{isEn ? 'Scroll the table sideways to read all limitations.' : 'Role a tabela para os lados para ler todas as limitações.'}</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label={isEn ? 'Format coverage' : 'Cobertura por formato'}>
+  <table>
+    <thead><tr><th>{isEn ? 'Format' : 'Formato'}</th><th>{isEn ? 'Current behavior' : 'Comportamento atual'}</th><th>{isEn ? 'Remaining limitations' : 'Limitações'}</th></tr></thead>
+    <tbody>{coverage.map(([format, behavior, limits]) => <tr><th scope="row">{format}</th><td>{behavior}</td><td>{limits}</td></tr>)}</tbody>
+  </table>
+</div>
+<section>
+  <h2>{isEn ? 'Published test evidence' : 'Evidências publicadas dos testes'}</h2>
+  <p>{isEn
+    ? `${report.checks.length} automated checks passed on ${report.generatedAt.slice(0, 10)} using ${report.environment.browser}, ExifTool ${report.environment.exiftool} and sharp ${report.environment.sharp}. The checks are run by the maintainer using independent readers, not an independent security audit.`
+    : `${report.checks.length} verificações automáticas passaram em ${report.generatedAt.slice(0, 10)} usando ${report.environment.browser}, ExifTool ${report.environment.exiftool} e sharp ${report.environment.sharp}. São testes do mantenedor com leitores independentes, não uma auditoria de segurança independente.`}</p>
+  <p>{isEn ? 'Image fixtures check selected author/GPS/comment fields with ExifTool and compare decoded pixels with sharp. PNG also checks that IDAT bytes stay unchanged. Office checks inspect synthetic ZIP package entries; PDF checks use ExifTool and raw bytes. Both viewer languages check that maps remain off before consent and reset when the file changes.' : 'Amostras de imagem verificam campos selecionados de autoria/GPS/comentários com ExifTool e comparam pixels decodificados com sharp. PNG também verifica que os bytes IDAT não mudam. Office usa inspeção de pacotes ZIP sintéticos; PDF usa ExifTool e bytes do arquivo. As duas versões do visualizador verificam que mapas ficam desligados antes da escolha e reiniciam ao trocar o arquivo.'}</p>
+  <p><a href="/verification-results.json" download>{isEn ? 'Download the full results, field values and output hashes (JSON)' : 'Baixar resultados completos, valores dos campos e hashes das saídas (JSON)'}</a></p>
+  <div class="table-scroll" tabindex="0" role="region" aria-label={isEn ? 'Image fixture results' : 'Resultados das amostras de imagem'}>
+    <table>
+      <thead><tr><th>{isEn ? 'Input' : 'Entrada'}</th><th>{isEn ? 'Default output' : 'Saída padrão'}</th><th>{isEn ? 'Changed channel values in test fixture' : 'Valores de canais alterados na amostra'}</th></tr></thead>
+      <tbody>{report.results.filter(row => 'pixelComparison' in row).map(row => <tr><th scope="row">{row.format.toUpperCase()}</th><td>{row.output.toUpperCase()}</td><td>{row.pixelComparison === 'not compared' ? (isEn ? 'Not compared' : 'Não comparado') : row.pixelComparison?.replace(' of ', ' / ').replace(' channel values changed', '')}</td></tr>)}</tbody>
+    </table>
+  </div>
+  <p>{isEn ? 'These small fixtures do not cover every browser, color profile, camera, malformed file or encrypted document. BMP verifies conversion/pixels without a personal tag fixture. No universal tests of AI generators, C2PA variants, watermarks, steganography or external provenance records have been performed.' : 'Essas amostras pequenas não cobrem todos os navegadores, perfis de cor, câmeras, arquivos malformados ou documentos criptografados. BMP verifica conversão/pixels sem uma amostra de tag pessoal. Não há testes universais de geradores de IA, variantes C2PA, marcas d’água, esteganografia ou registros externos de procedência.'}</p>
+  <details><summary>{isEn ? 'Reproduce the checks' : 'Reproduzir as verificações'}</summary>
+    <p>{isEn ? 'In the source checkout, install dependencies and Chrome, start Astro in background mode, then run the test script with TEST_ORIGIN set to the local server URL. Set HEIC_FIXTURE to a local HEIC sample to include that format. The test intercepts external requests. The JSON records the removal engine hash and test environment.' : 'No código-fonte, instale as dependências e o Chrome, inicie Astro em segundo plano e execute o script com TEST_ORIGIN apontando para o servidor local. Defina HEIC_FIXTURE para uma amostra HEIC local para incluir esse formato. O teste intercepta requisições externas. O JSON registra o hash do mecanismo e o ambiente.'}</p>
+    <pre><code>npm run test:metadata</code></pre>
+  </details>
+</section>
+<p><a href={isEn ? '/en/privacy/' : '/privacidade/'}>{isEn ? 'Website connections and privacy details' : 'Conexões do site e detalhes de privacidade'}</a></p>
+<style>
+  header { margin: 1rem 0 2rem; }
+  h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.2; margin-bottom: 1rem; }
+  h2 { margin: 2rem 0 1rem; font-size: 1.5rem; }
+  p { line-height: 1.7; color: var(--text-muted); }
+  a { color: var(--text); text-decoration: underline; }
+  .table-scroll { overflow-x: auto; margin: 1.5rem 0; border: 2px solid var(--border); }
+  table { border-collapse: collapse; min-width: 640px; width: 100%; background: var(--card-bg); font-size: 0.87rem; line-height: 1.6; }
+  th, td { padding: 1rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border-light); }
+  thead { background: var(--bg); }
+  tbody th { width: 18%; }
+  details { border: 2px solid var(--border); padding: 1rem; }
+  summary { cursor: pointer; font-weight: 700; }
+  .scroll-hint { display: none; font-size: 0.85rem; }
+  @media (max-width: 700px) { .scroll-hint { display: block; } }
+</style>

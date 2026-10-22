@@ -11,7 +11,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "indexnow": "node scripts/submit-indexnow.js",
-    "audit:seo": "node scripts/audit-seo.js"
+    "audit:seo": "node scripts/audit-seo.js",
+    "test:metadata": "node scripts/test-metadata.mjs",
+    "test:schema": "node scripts/test-schema.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
@@ -29,5 +31,10 @@
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "exiftool-vendored": "^39.0.1",
+    "puppeteer": "^25.15.0",
+    "sharp": "^0.35.5"
   }
 }

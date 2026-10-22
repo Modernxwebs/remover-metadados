@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import VerificationDetails from '../components/VerificationDetails.astro';
+---
+<Layout title="Cobertura de Metadados — Testes e Limitações" description="Veja o que cada formato remove, como a qualidade pode mudar e os resultados dos testes de metadados."
+  canonicalUrl="https://remover-metadados.com/verificacao/" alternatePt="https://remover-metadados.com/verificacao/" alternateEn="https://remover-metadados.com/en/verification/">
+  <Header ptUrl="/verificacao/" enUrl="/en/verification/" isSubpage={true} />
+  <main class="page-wrap verification-page"><VerificationDetails /></main>
+  <Footer />
+</Layout>
+<style>.verification-page { max-width: 1100px; padding-top: 2rem; padding-bottom: 3rem; }</style>

@@ -6,7 +6,7 @@ import Footer from '../components/Footer.astro';
 import MetadataViewerTool from '../components/MetadataViewerTool.astro';
 
 const title = 'Visualizador de Metadados Online — Ver EXIF, GPS e Dados Ocultos';
-const description = 'Visualize metadados EXIF, localização GPS em mapa, modelo de câmera, autor e histórico de fotos, PDFs e documentos grátis e 100% privado no navegador.';
+const description = 'Visualize metadados EXIF, localização GPS em mapa, modelo de câmera, autor e propriedades de fotos, PDFs e documentos grátis no navegador, sem envio de arquivos. Mapas opcionais.';
 const canonicalUrl = 'https://remover-metadados.com/ver-metadados/';
 const alternatePt = 'https://remover-metadados.com/ver-metadados/';
 const alternateEn = 'https://remover-metadados.com/en/metadata-viewer/';
@@ -15,15 +15,15 @@ const alternateEn = 'https://remover-metadados.com/en/metadata-viewer/';
 const viewerFaqs = [
   {
     q: 'O que é um visualizador de metadados online?',
-    a: 'É uma ferramenta que inspeciona arquivos digitais (como fotos JPEG, PNG, HEIC, documentos PDF e Office) e extrai todas as propriedades ocultas gravadas neles — como localização GPS exata, dados da câmera (abertura, ISO, tempo de exposição), nome do autor do documento e data de criação.',
+    a: 'É uma ferramenta que inspeciona arquivos digitais (como fotos JPEG, PNG, HEIC, documentos PDF e Office) e extrai as propriedades ocultas compatíveis gravadas neles — como localização GPS exata, dados da câmera (abertura, ISO, tempo de exposição), nome do autor do documento e data de criação.',
   },
   {
     q: 'Minhas fotos ou documentos são enviados para algum servidor na internet?',
-    a: 'Não! O nosso visualizador funciona 100% no seu próprio navegador através de JavaScript local (File API e WebAssembly). Nenhum byte ou metadado sai do seu celular ou computador. Você tem privacidade total e garantia de conformidade com a LGPD.',
+    a: 'Não! O nosso visualizador funciona 100% no seu próprio navegador através de JavaScript local (File API e WebAssembly). Os arquivos não são enviados. O site usa Google Analytics e Google Fonts. Mapas externos recebem coordenadas e seu IP apenas quando você escolhe carregar ou abrir um deles.',
   },
   {
     q: 'Como o visualizador detecta a localização GPS de uma foto?',
-    a: 'Celulares modernos (iPhone e Android) e câmeras com GPS gravam as coordenadas geográficas (latitude, longitude e altitude) no cabeçalho EXIF da imagem. Nosso visualizador decodifica esses bytes e plota o local exato em um mapa interativo do OpenStreetMap.',
+    a: 'Celulares modernos (iPhone e Android) e câmeras com GPS gravam as coordenadas geográficas (latitude, longitude e altitude) no cabeçalho EXIF da imagem. Nosso visualizador decodifica esses bytes e mostra as coordenadas localmente. Você pode escolher compartilhá-las com o OpenStreetMap para carregar um mapa.',
   },
   {
     q: 'Quais tipos de metadados posso encontrar em arquivos PDF e Word?',
@@ -31,11 +31,11 @@ const viewerFaqs = [
   },
   {
     q: 'Posso limpar ou remover os metadados após visualizá-los?',
-    a: 'Sim! Na própria tela de resultados do visualizador há o botão "Limpar Metadados Deste Arquivo Agora". Com um clique, nosso algoritmo remove permanentemente todos os dados EXIF, GPS e autoria, disponibilizando o arquivo 100% limpo para download imediato.',
+    a: 'Sim! Na própria tela de resultados do visualizador há o botão "Limpar Metadados Deste Arquivo Agora". Com um clique, a ferramenta remove os campos de metadados compatíveis e baixa uma cópia. Comentários, alterações controladas e conteúdo embutido podem permanecer; consulte a cobertura e os resultados dos testes.',
   },
   {
     q: 'Posso arrastar a foto para qualquer lugar da tela e escolher o formato limpo?',
-    a: 'Sim! Você pode soltar sua foto ou documento em qualquer ponto da janela — nossa tecnologia de tela inteira reconhece o arquivo imediatamente sem precisar mirar em caixas de upload restritas. Além disso, ao limpar a foto, você pode manter o formato original ou escolher exportar em JPG, PNG, WebP, AVIF ou baixar todos os formatos em ZIP.',
+    a: 'Sim! Você pode soltar sua foto ou documento em qualquer ponto da janela — nossa tecnologia de tela inteira reconhece o arquivo imediatamente sem precisar mirar em caixas de upload restritas. Além disso, ao limpar a foto, você pode usar a saída padrão de cada tipo de arquivo ou escolher exportar em JPG, PNG, WebP, AVIF ou baixar todos os formatos em ZIP.',
   },
   {
     q: 'A ferramenta é gratuita e tem limite de arquivos?',
@@ -47,24 +47,10 @@ const schemaJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     {
-      '@type': 'WebPage',
-      '@id': `${canonicalUrl}#webpage`,
-      'url': canonicalUrl,
-      'name': title,
-      'description': description,
-      'inLanguage': 'pt-BR',
-      'isPartOf': {
-        '@type': 'WebSite',
-        '@id': 'https://remover-metadados.com/#website',
-        'name': 'Remover Metadados',
-        'url': 'https://remover-metadados.com/',
-      },
-    },
-    {
       '@type': 'WebApplication',
-      '@id': `${canonicalUrl}#app`,
+      '@id': 'https://remover-metadados.com/ver-metadados/#app',
       'name': 'Visualizador de Metadados Online',
-      'url': canonicalUrl,
+      'url': 'https://remover-metadados.com/ver-metadados/',
       'applicationCategory': 'UtilitiesApplication',
       'operatingSystem': 'Any (Web Browser)',
       'browserRequirements': 'Requires JavaScript. Requires HTML5.',
@@ -73,11 +59,11 @@ const schemaJsonLd = {
         'price': '0',
         'priceCurrency': 'BRL',
       },
-      'description': 'Ferramenta online gratuita para inspecionar e visualizar metadados EXIF, localização GPS em mapa, modelo de câmera e dados de autoria localmente no navegador com privacidade total.',
+      'description': 'Ferramenta online gratuita para inspecionar e visualizar metadados EXIF, localização GPS em mapa, modelo de câmera e dados de autoria localmente no navegador, com mapas externos opcionais.',
       'featureList': [
         'Inspeção de dados EXIF e localização GPS em fotos JPG, PNG, HEIC, WebP e TIFF',
-        'Visualização interativa do local da foto em mapa com coordenadas decimais e DMS',
-        'Inspeção de metadados de autoria, empresa e histórico em documentos PDF e Office',
+        'Leitura local de coordenadas decimais e DMS; compartilhamento opcional para carregar mapa',
+        'Inspeção de metadados de autoria, empresa e propriedades padrão em documentos PDF e Office',
         'Avaliação automática de risco de privacidade (níveis Alto, Moderado e Limpo)',
         'Botão para limpar metadados e baixar arquivo higienizado com um clique',
         'Processamento 100% no navegador sem envio de arquivos para servidores',
@@ -113,6 +99,7 @@ const schemaJsonLd = {
   description={description}
   lang="pt-BR"
   canonicalUrl={canonicalUrl}
+  mainEntityId="https://remover-metadados.com/ver-metadados/#app"
   alternatePt={alternatePt}
   alternateEn={alternateEn}
 >
@@ -141,7 +128,7 @@ const schemaJsonLd = {
             Visualizador de Metadados Online — Ver EXIF, GPS e Dados Ocultos
           </h1>
           <p class="hero-viewer-subtitle">
-            Descubra o que suas fotos e documentos revelam sobre você. Inspecione coordenadas GPS em mapa, modelo do aparelho, autor original e histórico de edições com total privacidade — nada sai do seu dispositivo.
+            Descubra o que suas fotos e documentos revelam sobre você. Inspecione coordenadas GPS em mapa, modelo do aparelho, autor e propriedades de edição localmente, sem envio de arquivos. Mapas externos são opcionais e só compartilham coordenadas após sua escolha.
           </p>
         </header>
 
