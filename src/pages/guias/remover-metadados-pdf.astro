@@ -3,30 +3,34 @@ import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
-const title = 'Como Remover Metadados de PDF Online Grátis | Autor e Datas';
-const description = 'Remova nomes de autores, título, datas de criação e histórico XMP de documentos PDF no navegador. processamento local, sem envio a servidores e grátis.';
+const title = 'Como Remover Metadados de PDF | Campos Testados e Limites';
+const description = 'Veja quais campos padrão de PDF foram testados, o que pode permanecer e como conferir a cópia baixada. Processamento local no navegador.';
 const canonicalUrl = 'https://remover-metadados.com/guias/remover-metadados-pdf/';
 
 const faqItems = [
   {
     question: 'Quais metadados estão embutidos em um arquivo PDF?',
-    answer: 'Um documento PDF exportado pelo Word, LibreOffice, Canva ou Acrobat pode armazenar o nome completo do autor, empresa, título, assunto, palavras-chave, software criador, versão do sistema operacional, datas exatas de criação e modificação, além de fluxos XMP com histórico editorial.',
+    answer: 'Dependendo do arquivo e do programa que o criou, um PDF pode conter campos padrão como título, autor, assunto, palavras-chave, criador, produtor e datas, além de metadados XMP e outras estruturas. O conteúdo varia entre documentos.',
   },
   {
-    question: 'A ferramenta apaga o texto, tabelas ou páginas do documento?',
-    answer: 'A ferramenta altera propriedades padrão e desvincula XMP do catálogo, sem fazer redação do conteúdo visível. Propriedades personalizadas, comentários, anexos e bytes XMP podem permanecer. Revise o documento e guarde o original; assinaturas podem ser invalidadas.',
+    question: 'Quais campos foram confirmados no teste do PDF?',
+    answer: 'No PDF de teste publicado, ExifTool mostrou os campos Author, Title, Creator, Producer e Subject vazios após o processamento. O código também define Keywords como vazio e grava as datas de criação e modificação como 1º de janeiro de 1970; esses campos de data não são apagados e não foram verificados pelo teste publicado.',
   },
   {
-    question: 'Posso higienizar um PDF assinado digitalmente (com certificado ICP-Brasil)?',
-    answer: 'Recomendamos cautela redobrada. Qualquer alteração na estrutura binária de um PDF assinado pode invalidar a assinatura digital criptográfica. Se o documento exigir validade jurídica da assinatura, mantenha o original intacto e gere uma versão higienizada apenas quando a assinatura não for necessária.',
+    question: 'O que pode permanecer no PDF?',
+    answer: 'O teste publicado encontrou uma propriedade personalizada e bytes XMP desvinculados que permaneceram no arquivo. Comentários, anexos, campos de formulário, metadados de imagens incorporadas e revisões anteriores também não fazem parte da cobertura verificada. Esta ferramenta não apaga texto ou imagens visíveis.',
   },
   {
-    question: 'Documentos protegidos por senha de abertura podem ser limpos?',
-    answer: 'A ferramenta aceita PDFs desprotegidos. Se o documento tiver senha de abertura ou restrição de leitura, remova a senha no aplicativo de origem antes de processar o arquivo no navegador.',
+    question: 'Como conferir a cópia baixada?',
+    answer: 'Abra as propriedades do PDF e confira os campos padrão. Para uma inspeção mais detalhada, use ExifTool com o comando exiftool -a -G1 -s arquivo.pdf. Revise também as páginas, anexos, comentários e assinatura digital. O resultado do teste e as limitações estão na página de verificação.',
   },
   {
-    question: 'Meu documento confidencial é enviado para algum servidor?',
-    answer: 'Não. Todo o processamento ocorre 100% localmente no seu navegador através de bibliotecas WebAssembly e manipulação binária de arquivos. Seu PDF nunca é transmitido para servidores remotos nem armazenado na internet, sem upload do arquivo. O site usa analytics e recursos externos; veja a política de privacidade.',
+    question: 'A ferramenta altera o conteúdo visível ou a assinatura?',
+    answer: 'A limpeza trata propriedades de metadados; ela não faz redação de texto ou imagens visíveis. Como o arquivo é modificado, a assinatura digital pode deixar de ser válida. Guarde o original e não use esta ferramenta como substituto de redação de conteúdo confidencial.',
+  },
+  {
+    question: 'Meu PDF é enviado ao servidor?',
+    answer: 'O arquivo selecionado é processado no navegador e não é enviado aos servidores do site. A página usa analytics e pode carregar recursos externos; consulte a política de privacidade para detalhes sobre as conexões do site.',
   },
 ];
 
@@ -69,35 +73,35 @@ const howToSchema = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
   'name': 'Como Remover Metadados de PDF Online',
-  'description': 'Passo a passo para apagar autores, empresa e datas de criação de PDFs no navegador.',
+  'description': 'Passo a passo para processar uma cópia de PDF no navegador e conferir os campos padrão e limitações do resultado.',
   'totalTime': 'PT1M',
   'step': [
     {
       '@type': 'HowToStep',
       'position': 1,
-      'name': 'Abra a ferramenta gratuita',
-      'text': 'Acesse o Removedor de Metadados diretamente no seu navegador.',
+      'name': 'Guarde uma cópia do PDF original',
+      'text': 'Trabalhe em uma cópia do PDF e mantenha o original, especialmente se ele tiver uma assinatura digital.',
       'url': 'https://remover-metadados.com/#hero-section',
     },
     {
       '@type': 'HowToStep',
       'position': 2,
-      'name': 'Selecione seu documento PDF',
-      'text': 'Arraste uma cópia do seu arquivo PDF para a área de limpeza ou clique para carregar.',
+      'name': 'Selecione o PDF',
+      'text': 'Arraste a cópia do arquivo PDF para a ferramenta no navegador ou clique para selecioná-la.',
       'url': 'https://remover-metadados.com/#hero-section',
     },
     {
       '@type': 'HowToStep',
       'position': 3,
       'name': 'Higienização binária local',
-      'text': 'O navegador descarta blocos de autoria, software gerador e registros XMP na memória RAM.',
+      'text': 'O teste publicado confirmou campos padrão específicos vazios; propriedades personalizadas e bytes XMP desvinculados podem permanecer.',
       'url': 'https://remover-metadados.com/#como-funciona',
     },
     {
       '@type': 'HowToStep',
       'position': 4,
-      'name': 'Baixe o PDF protegido',
-      'text': 'Faça o download do PDF pronto para envio com segurança e conformidade à LGPD.',
+      'name': 'Baixe e confira o PDF',
+      'text': 'Inspecione as propriedades da cópia baixada e confira páginas, conteúdo, anexos e assinatura antes de compartilhar.',
       'url': 'https://remover-metadados.com/#hero-section',
     },
   ],
@@ -149,35 +153,35 @@ const faqSchema = {
       <header class="guide-hero">
         <div class="guide-kicker-badge">
           <span class="pulse-dot" aria-hidden="true"></span>
-          <span>GUIA PRÁTICO · PDF, XMP & OFFICE</span>
+          <span>GUIA PRÁTICO · PDF, CAMPOS TESTADOS E LIMITES</span>
         </div>
 
         <h1 class="guide-hero-h1">Como Remover Metadados de PDF Online</h1>
 
         <p class="guide-hero-lead">
-          Antes de enviar um contrato, petição jurídica, proposta comercial ou currículo, verifique se o seu PDF não está expondo <strong>nomes de autores, razão social da empresa, histórico de edições e versões anteriores</strong>. Aprenda a higienizar seus documentos direto no navegador, com processamento local de arquivos e sem envio a servidores.
+          PDFs podem conter propriedades de autoria e outros dados que não aparecem na página. Veja quais campos padrão foram confirmados em um arquivo de teste, quais dados podem permanecer e como revisar a cópia baixada. O arquivo é processado localmente no navegador.
         </p>
 
         <!-- Quick Specs Strip -->
         <div class="guide-specs-strip">
           <div class="spec-pill">
-            <span class="spec-label">DOCUMENTOS:</span>
-            <span class="spec-val">PDF, DOCX, XLSX, PPTX</span>
+            <span class="spec-label">FORMATO DESTE GUIA:</span>
+            <span class="spec-val">PDF</span>
           </div>
           <div class="spec-divider" aria-hidden="true"></div>
           <div class="spec-pill">
-            <span class="spec-label">PRIVACIDADE:</span>
-            <span class="spec-val">Local, sem upload do arquivo</span>
+            <span class="spec-label">TESTE PUBLICADO:</span>
+            <span class="spec-val">Campos padrão selecionados</span>
           </div>
           <div class="spec-divider" aria-hidden="true"></div>
           <div class="spec-pill">
-            <span class="spec-label">VELOCIDADE:</span>
-            <span class="spec-val">Instantâneo (&lt; 2 seg)</span>
+            <span class="spec-label">PODEM PERMANECER:</span>
+            <span class="spec-val">Propriedades extras e bytes XMP</span>
           </div>
           <div class="spec-divider" aria-hidden="true"></div>
           <div class="spec-pill">
-            <span class="spec-label">INTEGRIDADE:</span>
-            <span class="spec-val">Texto & Layout Intactos</span>
+            <span class="spec-label">PROCESSAMENTO:</span>
+            <span class="spec-val">Local no navegador</span>
           </div>
         </div>
 
@@ -195,7 +199,7 @@ const faqSchema = {
             <span>Remover Metadados do Meu PDF Agora</span>
             <span aria-hidden="true">→</span>
           </a>
-          <p class="hero-cta-trust">✓ Processamento seguro no navegador · Sem envio a servidores · Confira cobertura e limitações</p>
+          <p class="hero-cta-trust">Use uma cópia · Confira os campos · Preserve o original</p>
         </div>
       </header>
 
@@ -205,14 +209,14 @@ const faqSchema = {
         <!-- Left Content Column -->
         <article class="guide-article">
 
-          <!-- Before vs After Terminal Box -->
+          <!-- Published PDF fixture results -->
           <section class="guide-section" aria-labelledby="heading-pdf-demo">
             <div class="section-title-wrap">
-              <span class="section-kicker">INSPEÇÃO REAL</span>
-              <h2 id="heading-pdf-demo">Quais informações ocultas seu PDF carrega?</h2>
+              <span class="section-kicker">RESULTADOS PUBLICADOS</span>
+              <h2 id="heading-pdf-demo">O que o teste do PDF confirmou?</h2>
             </div>
             <p>
-              Mesmo que você exporte um documento em PDF pronto para leitura, programas como Microsoft Word, Excel e Canva salvam dados de auditoria interna nas propriedades do arquivo:
+              O relatório público registra um teste feito pela equipe em um PDF sintético. O arquivo de entrada tinha os campos mostrados abaixo; ExifTool foi usado para inspecionar a cópia processada. Isso não é uma auditoria independente nem comprova todos os PDFs.
             </p>
 
             <div class="terminal-comparison">
@@ -221,16 +225,14 @@ const faqSchema = {
                   <span class="term-dot dot-red" aria-hidden="true"></span>
                   <span class="term-dot dot-yellow" aria-hidden="true"></span>
                   <span class="term-dot dot-green" aria-hidden="true"></span>
-                  <span class="term-title">contrato_proposta.pdf [EXPOSTO]</span>
+                  <span class="term-title">PDF sintético de teste [ENTRADA]</span>
                 </div>
                 <div class="terminal-body">
-                  <div class="term-line danger-line"><span>Autor / Criador:</span> Dr. Roberto Silva (Advocacia Corporativa)</div>
-                  <div class="term-line danger-line"><span>Empresa / Razão Social:</span> Silva &amp; Associados Consultoria S/A</div>
-                  <div class="term-line danger-line"><span>Título do Documento:</span> Minuta_Fusao_Empresarial_v4_Final.docx</div>
-                  <div class="term-line danger-line"><span>Aplicativo Gerador:</span> Microsoft Word para Office 365</div>
-                  <div class="term-line danger-line"><span>Produtor do PDF:</span> macOS Version 14.3.1 Quartz PDFContext</div>
-                  <div class="term-line danger-line"><span>Data de Criação:</span> 2026-02-14 09:12:44 -03:00</div>
-                  <div class="term-line danger-line"><span>Metadados XMP:</span> Registros de 6 revisores anteriores detectados</div>
+                  <div class="term-line danger-line"><span>PDF:Author:</span> Audit Test Author</div>
+                  <div class="term-line danger-line"><span>PDF:Title:</span> Audit Test Title</div>
+                  <div class="term-line danger-line"><span>PDF:Creator:</span> pdf-lib</div>
+                  <div class="term-line danger-line"><span>PDF:Producer:</span> pdf-lib</div>
+                  <div class="term-line danger-line"><span>Teste:</span> Campos padrão não vazios antes do processamento</div>
                 </div>
               </div>
 
@@ -244,30 +246,30 @@ const faqSchema = {
               <div class="terminal-box terminal-safe">
                 <div class="terminal-header">
                   <span class="term-dot dot-green" aria-hidden="true"></span>
-                  <span class="term-title">contrato_proposta_limpo.pdf [HIGIENIZADO]</span>
-                  <span class="term-badge-ok">EXEMPLO ILUSTRATIVO</span>
+                  <span class="term-title">PDF sintético de teste [SAÍDA]</span>
+                  <span class="term-badge-ok">VERIFICAÇÃO PUBLICADA</span>
                 </div>
                 <div class="terminal-body">
-                  <div class="term-line safe-line"><span>Autor / Criador:</span> [REMOVIDO COMPLETAMENTE]</div>
-                  <div class="term-line safe-line"><span>Empresa / Organização:</span> [NENHUM RASTRO ENCONTRADO]</div>
-                  <div class="term-line safe-line"><span>Título / Assunto:</span> [HIGIENIZADO]</div>
-                  <div class="term-line safe-line"><span>Aplicativo &amp; Produtor:</span> [APAGADOS]</div>
-                  <div class="term-line safe-line"><span>Datas e Histórico:</span> [ZERADOS]</div>
-                  <div class="term-line safe-line"><span>Fluxos XMP:</span> [DESCARTE TOTAL DE REVISÕES]</div>
-                  <div class="term-line safe-line"><span>Conteúdo Visual:</span> 100% Páginas, Textos e Imagens Preservados</div>
+                  <div class="term-line safe-line"><span>PDF:Author:</span> vazio</div>
+                  <div class="term-line safe-line"><span>PDF:Title:</span> vazio</div>
+                  <div class="term-line safe-line"><span>PDF:Creator / Producer:</span> vazio</div>
+                  <div class="term-line safe-line"><span>PDF:Subject:</span> vazio</div>
+                  <div class="term-line danger-line"><span>Propriedade personalizada:</span> ainda presente no teste</div>
+                  <div class="term-line danger-line"><span>Bytes XMP desvinculados:</span> ainda presentes no teste</div>
                 </div>
               </div>
             </div>
+            <p class="verification-note">O relatório foi gerado em 22/10/2026 com Chrome, ExifTool e pdf-lib. Os campos de data são definidos como 01/01/1970 pelo código, mas não foram verificados por esse teste. <a href="/verificacao/">Consulte o relatório completo, o método e as limitações.</a></p>
           </section>
 
           <!-- Why clean PDF metadata -->
           <section class="guide-section" aria-labelledby="heading-por-que-pdf">
             <div class="section-title-wrap">
-              <span class="section-kicker">CONFORMIDADE & SIGILO</span>
-              <h2 id="heading-por-que-pdf">Por que advogados, empresas e profissionais devem limpar PDFs?</h2>
+              <span class="section-kicker">REVISÃO DO ARQUIVO</span>
+              <h2 id="heading-por-que-pdf">O que revisar antes de compartilhar um PDF?</h2>
             </div>
             <p>
-              No meio corporativo e jurídico, o envio acidental de metadados pode violar acordos de confidencialidade (NDA), comprometer negociações estratégicas e desrespeitar a <strong>Lei Geral de Proteção de Dados (LGPD)</strong>:
+              As propriedades de um PDF variam conforme o arquivo e o aplicativo que o criou. Revise os dados do documento e o conteúdo visível antes de compartilhar. Remover alguns campos não garante conformidade legal nem substitui a revisão de privacidade da sua organização:
             </p>
 
             <div class="risks-grid">
@@ -313,7 +315,7 @@ const faqSchema = {
                 <div class="step-info">
                   <h3>Acesse o Removedor Local</h3>
                   <p>
-                    Abra o <a href="/#hero-section">Removedor de Metadados</a> no seu navegador. Como o processamento é 100% client-side, seus contratos confidenciais nunca saem do seu computador.
+                    Abra o <a href="/#hero-section">Removedor de Metadados</a> no navegador e trabalhe em uma cópia. O arquivo selecionado é processado no dispositivo.
                   </p>
                 </div>
               </div>
@@ -323,7 +325,7 @@ const faqSchema = {
                 <div class="step-info">
                   <h3>Selecione uma Cópia do PDF</h3>
                   <p>
-                    Arraste o arquivo <strong>PDF, DOCX, XLSX ou PPTX</strong> para a área de limpeza. Dica: sempre guarde seu documento original de edição em pasta segura.
+                    Arraste o arquivo <strong>PDF</strong> para a área de limpeza. Guarde o original, especialmente se ele tiver assinatura digital.
                   </p>
                 </div>
               </div>
@@ -333,7 +335,7 @@ const faqSchema = {
                 <div class="step-info">
                   <h3>Limpeza Binária de Propriedades</h3>
                   <p>
-                    A ferramenta manipula a árvore de objetos do PDF e descarta o dicionário de informações (<code>/Info</code>) e o fluxo XML de metadados (<code>/Metadata</code>).
+                    O código limpa campos padrão do dicionário de informações, redefine datas e remove referências de metadados e PieceInfo do catálogo. Consulte abaixo quais campos foram verificados e o que pode permanecer.
                   </p>
                 </div>
               </div>
@@ -341,9 +343,9 @@ const faqSchema = {
               <div class="step-card">
                 <div class="step-number">04</div>
                 <div class="step-info">
-                  <h3>Baixe o PDF Higienizado</h3>
+                    <h3>Baixe e inspecione a cópia</h3>
                   <p>
-                    Faça o download do PDF limpo. Você pode abrir as propriedades do arquivo no Adobe Acrobat ou no navegador para confirmar que todos os campos de autor foram removidos.
+                    Faça o download. Abra as propriedades no leitor de PDF e confira os campos padrão; para uma inspeção mais detalhada, use <code>exiftool -a -G1 -s arquivo.pdf</code>. Revise as páginas, anexos, comentários e assinatura antes de compartilhar.
                   </p>
                 </div>
               </div>
@@ -354,50 +356,47 @@ const faqSchema = {
           <section class="guide-section" aria-labelledby="heading-formatos-pdf">
             <div class="section-title-wrap">
               <span class="section-kicker">TABELA TÉCNICA</span>
-              <h2 id="heading-formatos-pdf">Metadados Removidos em Documentos</h2>
+              <h2 id="heading-formatos-pdf">Campos de PDF verificados e cobertura do código</h2>
             </div>
             <p>
-              Veja quais campos e propriedades são higienizados pela nossa ferramenta em PDFs e pacotes Office:
+              O teste publicado examinou um PDF sintético com ExifTool. A tabela separa o que o teste confirmou do que o código altera sem uma asserção de teste:
             </p>
 
             <div class="table-container">
               <table class="specs-table">
                 <thead>
                   <tr>
-                    <th>Tipo de Arquivo</th>
-                    <th>Extensão</th>
-                    <th>Campos Eliminados</th>
-                    <th>Conformidade LGPD</th>
+                    <th>Campo PDF</th>
+                    <th>Comportamento</th>
+                    <th>Verificação</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><strong>Documento PDF</strong></td>
-                    <td><code>.pdf</code></td>
-                    <td>Autor, Criador, Produtor, Título, Assunto, Datas, XMP</td>
-                    <td><span class="table-badge-ok">Cobertura limitada</span></td>
+                    <td><strong>Author, Title, Creator, Producer e Subject</strong></td>
+                    <td>Os valores padrão ficam vazios após o processamento do PDF de teste.</td>
+                    <td><span class="table-badge-ok">Confirmado no relatório</span></td>
                   </tr>
                   <tr>
-                    <td><strong>Microsoft Word</strong></td>
-                    <td><code>.docx</code></td>
-                    <td>Autor, Último Salvo Por, Tempo de Edição, Comentários ocultos</td>
-                    <td><span class="table-badge-ok">Cobertura limitada</span></td>
+                    <td><strong>Keywords</strong></td>
+                    <td>O código grava uma lista vazia. O teste não começou com palavras-chave de exemplo.</td>
+                    <td><span class="table-badge-ok">Código; sem valor de entrada no teste</span></td>
                   </tr>
                   <tr>
-                    <td><strong>Microsoft Excel</strong></td>
-                    <td><code>.xlsx</code></td>
-                    <td>Propriedades padrão de autoria; revisões não são removidas</td>
-                    <td><span class="table-badge-ok">Cobertura limitada</span></td>
+                    <td><strong>CreationDate e ModDate</strong></td>
+                    <td>O código define as duas datas como 01/01/1970; elas não são removidas.</td>
+                    <td><span class="table-badge-ok">Não verificado no teste</span></td>
                   </tr>
                   <tr>
-                    <td><strong>PowerPoint</strong></td>
-                    <td><code>.pptx</code></td>
-                    <td>Propriedades da apresentação e notas do apresentador</td>
-                    <td><span class="table-badge-ok">Cobertura limitada</span></td>
+                    <td><strong>XMP e PieceInfo no catálogo</strong></td>
+                    <td>O código remove as referências do catálogo. Bytes XMP desvinculados permaneceram no teste.</td>
+                    <td><span class="table-badge-ok">Limite confirmado</span></td>
                   </tr>
                 </tbody>
               </table>
             </div>
+            <p class="verification-note">O teste encontrou uma propriedade personalizada e bytes XMP desvinculados que ainda estavam no arquivo. Comentários, anexos, formulários, metadados de imagens incorporadas e revisões anteriores não foram validados. A ferramenta não redige conteúdo visível; alterações também podem invalidar assinaturas digitais.</p>
+            <p class="verification-note">Para DOCX, XLSX, PPTX, ODT, ODS e ODP há testes sintéticos de propriedades de pacote, mas não testes completos de compatibilidade com cada aplicativo. Veja os <a href="/verificacao/">resultados e limitações por formato</a>.</p>
           </section>
 
           <!-- FAQ Accordion -->
@@ -473,8 +472,8 @@ const faqSchema = {
                 </div>
                 <div class="rel-card-info">
                   <span class="rel-tag">ARTIGO DO BLOG · 7 MIN</span>
-                  <h3 class="rel-title">Metadados Ocultos em PDFs & LGPD</h3>
-                  <p class="rel-desc">Entenda como nomes de autores, caminhos de pastas e revisões vazam dados confidenciais.</p>
+                  <h3 class="rel-title">Metadados em PDF: Campos e Limites</h3>
+                  <p class="rel-desc">Veja o que o teste confirmou, o que pode permanecer e como conferir uma cópia.</p>
                 </div>
               </a>
             </div>
@@ -492,20 +491,20 @@ const faqSchema = {
 
             <ul class="sidebar-checklist">
               <li>
-                <span class="check-mark">✓</span>
-                <span>Remove nome do autor e empresa</span>
+              <span class="check-mark">✓</span>
+                <span>Teste confirmou Author, Title, Creator, Producer e Subject vazios</span>
               </li>
               <li>
                 <span class="check-mark">✓</span>
-                <span>Descarta datas e software gerador</span>
+                <span>Datas são redefinidas para 01/01/1970, não apagadas</span>
               </li>
               <li>
-                <span class="check-mark">✓</span>
-                <span>Elimina fluxos de revisão XMP</span>
+                <span class="check-mark">!</span>
+                <span>Propriedades personalizadas e bytes XMP podem permanecer</span>
               </li>
               <li>
-                <span class="check-mark">✓</span>
-                <span>Mantém páginas e texto 100% intactos</span>
+                <span class="check-mark">!</span>
+                <span>Não remove texto ou imagens visíveis; não é ferramenta de redação</span>
               </li>
               <li>
                 <span class="check-mark">✓</span>
@@ -518,7 +517,7 @@ const faqSchema = {
                 <span>Limpar Meu PDF Agora</span>
                 <span aria-hidden="true">→</span>
               </a>
-              <p class="sidebar-subtext">Sem envio a servidores · Sem cadastro · processamento local</p>
+              <p class="sidebar-subtext">Processe uma cópia no navegador e confira o resultado.</p>
             </div>
 
             <div class="sidebar-help">
@@ -532,12 +531,12 @@ const faqSchema = {
 
       <!-- Bottom High-Impact Callout -->
       <section class="guide-bottom-cta">
-        <div class="bottom-cta-badge">CONFORMIDADE JURÍDICA & LGPD</div>
-        <h2>Pronto para enviar seus documentos com sigilo absoluto?</h2>
-        <p>Higienize contratos, petições e currículos em segundos diretamente no seu navegador.</p>
+        <div class="bottom-cta-badge">TESTE EM UMA CÓPIA</div>
+        <h2>Confira os campos padrão do seu PDF</h2>
+        <p>O teste publicado cobre campos selecionados e documenta dados que podem permanecer. Revise a cópia baixada antes de compartilhar.</p>
         <div class="bottom-cta-btns">
           <a href="/#hero-section" class="btn-cta-primary">
-            <span>Abrir Removedor de PDFs</span>
+            <span>Processar uma cópia de PDF</span>
             <span aria-hidden="true">→</span>
           </a>
           <a href="/guias/" class="btn-cta-secondary">
@@ -554,6 +553,23 @@ const faqSchema = {
 
 <style>
   /* ── Layout & Typography ─────────────────────────────────── */
+  .verification-note {
+    margin: 0.85rem 0 0;
+    padding: 0.85rem 1rem;
+    border-left: 3px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .verification-note a {
+    color: var(--text);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
   .guide-main {
     min-height: 70vh;
     padding: 1.5rem 0 6rem;

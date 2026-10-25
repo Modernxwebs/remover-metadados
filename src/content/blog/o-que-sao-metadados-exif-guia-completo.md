@@ -119,3 +119,5 @@ Diferente de outros sites da internet que exigem o upload das suas fotos para um
 
 Acesse a **[ferramenta na página inicial](/)**, selecione suas fotos e baixe as cópias processadas e confira os [testes e limitações](/verificacao/) antes de compartilhá-las. Se você também lida com contratos, laudos e documentos corporativos, leia em seguida nosso artigo sobre **[Metadados Ocultos em PDFs e Riscos perante a LGPD](/blog/metadados-em-pdf-riscos-e-como-remover/)**.
 
+Vídeos usam caixas de contêiner diferentes das tags EXIF de fotos. Veja o **[guia de metadados de vídeo MP4, MOV e M4V](/guias/remover-metadados-de-video/)** para conhecer os alvos atuais do código e como conferir a cópia; o relatório público ainda não verifica reprodução nem cobertura completa de vídeo.
+

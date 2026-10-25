@@ -121,6 +121,16 @@ const categories = isEn
 
           <!-- Description text -->
           <p class="format-card-desc">{cat.desc}</p>
+          {!isEn && cat.id === "pdfs" && (
+            <a class="format-guide-link" href="/guias/remover-metadados-pdf/">
+              Guia: metadados de PDF <span aria-hidden="true">→</span>
+            </a>
+          )}
+          {!isEn && cat.id === "multimidia" && (
+            <a class="format-guide-link" href="/guias/remover-metadados-de-video/">
+              Guia: metadados de vídeo <span aria-hidden="true">→</span>
+            </a>
+          )}
         </div>
       ))}
     </div>
@@ -216,6 +226,19 @@ const categories = isEn
     line-height: 1.6;
     margin: 0;
     margin-top: auto;
+  }
+
+  .format-guide-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    width: fit-content;
+    margin-top: 0.85rem;
+    color: var(--text);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
   }
 
   @media (max-width: 980px) {

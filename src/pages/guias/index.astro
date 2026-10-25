@@ -4,7 +4,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
 const title = 'Guias para Remover Metadados | Fotos, Vídeos e PDFs';
-const description = 'Aprenda a remover metadados de vídeos (MP4, MOV), imagens (EXIF, GPS) e PDFs online. Guias práticos com limpeza 100% no navegador e processamento local de arquivos.';
+const description = 'Guias para remover metadados de fotos, vídeos e PDFs. Consulte os campos verificados, as limitações por formato e como conferir uma cópia processada.';
 const canonicalUrl = 'https://remover-metadados.com/guias/';
 
 const guides = [
@@ -36,13 +36,13 @@ const guides = [
     readTime: '3 min de leitura',
     icon: 'video',
     badge: 'Essencial',
-    summary: 'Aprenda a limpar localização, dados do dispositivo de gravação e tags ocultas antes de compartilhar ou publicar vídeos na internet.',
+    summary: 'A ferramenta aceita MP4, MOV e M4V e direciona a limpeza a caixas udta e a um tipo específico de XMP. Os testes publicados ainda não verificam reprodução nem cobertura completa de vídeo.',
     highlights: [
-      'Elimina tags de GPS gravadas pelo smartphone ou drone',
-      'Remove informações do gravador, software e usuário',
-      'Processamento nativo sem perda de resolução visual',
+      'Veja exatamente quais caixas o código remove',
+      'Outras tags e dados de faixa podem permanecer',
+      'Confira a cópia em um player e com um leitor de metadados',
     ],
-    formats: ['MP4', 'MOV', 'M4V', 'MP3'],
+    formats: ['MP4', 'MOV', 'M4V'],
   },
   {
     id: 'pdf',
@@ -53,33 +53,33 @@ const guides = [
     slug: '/guias/remover-metadados-pdf/',
     readTime: '3 min de leitura',
     icon: 'pdf',
-    badge: 'LGPD & Compliance',
-    summary: 'Limpe campos padrão de autor, título e aplicativo criador. Comentários, anexos e histórico no conteúdo podem permanecer.',
+    badge: 'Campos verificados',
+    summary: 'O teste público confirmou campos padrão de autoria vazios na cópia. Datas são redefinidas, enquanto propriedades personalizadas e bytes XMP desvinculados podem permanecer.',
     highlights: [
-      'Exclui nome do autor, empresa e pastas do computador',
-      'Limpa propriedades padrão; comentários e revisões permanecem',
-      'Preserva a formatação, páginas e o layout do PDF intactos',
+      'Autor, título, criador, produtor e assunto ficaram vazios no PDF de teste',
+      'Datas são definidas para 1970; não são apagadas',
+      'Propriedades personalizadas, bytes XMP e outros dados podem permanecer',
     ],
-    formats: ['PDF', 'DOCX', 'XLSX', 'PPTX'],
+    formats: ['PDF'],
   },
 ];
 
 const faqs = [
   {
     q: 'O que são metadados e por que devo removê-los?',
-    a: 'Metadados são informações ocultas gravadas automaticamente quando você tira uma foto, grava um vídeo ou salva um documento. Podem incluir coordenadas exatas de GPS de onde você estava, modelo e número de série do seu aparelho, nome completo de quem editou o arquivo e datas exatas. Remover esses dados antes de enviar ou publicar evita riscos de doxxing, vazamento corporativo e perseguição.',
+    a: 'Metadados são informações associadas ao arquivo, como campos de autoria, datas ou localização, quando o formato e o aplicativo os gravam. O conteúdo varia por arquivo. A remoção de alguns campos pode reduzir exposição, mas não garante anonimização nem substitui a revisão do arquivo.',
   },
   {
     q: 'A ferramenta reduz a qualidade da imagem ou do vídeo ao limpar?',
-    a: 'Depende do formato. PNG normalmente preserva os dados de imagem comprimidos; JPEG, WebP e AVIF são recodificados e podem perder qualidade. HEIC vira JPEG; GIF e TIFF perdem animação ou páginas adicionais. Vídeos não são recomprimidos, mas a limpeza cobre apenas caixas específicas. Veja a página de verificação.',
+    a: 'Depende do formato. PNG normalmente preserva os dados de imagem comprimidos; JPEG, WebP e AVIF são recodificados e podem perder qualidade. HEIC vira JPEG; GIF e TIFF viram PNG de um quadro ou página. Vídeos são tratados por um caminho de caixas do contêiner, mas os testes publicados ainda não verificam reprodução ou cobertura completa. Consulte a página de verificação.',
   },
   {
-    q: 'Por que o processamento local no navegador é mais seguro que outros sites?',
-    a: 'Removedores tradicionais exigem que você envie seus arquivos para um servidor remoto, criando cópias e brechas de segurança. Nossa tecnologia utiliza APIs HTML5 e manipulação binária no próprio navegador: seus arquivos nunca trafegam pela internet e não saem do seu computador ou celular.',
+    q: 'Onde os arquivos selecionados são processados?',
+    a: 'A ferramenta processa o conteúdo dos arquivos no navegador e não envia os arquivos selecionados ao servidor. O site ainda carrega analytics e outros recursos externos; veja a política de privacidade para entender as conexões da página.',
   },
   {
     q: 'Como verificar se os metadados foram realmente excluídos?',
-    a: 'Após baixar o arquivo limpo, você pode inspecionar as propriedades no seu sistema operacional (botão direito > Propriedades > Detalhes no Windows, ou Obter Informações no Mac) ou reabrir o arquivo em qualquer leitor de EXIF para constatar que os campos foram zerados.',
+    a: 'Confira a cópia baixada com um leitor adequado ao formato. Para PDFs, veja as propriedades do documento ou use ExifTool; para vídeos, examine as tags e confirme que o arquivo toca com imagem e som. A página de verificação mostra o que os testes atuais cobrem e o que não foi testado.',
   },
 ];
 
@@ -154,7 +154,7 @@ const collectionSchema = {
         <h1 class="guides-hero-title">Guias Práticos para Remover Metadados com Segurança</h1>
 
         <p class="guides-hero-lead">
-          Fotos, vídeos e documentos carregam dados invisíveis que não aparecem na tela: <strong>coordenadas de GPS</strong>, aparelho utilizado, autoria e histórico de edições. Explore nossos tutoriais passo a passo para higienizar seus arquivos localmente no navegador, com total sigilo e sem envio a servidores.
+          Fotos, vídeos e documentos podem conter dados que não aparecem na tela, como autoria, datas ou localização. Explore os tutoriais para ver a cobertura testada e as limitações de cada formato. O processamento dos arquivos ocorre localmente no navegador.
         </p>
 
         <!-- Technical Trust Chips -->
@@ -314,8 +314,8 @@ const collectionSchema = {
           </a>
           <a href="/blog/metadados-em-pdf-riscos-e-como-remover/" style="display: flex; flex-direction: column; padding: 1.25rem; background: var(--bg); border: 2px solid var(--border); box-shadow: 2px 2px 0 var(--shadow-color); border-radius: 3px; text-decoration: none; color: var(--text);">
             <span style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.4rem;">DOCUMENTOS & PDF · 7 MIN</span>
-            <h3 style="font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; line-height: 1.35; margin: 0 0 0.5rem; color: var(--text);">Metadados Ocultos em PDFs: Riscos Jurídicos e LGPD</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; margin: 0 0 0.75rem; flex-grow: 1;">Descubra como caminhos de rede e históricos em PDFs vazam segredos de empresas.</p>
+            <h3 style="font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; line-height: 1.35; margin: 0 0 0.5rem; color: var(--text);">Metadados em PDF: Campos, Limites e Como Conferir</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; margin: 0 0 0.75rem; flex-grow: 1;">Entenda os campos padrão, os limites do teste publicado e como revisar uma cópia processada.</p>
             <span style="font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700; color: var(--link-color);">Ler artigo &rarr;</span>
           </a>
         </div>
@@ -398,7 +398,7 @@ const collectionSchema = {
         </h2>
 
         <p class="cta-desc">
-          Arraste suas fotos, vídeos ou PDFs diretamente para a nossa ferramenta online. A limpeza acontece em segundos, no seu navegador, sem envio a servidores e com conformidade total à LGPD.
+          Processe uma cópia no navegador, confira a cobertura do formato e revise o arquivo baixado antes de compartilhar. A ferramenta não envia o arquivo selecionado aos servidores do site.
         </p>
 
         <div class="cta-actions">

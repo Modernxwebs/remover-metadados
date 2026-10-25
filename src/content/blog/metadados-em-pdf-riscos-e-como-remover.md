@@ -1,12 +1,12 @@
 ---
-title: "Metadados Ocultos em PDFs: Riscos Jurídicos, LGPD e Como Limpar Documentos"
-description: "Entenda como nomes de autores, caminhos de pastas internas e históricos de revisão em arquivos PDF vazam dados de empresas e escritórios, e aprenda a limpá-los."
+title: "Metadados em PDF: Campos, Limites e Como Conferir uma Cópia"
+description: "Veja quais propriedades um PDF pode conter, o que os testes do removedor confirmaram e como conferir os campos e dados que podem permanecer."
 pubDate: 2026-09-18
 author: "Dev Sharma"
 authorRole: "Especialista em Privacidade & Segurança Digital"
 category: "Documentos & PDF"
 categorySlug: "documentos-pdf"
-tags: ["PDF", "Segurança da Informação", "LGPD", "Compliance", "Documentos", "Advocacia"]
+tags: ["PDF", "Metadados", "Privacidade", "Documentos"]
 lang: "pt-BR"
 readTime: "7 min de leitura"
 featured: false
@@ -77,16 +77,19 @@ No Brasil, a **Lei nº 13.709/2018 (LGPD)** impõe obrigações severas a pessoa
 
 ---
 
-## Como Higienizar Metadados de PDF com Total Segurança
+## Remover e conferir propriedades padrão de PDF
 
-Para assegurar que seus documentos estejam verdadeiramente limpos antes do envio a clientes, tribunais ou parceiros comerciais, siga o protocolo de segurança:
+Trabalhe em uma cópia e mantenha o original. A limpeza de metadados não é uma ferramenta de redação: ela não apaga texto ou imagens visíveis nas páginas. Se o documento tiver assinatura digital, a alteração também pode invalidá-la.
 
-1. **Evite editores amadores**: Nunca cubra dados confidenciais com caixas de texto ou formas pretas desenhadas.
-2. **Utilize o Removedor de Metadados de PDF Online**: Nossa ferramenta de **[Remover Metadados de PDF](/guias/remover-metadados-pdf/)** reconstrói o arquivo no seu navegador, eliminando por completo:
-   - Dicionários `/Author`, `/Creator`, `/Producer`, `/Keywords`, `/Subject`.
-   - Datas de criação `/CreationDate` e modificação `/ModDate`.
-   - Fluxos de metadados XML (XMP).
-3. **Sem Envio para a Nuvem**: Como o processamento acontece **100% no seu próprio navegador via JavaScript**, seus contratos confidenciais e petições jurídicas nunca trafegam pela internet e não são gravados em nenhum servidor externo, sem upload do arquivo. A ferramenta não garante remoção de todo dado pessoal: propriedades personalizadas, bytes XMP desvinculados, anexos e comentários podem permanecer. Veja os [testes e limitações](/verificacao/).
+O processamento do PDF ocorre no navegador e não envia o arquivo selecionado aos servidores do site. Isso descreve o caminho do arquivo; não é uma afirmação de conformidade legal nem uma garantia de anonimização.
 
-Acesse a **[ferramenta na página inicial](/)** ou a seção de **[Guias de PDF](/guias/remover-metadados-pdf/)** para limpar seus arquivos PDF gratuitamente em poucos segundos. Se seu escritório ou empresa também anexa fotografias e vistorias em relatórios, confira também nosso **[Guia Completo sobre Metadados EXIF e Coordenadas de GPS](/blog/o-que-sao-metadados-exif-guia-completo/)**.
+No relatório público, um PDF sintético foi inspecionado com ExifTool antes e depois do processamento:
+
+- Os campos padrão Author, Title, Creator, Producer e Subject estavam vazios na cópia de saída.
+- O código define Keywords como vazio e redefine as datas de criação e modificação para 1º de janeiro de 1970. As datas não são apagadas, e o arquivo de teste publicado não as verifica.
+- O teste encontrou uma propriedade personalizada e bytes XMP desvinculados que permaneceram no arquivo. Comentários, anexos, formulários, metadados de imagens incorporadas e revisões anteriores não foram verificados.
+
+Para conferir a sua cópia, abra as propriedades no leitor de PDF ou execute <code>exiftool -a -G1 -s arquivo.pdf</code>. Revise também as páginas, anexos, comentários e assinatura digital. Consulte o **[guia de remoção de metadados de PDF](/guias/remover-metadados-pdf/)** para os detalhes do teste e as **[limitações por formato](/verificacao/)** antes de compartilhar.
+
+Se o arquivo que você vai enviar for uma foto, veja também nosso **[guia de metadados EXIF e dados de imagem](/blog/o-que-sao-metadados-exif-guia-completo/)**.
 

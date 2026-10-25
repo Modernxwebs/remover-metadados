@@ -3,30 +3,30 @@ import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
-const title = 'Como Remover Metadados de Vídeo Online Grátis | MP4 e MOV';
-const description = 'Aprenda a remover localização de GPS, dispositivo e tags ocultas de vídeos MP4 e MOV no navegador. Sem envio a servidores, processamento local e gratuito.';
+const title = 'Remover Metadados de Vídeo MP4, MOV e M4V | Limites';
+const description = 'Veja quais caixas de MP4, MOV e M4V o código tenta remover, o que pode permanecer e como conferir o vídeo baixado. Processamento local no navegador.';
 const canonicalUrl = 'https://remover-metadados.com/guias/remover-metadados-de-video/';
 
 const faqItems = [
   {
-    question: 'Quais metadados de vídeo são removidos?',
-    answer: 'A ferramenta remove os metadados compatíveis com o contêiner do arquivo, incluindo coordenadas de geolocalização GPS, modelo e número de série da câmera ou smartphone, nome do software de edição, datas de criação e tags de usuário embutidas.',
+    question: 'Quais caixas de metadados o código tenta remover?',
+    answer: 'O caminho atual ignora caixas udta e caixas uuid cujo identificador começa com be 7a cf cb. Isso pode atingir alguns dados de usuário e XMP. Não é uma lista de campos GPS, câmera ou datas garantidamente removidos; outras estruturas podem permanecer.',
   },
   {
-    question: 'A ferramenta aceita arquivos MP4 e MOV gravados em celulares?',
-    answer: 'Sim. O removedor foi otimizado para processar arquivos MP4, M4V e MOV gravados em smartphones (iPhone e Android), câmeras digitais e drones diretamente no navegador.',
+    question: 'Quais formatos são aceitos e foram testados?',
+    answer: 'O código aceita arquivos com extensão MP4, M4V e MOV. A verificação publicada do projeto ainda não inclui um vídeo de teste: reprodução e cobertura completa dos metadados não foram verificadas. Use uma cópia e confira o resultado antes de compartilhar.',
   },
   {
-    question: 'O vídeo perde resolução ou qualidade após a higienização?',
-    answer: 'Não. A limpeza atua especificamente nos cabeçalhos e caixas de metadados do contêiner (átomos moov/udta/meta). As faixas de vídeo e áudio não sofrem recompressão destrutiva, preservando a nitidez original.',
+    question: 'A imagem, o áudio e a reprodução estão garantidos?',
+    answer: 'O código copia os dados de mídia sem reencodificá-los, mas a reprodução do arquivo de saída ainda não foi verificada pelo teste público. Confira duração, imagem e som em um player antes de usar a cópia.',
   },
   {
-    question: 'Meus vídeos são enviados para servidores externos?',
-    answer: 'Absolutamente não. Todo o processamento é executado localmente na memória do seu navegador através de APIs modernas do HTML5. Seu arquivo nunca sai do seu computador ou smartphone.',
+    question: 'Meu vídeo é enviado ao servidor?',
+    answer: 'O arquivo selecionado é processado no navegador e não é enviado aos servidores do site. A página usa analytics e pode carregar recursos externos; consulte a política de privacidade para detalhes sobre as conexões do site.',
   },
   {
-    question: 'Remover metadados apaga marca d’água ou legendas gravadas no vídeo?',
-    answer: 'Não. Metadados são informações descritivas anexadas ao contêiner. Marcas d’água visíveis, legendas queimadas nos pixels ou vinhetas fazem parte do fluxo de vídeo e não são alteradas por removedores de metadados.',
+    question: 'A limpeza remove marca d’água ou legendas do vídeo?',
+    answer: 'Não. Marcas d’água e legendas queimadas fazem parte da imagem; faixas de áudio e vídeo são tratadas como dados de mídia, não como metadados pelo código atual.',
   },
 ];
 
@@ -69,13 +69,13 @@ const howToSchema = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
   'name': 'Como Remover Metadados de Vídeo Online',
-  'description': 'Passo a passo simples para higienizar vídeos MP4 e MOV no navegador sem envio a servidores.',
+  'description': 'Passo a passo para processar uma cópia de vídeo no navegador e conferir a reprodução e os metadados restantes.',
   'totalTime': 'PT1M',
   'step': [
     {
       '@type': 'HowToStep',
       'position': 1,
-      'name': 'Acesse a ferramenta gratuita',
+      'name': 'Guarde uma cópia do vídeo original',
       'text': 'Abra a página inicial do Removedor de Metadados no seu navegador.',
       'url': 'https://remover-metadados.com/#hero-section',
     },
@@ -89,15 +89,15 @@ const howToSchema = {
     {
       '@type': 'HowToStep',
       'position': 3,
-      'name': 'Higienização automática local',
-      'text': 'A ferramenta apaga dados de localização GPS, identificação do gravador e tags técnicas na memória do dispositivo.',
+      'name': 'Processe uma cópia e conheça os limites',
+      'text': 'O código tenta remover caixas udta e uma família de caixas XMP uuid; outros metadados podem permanecer e a reprodução não foi verificada.',
       'url': 'https://remover-metadados.com/#como-funciona',
     },
     {
       '@type': 'HowToStep',
       'position': 4,
-      'name': 'Baixe seu vídeo protegido',
-      'text': 'Clique para baixar o arquivo higienizado pronto para postar ou compartilhar com processamento local de arquivos.',
+      'name': 'Baixe e confira a cópia',
+      'text': 'Inspecione as tags restantes e abra o arquivo em um player para conferir imagem, som e duração antes de usá-lo.',
       'url': 'https://remover-metadados.com/#hero-section',
     },
   ],
@@ -149,35 +149,35 @@ const faqSchema = {
       <header class="guide-hero">
         <div class="guide-kicker-badge">
           <span class="pulse-dot" aria-hidden="true"></span>
-          <span>GUIA PRÁTICO · MP4, MOV & M4V</span>
+          <span>GUIA PRÁTICO · MP4, MOV, M4V E LIMITAÇÕES</span>
         </div>
 
         <h1 class="guide-hero-h1">Como Remover Metadados de Vídeo Online</h1>
 
         <p class="guide-hero-lead">
-          Quando você grava um vídeo com seu smartphone ou câmera, dezenas de informações invisíveis são gravadas junto: <strong>coordenadas exatas de GPS</strong>, número de série do aparelho e software de edição. Aprenda a higienizar seus arquivos MP4 e MOV direto no navegador, sem enviar nada para servidores externos.
+          O código aceita arquivos MP4, MOV e M4V e tenta remover caixas específicas do contêiner. O relatório público ainda não inclui um vídeo de teste, então a reprodução e a remoção completa de metadados não estão confirmadas. Veja o que o código altera e como conferir a cópia.
         </p>
 
         <!-- Quick Specs Strip -->
         <div class="guide-specs-strip">
           <div class="spec-pill">
-            <span class="spec-label">FORMATOS:</span>
+            <span class="spec-label">EXTENSÕES ACEITAS PELO CÓDIGO:</span>
             <span class="spec-val">MP4, MOV, M4V</span>
           </div>
           <div class="spec-divider" aria-hidden="true"></div>
           <div class="spec-pill">
-            <span class="spec-label">PRIVACIDADE:</span>
-            <span class="spec-val">100% Local (Sem Envio a Servidores)</span>
+            <span class="spec-label">TESTE PÚBLICO:</span>
+            <span class="spec-val">Vídeo ainda não verificado</span>
           </div>
           <div class="spec-divider" aria-hidden="true"></div>
           <div class="spec-pill">
-            <span class="spec-label">TEMPO ESTIMADO:</span>
-            <span class="spec-val">~30 segundos</span>
+            <span class="spec-label">CAIXAS ALVO:</span>
+            <span class="spec-val">udta e XMP uuid específico</span>
           </div>
           <div class="spec-divider" aria-hidden="true"></div>
           <div class="spec-pill">
-            <span class="spec-label">CUSTO:</span>
-            <span class="spec-val">Gratuito</span>
+            <span class="spec-label">ANTES DE USAR:</span>
+            <span class="spec-val">Confira tags e reprodução</span>
           </div>
         </div>
 
@@ -192,7 +192,7 @@ const faqSchema = {
             <span>Remover Metadados do Meu Vídeo Agora</span>
             <span aria-hidden="true">→</span>
           </a>
-          <p class="hero-cta-trust">✓ Processamento instantâneo no navegador · Sem envio a servidores · Sem cadastro</p>
+          <p class="hero-cta-trust">Processamento local · Use uma cópia · Reprodução ainda não testada</p>
         </div>
       </header>
 
@@ -202,14 +202,14 @@ const faqSchema = {
         <!-- Left Content Column -->
         <article class="guide-article">
 
-          <!-- Before vs After Terminal Box -->
+          <!-- Implementation scope, not a video test result -->
           <section class="guide-section" aria-labelledby="heading-inspecao">
             <div class="section-title-wrap">
-              <span class="section-kicker">DEMONSTRAÇÃO REAL</span>
-              <h2 id="heading-inspecao">O que está oculto dentro do seu vídeo?</h2>
+              <span class="section-kicker">ALCANCE DO CÓDIGO</span>
+              <h2 id="heading-inspecao">O que o código tenta alterar?</h2>
             </div>
             <p>
-              Ao apertar o play, você vê apenas a gravação. No entanto, os contêineres MP4 e QuickTime MOV guardam blocos de metadados como <code>udta</code>, <code>meta</code> e átomos de localização gravados pelo iOS, Android ou softwares como Premiere e Final Cut:
+              Arquivos MP4, MOV e M4V podem organizar dados em caixas diferentes. A implementação atual procura caixas <code>udta</code> e caixas <code>uuid</code> com um identificador XMP específico. Isso descreve o código, não comprova que todos os metadados ou todos os vídeos sejam tratados corretamente.
             </p>
 
             <div class="terminal-comparison">
@@ -218,15 +218,13 @@ const faqSchema = {
                   <span class="term-dot dot-red" aria-hidden="true"></span>
                   <span class="term-dot dot-yellow" aria-hidden="true"></span>
                   <span class="term-dot dot-green" aria-hidden="true"></span>
-                  <span class="term-title">arquivo_original.mp4 [EXPOSTO]</span>
+                  <span class="term-title">Contêiner de entrada [ESTRUTURA VARIÁVEL]</span>
                 </div>
                 <div class="terminal-body">
-                  <div class="term-line danger-line"><span>GPS Coordenadas:</span> -23.55052, -46.633308</div>
-                  <div class="term-line danger-line"><span>Localização:</span> São Paulo, SP, Brasil</div>
-                  <div class="term-line danger-line"><span>Dispositivo:</span> Apple iPhone 15 Pro Max</div>
-                  <div class="term-line danger-line"><span>Software:</span> iOS 17.4.1 Camera App</div>
-                  <div class="term-line danger-line"><span>Data & Hora:</span> 2026-03-12 18:42:09 UTC</div>
-                  <div class="term-line danger-line"><span>Identificador Único:</span> UUID-9f4a-81c2-bc04</div>
+                  <div class="term-line danger-line"><span>moov:</span> caixa principal de metadados e faixas</div>
+                  <div class="term-line danger-line"><span>udta:</span> dados de usuário; caixa-alvo do código</div>
+                  <div class="term-line danger-line"><span>uuid:</span> pode conter XMP ou outros dados</div>
+                  <div class="term-line danger-line"><span>mdat:</span> amostras de áudio e vídeo</div>
                 </div>
               </div>
 
@@ -240,19 +238,19 @@ const faqSchema = {
               <div class="terminal-box terminal-safe">
                 <div class="terminal-header">
                   <span class="term-dot dot-green" aria-hidden="true"></span>
-                  <span class="term-title">arquivo_higienizado.mp4 [LIMPO]</span>
-                  <span class="term-badge-ok">EXEMPLO ILUSTRATIVO</span>
+                  <span class="term-title">Comportamento implementado [NÃO É TESTE]</span>
+                  <span class="term-badge-ok">COBERTURA LIMITADA</span>
                 </div>
                 <div class="terminal-body">
-                  <div class="term-line safe-line"><span>GPS Coordenadas:</span> [REMOVIDO COM SUCESSO]</div>
-                  <div class="term-line safe-line"><span>Localização:</span> [NENHUM RASTRO ENCONTRADO]</div>
-                  <div class="term-line safe-line"><span>Dispositivo:</span> [HIGIENIZADO]</div>
-                  <div class="term-line safe-line"><span>Software:</span> [HIGIENIZADO]</div>
-                  <div class="term-line safe-line"><span>Tags de Usuário:</span> [ZERADAS]</div>
-                  <div class="term-line safe-line"><span>Vídeo & Áudio:</span> 100% Fidelidade e Resolução Preservadas</div>
+                  <div class="term-line safe-line"><span>udta:</span> ignorada pelo código</div>
+                  <div class="term-line safe-line"><span>uuid XMP específico:</span> ignorado pelo código</div>
+                  <div class="term-line safe-line"><span>Outras caixas:</span> copiadas, podem conter metadados</div>
+                  <div class="term-line safe-line"><span>mdat:</span> bytes copiados sem reencodificação</div>
+                  <div class="term-line danger-line"><span>Reprodução e cobertura total:</span> ainda não verificadas</div>
                 </div>
               </div>
             </div>
+            <p class="video-verification-note">O relatório público do projeto ainda não inclui amostra de vídeo. Não há teste de reprodução nem de remoção completa para MP4, MOV ou M4V. <a href="/verificacao/">Consulte o relatório, o método e os formatos verificados.</a></p>
           </section>
 
           <!-- Why clean metadata -->
@@ -262,31 +260,31 @@ const faqSchema = {
               <h2 id="heading-por-que">Por que você deve limpar metadados de vídeo antes de compartilhar?</h2>
             </div>
             <p>
-              Vídeos enviados via Telegram, Discord, AirDrop, e-mail ou compartilhados em redes sociais e plataformas de armazenamento em nuvem frequentemente mantêm os metadados intactos. Existem três perigos imediatos:
+              O conteúdo de um contêiner varia conforme o aplicativo, as configurações de gravação e as edições feitas no arquivo. Serviços de compartilhamento também podem transformar ou remover dados de maneiras diferentes; não presuma que uma plataforma sempre preserve ou apague metadados:
             </p>
 
             <div class="risks-grid">
               <div class="risk-card">
                 <div class="risk-badge">PERIGO 01</div>
-                <h3>Rastreamento Residencial e Rotina</h3>
+                <h3>Localização, se estiver no arquivo</h3>
                 <p>
-                  Vídeos gravados em casa ou na vizinhança registram as coordenadas de GPS. Pessoas mal-intencionadas podem extrair os dados e descobrir exatamente onde você mora ou estuda.
+                  Alguns arquivos podem conter localização ou outros dados de contexto. Inspecione o vídeo específico antes de compartilhar; a presença e a precisão desses campos variam.
                 </p>
               </div>
 
               <div class="risk-card">
                 <div class="risk-badge">PERIGO 02</div>
-                <h3>Exposição de Equipamento Profissional</h3>
+                <h3>Informações do contêiner</h3>
                 <p>
-                  Criadores de conteúdo e videomakers podem expor números de série de câmeras caras, lentes e configurações de estúdio em arquivos brutos entregues a clientes.
+                  Caixas do contêiner podem armazenar nomes, datas ou metadados de ferramentas. O código só trata caixas específicas e não garante que todos esses dados sejam removidos.
                 </p>
               </div>
 
               <div class="risk-card">
                 <div class="risk-badge">PERIGO 03</div>
-                <h3>Vazamento de Fluxo Editorial</h3>
+                <h3>Revisão antes do envio</h3>
                 <p>
-                  Softwares de edição como Adobe Premiere, DaVinci Resolve e Final Cut salvam histórico de edições, nomes de editores e versões internas no cabeçalho do arquivo.
+                  Confira a saída com um leitor de metadados e reproduza o arquivo. Metadados e conteúdo visível, como legendas gravadas na imagem, são coisas diferentes.
                 </p>
               </div>
             </div>
@@ -326,9 +324,9 @@ const faqSchema = {
               <div class="step-card">
                 <div class="step-number">03</div>
                 <div class="step-info">
-                  <h3>Limpeza Binária Instantânea</h3>
+                    <h3>Processamento local com cobertura limitada</h3>
                   <p>
-                    A ferramenta lê a estrutura de átomos do contêiner e descarta as caixas de localização GPS, dispositivo e autoria. Todo o processo acontece na memória local da sua máquina.
+                    O código atual tenta remover caixas <code>udta</code> e caixas <code>uuid</code> com um identificador XMP específico. Outros metadados podem permanecer; os testes publicados ainda não verificam vídeos.
                   </p>
                 </div>
               </div>
@@ -336,9 +334,9 @@ const faqSchema = {
               <div class="step-card">
                 <div class="step-number">04</div>
                 <div class="step-info">
-                  <h3>Baixe a Cópia Higienizada</h3>
+                    <h3>Baixe e verifique a cópia</h3>
                   <p>
-                    Clique em <strong>Baixar</strong> individualmente ou em <strong>Baixar Todos (.zip)</strong> para receber seus arquivos seguros e livres de qualquer vestígio de rastreamento.
+                    Baixe a cópia e inspecione as tags com <code>exiftool -a -G1 -s arquivo.mp4</code>. Em seguida, abra-a em um player e confira imagem, som e duração. Guarde o original.
                   </p>
                 </div>
               </div>
@@ -349,50 +347,41 @@ const faqSchema = {
           <section class="guide-section" aria-labelledby="heading-formatos">
             <div class="section-title-wrap">
               <span class="section-kicker">TABELA TÉCNICA</span>
-              <h2 id="heading-formatos">Compatibilidade de Formatos de Vídeo</h2>
+              <h2 id="heading-formatos">Formatos aceitos e o que foi testado</h2>
             </div>
             <p>
-              Confira os formatos de vídeo suportados para processamento nativo e os metadados eliminados:
+              Estes nomes de arquivo entram no caminho de vídeo do código. O relatório público ainda não tem uma amostra de vídeo, portanto não confirma a saída nem a reprodução:
             </p>
 
             <div class="table-container">
               <table class="specs-table">
                 <thead>
                   <tr>
-                    <th>Formato</th>
-                    <th>Extensão</th>
-                    <th>Metadados Eliminados</th>
-                    <th>Processamento</th>
+                    <th>Extensões aceitas</th>
+                    <th>Alvo do código</th>
+                    <th>Verificação e limites</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><strong>MPEG-4 Part 14</strong></td>
-                    <td><code>.mp4</code></td>
-                    <td>GPS, Câmera, Software, Dados do Usuário (átomos udta/moov)</td>
-                    <td><span class="table-badge-ok">100% Local</span></td>
+                    <td><strong>MP4</strong></td>
+                    <td>Caixas <code>udta</code> e caixas <code>uuid</code> com prefixo XMP específico.</td>
+                    <td>Sem amostra publicada; outras caixas e tags podem permanecer. Reprodução não verificada.</td>
                   </tr>
                   <tr>
-                    <td><strong>Apple QuickTime</strong></td>
-                    <td><code>.mov</code></td>
-                    <td>Localização iOS, Modelo iPhone, Tags de Usuário</td>
-                    <td><span class="table-badge-ok">100% Local</span></td>
+                    <td><strong>MOV</strong></td>
+                    <td>Usa o mesmo caminho de caixas do código para arquivos de vídeo.</td>
+                    <td>Sem amostra publicada; outras caixas e tags podem permanecer. Reprodução não verificada.</td>
                   </tr>
                   <tr>
-                    <td><strong>MPEG-4 Video</strong></td>
-                    <td><code>.m4v</code></td>
-                    <td>Metadados de autoria e timestamps</td>
-                    <td><span class="table-badge-ok">100% Local</span></td>
-                  </tr>
-                  <tr>
-                    <td><strong>Áudio MPEG</strong></td>
-                    <td><code>.mp3</code></td>
-                    <td>Tags ID3v1/ID3v2, artista, álbum, gravador</td>
-                    <td><span class="table-badge-ok">100% Local</span></td>
+                    <td><strong>M4V</strong></td>
+                    <td>Usa o mesmo caminho de caixas do código para arquivos de vídeo.</td>
+                    <td>Sem amostra publicada; outras caixas e tags podem permanecer. Reprodução não verificada.</td>
                   </tr>
                 </tbody>
               </table>
             </div>
+            <p class="video-verification-note">O código não percorre todas as estruturas possíveis: outras caixas, datas, metadados de faixas e dados em caixas não reconhecidas podem ficar no arquivo. Até haver testes de vídeo, processe apenas cópias e confira cada saída.</p>
           </section>
 
           <!-- FAQ Accordion -->
@@ -473,32 +462,32 @@ const faqSchema = {
             <ul class="sidebar-checklist">
               <li>
                 <span class="check-mark">✓</span>
-                <span>Suporta MP4, MOV e M4V</span>
+                <span>O código aceita MP4, MOV e M4V</span>
               </li>
               <li>
                 <span class="check-mark">✓</span>
-                <span>Apaga GPS e dispositivo</span>
+                <span>Tenta remover udta e um tipo de XMP uuid</span>
               </li>
               <li>
                 <span class="check-mark">✓</span>
-                <span>Sem compressão destrutiva</span>
+                <span>Reprodução ainda não verificada</span>
               </li>
               <li>
                 <span class="check-mark">✓</span>
-                <span>Processamento 100% no navegador</span>
+                <span>O arquivo é processado localmente</span>
               </li>
               <li>
                 <span class="check-mark">✓</span>
-                <span>Gratuito e sem limites</span>
+                <span>Use uma cópia e confira cada saída</span>
               </li>
             </ul>
 
             <div class="sidebar-action-box">
               <a href="/#hero-section" class="sidebar-cta-btn">
-                <span>Limpar Meu Vídeo Agora</span>
+                <span>Processar uma cópia de vídeo</span>
                 <span aria-hidden="true">→</span>
               </a>
-              <p class="sidebar-subtext">Não requer cadastro ou instalação</p>
+              <p class="sidebar-subtext">Reprodução e cobertura completa ainda não foram testadas.</p>
             </div>
 
             <div class="sidebar-help">
@@ -512,12 +501,12 @@ const faqSchema = {
 
       <!-- Bottom High-Impact Callout -->
       <section class="guide-bottom-cta">
-        <div class="bottom-cta-badge">PROCESSAMENTO LOCAL DE ARQUIVOS</div>
-        <h2>Pronto para compartilhar seus vídeos sem expor sua privacidade?</h2>
-        <p>Experimente nosso removedor local gratuito. Seus dados nunca saem da sua máquina.</p>
+        <div class="bottom-cta-badge">TESTE COM UMA CÓPIA</div>
+        <h2>Inspecione o vídeo antes de compartilhar</h2>
+        <p>O código tenta remover caixas específicas, mas o relatório público ainda não confirma a reprodução nem a cobertura completa de MP4, MOV ou M4V.</p>
         <div class="bottom-cta-btns">
           <a href="/#hero-section" class="btn-cta-primary">
-            <span>Abrir Removedor de Metadados</span>
+            <span>Processar uma cópia de vídeo</span>
             <span aria-hidden="true">→</span>
           </a>
           <a href="/guias/" class="btn-cta-secondary">
@@ -534,6 +523,23 @@ const faqSchema = {
 
 <style>
   /* ── Layout & Typography ─────────────────────────────────── */
+  .video-verification-note {
+    margin: 0.85rem 0 0;
+    padding: 0.85rem 1rem;
+    border-left: 3px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .video-verification-note a {
+    color: var(--text);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
   .guide-main {
     min-height: 70vh;
     padding: 1.5rem 0 6rem;
