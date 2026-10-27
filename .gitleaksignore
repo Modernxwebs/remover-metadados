@@ -1,0 +1,4 @@
+# Retired IndexNow verification key, not an account/server credential.
+# The integration was removed and the live verification endpoints were disabled
+# on 2026-10-27. Ignore only this historical finding; all other detection stays on.
+4b53dc94b2b4e0cd12c1b6065ef4b20f427d3a90:scripts/submit-indexnow.js:generic-api-key:5

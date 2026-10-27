@@ -13,7 +13,7 @@ if (output === root || output.startsWith(path.join(root, 'src') + path.sep) || o
 }
 
 const rootFiles = [
-  '.env.example', '.gitignore', 'README.md', 'LICENSE', 'LICENSE-SCOPE.md',
+  '.env.example', '.gitignore', '.gitleaksignore', 'README.md', 'LICENSE', 'LICENSE-SCOPE.md',
   'CONTRIBUTING.md', 'SECURITY.md', 'THIRD_PARTY_NOTICES.md', 'astro.config.mjs',
   'package.json', 'package-lock.json', 'tsconfig.json',
 ];
