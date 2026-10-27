@@ -10,7 +10,6 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "indexnow": "node scripts/submit-indexnow.js",
     "audit:seo": "node scripts/audit-seo.js",
     "test:metadata": "node scripts/test-metadata.mjs",
     "test:schema": "node scripts/test-schema.mjs"
