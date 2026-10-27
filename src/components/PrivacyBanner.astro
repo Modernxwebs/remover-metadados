@@ -29,8 +29,8 @@ const isEn = currentLocale === 'en';
 
       <p class="privacy-desc">
         {isEn
-          ? 'Your files are processed locally without uploads. The website also connects to Google Analytics and Google Fonts; library fallbacks may load from jsDelivr. External maps share coordinates only when you choose to load or open them.'
-          : 'Seus arquivos são processados localmente, sem envio a servidores. O site também se conecta ao Google Analytics e Google Fonts; alternativas de bibliotecas podem carregar pelo jsDelivr. Mapas externos compartilham coordenadas apenas quando você escolhe carregar ou abrir um deles.'}
+          ? 'Your files are processed locally without uploads, using libraries served with this website. Website browsing also loads Google Fonts and external badge images, and may use Google Analytics when configured. External maps share coordinates only when you choose to load or open them.'
+          : 'Seus arquivos são processados localmente, sem envio a servidores, com bibliotecas servidas pelo próprio site. A navegação também carrega Google Fonts e imagens de selos externos, e pode usar Google Analytics quando configurado. Mapas externos compartilham coordenadas apenas quando você escolhe carregar ou abrir um deles.'}
         <a href={isEn ? '/en/privacy/' : '/privacidade/'}>{isEn ? 'Privacy details' : 'Detalhes de privacidade'}</a>
       </p>
     </div>
