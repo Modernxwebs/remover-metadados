@@ -1,3 +1,11 @@
+# Baseline browser protections. Deploy these headers with the static assets.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self' mailto:; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://twelve.tools https://dododirectory.com https://dofollow.tools https://api.producthunt.com https://*.google-analytics.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src https://www.openstreetmap.org; worker-src 'self' blob:
+
 # Block indexing of the Cloudflare Pages subdomain
 # Canonical tags in Layout.astro already point to remover-metadados.com
 https://remover-metadados.pages.dev/*

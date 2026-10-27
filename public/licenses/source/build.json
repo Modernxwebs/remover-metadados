@@ -1,0 +1,32 @@
+{
+  "wrapper": "heic-to 1.6.6, modified by Modern X Webs",
+  "libheif": "1.23.7",
+  "libde265": "1.1.3",
+  "emscripten": "4.0.14",
+  "emsdkToolchainRevision": "4658718c188782acc67a249d45fce2d891ee3cc1",
+  "cmake": "3.31.6",
+  "esbuild": "0.25.4",
+  "nativeFormat": "Single-file WebAssembly module in a separately served ES module and worker",
+  "features": "HEVC decoding with libde265; other external codecs, plugin loading and parallel tile decoding disabled",
+  "workerLimits": {
+    "inputBytes": 104857600,
+    "decodedPixels": 64000000,
+    "timeoutMilliseconds": 30000,
+    "maximumWasmMemoryBytes": 536870912
+  },
+  "decoderSha256": "4bc8a3e8cbeb8ff69d9e1cad2d9b4d7871f39a5fd4ccd684a105d30aa60c4cf1",
+  "buildSourceSha256": {
+    "scripts/build-heic-native.py": "4fc8f0cb466dbd6f3c00c4224e28aab9b85d1c64503831b3aa36b4b7a37acd70",
+    "scripts/build-heic-wrapper.mjs": "e6b6025ec66c4ef3d59131c332d18e440a62325f004f7e7d677e8534250c7227"
+  },
+  "note": "Runtime versions are checked by the browser test suites. This record is not a security certification or an independent audit.",
+  "toolchainRuntimeNotices": [
+    "llvm-libcxx-LICENSE.txt",
+    "llvm-libcxxabi-LICENSE.txt",
+    "llvm-compiler-rt-LICENSE.txt",
+    "llvm-libunwind-LICENSE.txt",
+    "musl-COPYRIGHT.txt",
+    "llvm-libc-LICENSE.txt",
+    "mimalloc-LICENSE.txt"
+  ]
+}

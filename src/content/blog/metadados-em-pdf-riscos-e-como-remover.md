@@ -2,8 +2,8 @@
 title: "Metadados em PDF: Campos, Limites e Como Conferir uma Cópia"
 description: "Veja quais propriedades um PDF pode conter, o que os testes do removedor confirmaram e como conferir os campos e dados que podem permanecer."
 pubDate: 2026-09-18
-author: "Dev Sharma"
-authorRole: "Especialista em Privacidade & Segurança Digital"
+author: "Modern X Webs"
+authorRole: "Equipe do projeto"
 category: "Documentos & PDF"
 categorySlug: "documentos-pdf"
 tags: ["PDF", "Metadados", "Privacidade", "Documentos"]

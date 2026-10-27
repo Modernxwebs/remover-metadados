@@ -2,6 +2,11 @@
 
 Reviewed against the local source and browser behavior on October 22, 2026.
 
+This is a historical review. Later public-release preparation changed the local
+decoder loading, optional analytics configuration and privacy wording. See the
+current README, SECURITY.md, privacy pages and verification results for current
+behavior and recorded checks.
+
 | Finding | Verdict | Benefit and implemented change |
 | --- | --- | --- |
 | Viewer automatically creates an OpenStreetMap URL with GPS | True. `renderActiveItem()` assigned an external iframe URL without map-specific consent. A generated URL alone is not a network disclosure, but loading the frame shares coordinates. | Maps now stay off until an explicit action, with a coordinate/IP sharing notice. Consent resets on file changes and clearing. External map actions use buttons so automatic outbound-link analytics does not collect coordinate-bearing hrefs. Map frames and tabs omit referrers. |

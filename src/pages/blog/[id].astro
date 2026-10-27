@@ -81,9 +81,8 @@ const blogPostingSchema = {
   'datePublished': data.pubDate.toISOString(),
   'dateModified': (data.updatedDate || data.pubDate).toISOString(),
   'author': {
-    '@type': 'Person',
+    '@type': 'Organization',
     'name': data.author,
-    'jobTitle': data.authorRole,
     'url': 'https://remover-metadados.com/sobre/',
   },
   'publisher': {
@@ -149,7 +148,7 @@ const blogPostingSchema = {
 
         <div class="post-author-meta">
           <div class="meta-author-box">
-            <div class="meta-avatar" aria-hidden="true">DS</div>
+            <div class="meta-avatar" aria-hidden="true">MX</div>
             <div class="meta-names">
               <span class="meta-name">{data.author}</span>
               <span class="meta-role">{data.authorRole}</span>

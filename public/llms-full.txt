@@ -1,121 +1,68 @@
-# Remover Metadados — Full LLM Documentation
+# Remover Metadados / Metadata Remover
 
-## Overview
+Maintained by Modern X Webs. Contact: dev@modernxwebs.com.
 
-**Remover Metadados** (Portuguese) / **Metadata Remover** (English) is a free, open-source, browser-based tool that lets users permanently strip metadata from their files without ever uploading them to a server.
+The application reads and processes selected file contents in the browser,
+without uploading them for processing. Website delivery and external resource
+connections are separate from file processing. Local processing is not anonymous
+browsing or a guarantee of complete metadata removal.
 
-The site serves two audiences:
-1. **Brazilian users** at `https://remover-metadados.com/` (Portuguese, pt-BR)
-2. **International / English-speaking users** at `https://remover-metadados.com/en/`
+## Coverage
 
----
+- JPEG, WebP and AVIF use re-encoding; pixels and color/profile information can change.
+- PNG normally strips selected chunks while preserving compressed image data.
+- HEIC/HEIF becomes JPEG. GIF/BMP/TIFF normally become a single-frame/page PNG.
+- SVG processing removes selected elements; it is not a complete sanitizer.
+- PDF processing clears standard properties and detaches selected references.
+  Custom properties, detached bytes, annotations, attachments and visible content can remain.
+- Office/OpenDocument processing clears selected package properties and thumbnails.
+  Comments, tracked changes and embedded files can remain.
+- MP3 and MP4/MOV/M4V processing targets selected tag envelopes or container boxes.
+  Complete metadata removal and real-media playback are not established.
 
-## What is Metadata?
+## Privacy
 
-Metadata is hidden information embedded inside files that can expose sensitive details:
+Processing libraries are delivered with the website; there are no remote CDN
+script fallbacks. Google Fonts and directory/Product Hunt badge images create
+external connections. Google Analytics is optional and disabled in an unconfigured
+source build; when configured, it loads only on its configured production hostname.
+Application file events use permitted format labels, counts, sizes and fixed error
+codes, not selected filenames, metadata values or raw errors.
 
-- **EXIF data in photos**: GPS coordinates (exact location where the photo was taken), camera model, serial number, date and time, lens settings (f-stop, shutter speed, ISO), software used to edit the image.
-- **IPTC/XMP in images**: Author name, copyright notice, caption, keywords.
-- **PDF metadata**: Author name, organization/company, creation software, creation and modification dates, document title, subject, producer application.
-- **Office document metadata (DOCX/XLSX/PPTX)**: Author name, revision history, company name, comments, tracked changes, last modified by.
+GPS coordinates are displayed locally. Opening or loading an external map sends
+the selected coordinates and connection information to that provider only after
+the user chooses the map action. Map permission resets when the file changes.
 
----
+Dropping files on informational pages temporarily stores them in browser IndexedDB
+to transfer them to the removal tool. The next tool visit consumes or clears the
+entry. Interrupted transfers can remain until a later tool visit or until browser
+site data is cleared. Reports and downloaded files remain where the user saves them.
 
-## How It Works (Technical)
+## Evidence
 
-All processing runs exclusively in the user's browser. No files are transmitted to any server.
+The verification pages describe coverage and remaining limitations. The JSON report
+contains maintainer-run fixture results, environment versions and an engine hash.
+These are not an independent security audit or proof for every file or browser.
+No universal C2PA, AI-provenance, watermark, steganography or anonymization guarantee
+is made. Keep originals and review the downloaded copy before sharing it.
 
-### Image Processing (JPEG/PNG/WebP/GIF)
-- JPEG: Re-encodes through HTML5 Canvas at quality 0.95. Pixels can change; this is not lossless metadata-only editing.
-- PNG: Normally strips metadata chunks while retaining IDAT bytes; pHYs and selected color/rendering chunks remain. ICC is removed. Canvas is a fallback.
-- WebP: Re-encoded at quality 0.95. AVIF uses 0.85 with WebP fallback. GIF/BMP/TIFF become PNG with one frame/page; HEIC becomes JPEG. Conversions use raster re-encoding.
+## Useful pages
 
-### PDF Processing
-- Uses `pdf-lib` (JavaScript) to load the PDF, clear `PDFDocument.setTitle('')`, `setAuthor('')`, `setSubject('')`, `setKeywords([])`, `setProducer('')`, `setCreator('')`, and save a fresh copy.
+- Portuguese tool: https://remover-metadados.com/
+- English tool: https://remover-metadados.com/en/
+- Portuguese viewer: https://remover-metadados.com/ver-metadados/
+- English viewer: https://remover-metadados.com/en/metadata-viewer/
+- Coverage and evidence: https://remover-metadados.com/en/verification/
+- Machine-readable results: https://remover-metadados.com/verification-results.json
+- Privacy: https://remover-metadados.com/en/privacy/
+- About: https://remover-metadados.com/en/about/
+- Contact: https://remover-metadados.com/en/contact/
 
-### Office Documents (DOCX, XLSX, PPTX)
-- Uses `jszip` to unzip the Open XML container, locate `docProps/core.xml` and `docProps/app.xml`, strip all metadata fields, and re-zip the file for download.
+## Licensing and maintenance
 
----
+Original application code is MIT licensed. Original branding and editorial prose
+are excluded from that grant. Dependencies retain their upstream licenses; the
+separate HEIC decoder is LGPL licensed. Source archives and notices are provided
+under /licenses/. No outside code contributions are currently accepted.
 
-## File processing and website connections
-
-- **No server uploads**: Files are processed in-memory using browser JavaScript APIs.
-- **Google Analytics 4** loads on page open and may use cookies and send usage/device information to Google.
-- **External resources**: Google Fonts and possible jsDelivr decoder fallbacks. Maps share GPS coordinates only after an explicit user choice.
-- **No accounts** required.
-- Browser memory management is browser-dependent. Downloads and exported reports remain where the user saves them.
-
----
-
-## SEO Keywords
-
-### Portuguese (pt-BR)
-remover metadados, remover metadados de fotos, remover EXIF, remover localização de foto, limpar metadados PDF, remover metadados de documentos, remover metadados online grátis, ferramenta de privacidade, dados EXIF câmera, GPS foto remover
-
-### English
-metadata remover, remove metadata from photos, remove EXIF data, strip GPS from image, clean PDF metadata, remove document metadata, online metadata remover free, EXIF remover, photo privacy tool, image metadata cleaner, AI metadata scrubber, remove hidden data from files
-
----
-
-## Site Structure
-
-```
-remover-metadados.com/
-├── /                                    # PT-BR homepage + tool
-├── /ver-metadados/                      # Online metadata & GPS inspector (PT-BR)
-├── /blog/                               # Privacy & security blog hub (PT-BR)
-│   ├── /como-ver-metadados-de-uma-foto/ # Guide: How to view photo metadata on mobile & PC
-│   ├── /o-que-sao-metadados-exif-guia-completo/ # Guide: What is EXIF & GPS risks
-│   └── /metadados-em-pdf-riscos-e-como-remover/ # Guide: PDF metadata & LGPD risks
-├── /guias/                              # Privacy guides & tutorials hub (PT-BR)
-│   ├── /remover-metadados-de-imagem/    # Photos & EXIF guide
-│   ├── /remover-metadados-de-video/     # Videos & MP4/MOV guide
-│   └── /remover-metadados-pdf/          # PDF & Office documents guide
-├── /sobre                               # About us (PT-BR)
-├── /privacidade                         # Privacy policy (PT-BR)
-├── /termos                              # Terms of service (PT-BR)
-├── /contato                             # Contact (PT-BR)
-├── /en/                                 # EN homepage + tool
-├── /en/metadata-viewer/                 # Online metadata & GPS inspector (EN)
-├── /en/about                            # About us (EN)
-├── /en/privacy                          # Privacy policy (EN)
-├── /en/terms                            # Terms of service (EN)
-├── /en/contact                          # Contact (EN)
-├── /sitemap-index.xml                   # Sitemap index
-├── /robots.txt                          # Crawler directives
-├── /llms.txt                            # LLM summary
-└── /llms-full.txt                       # This file
-```
-
----
-
-## Technology Stack
-
-| Layer | Technology |
-|---|---|
-| Framework | Astro 7 (static site generation) |
-| Styling | Tailwind CSS v4 |
-| Image metadata | piexifjs |
-| PDF processing | pdf-lib |
-| Office doc processing | jszip |
-| Hosting target | Static CDN (Cloudflare Pages / Vercel / Netlify) |
-| Languages | Portuguese (pt-BR), English (en) |
-
----
-
-## Contact
-
-- Email: hello@remover-metadados.com
-- X (Twitter): https://x.com/DevSharmaBuilds
-- LinkedIn: https://www.linkedin.com/in/dev000111/
-
----
-
-*Last updated: September 2026*
-
-## Coverage and verification
-
-Office processing clears standard package properties, custom properties and selected thumbnails. Comments, tracked changes and embedded files remain. PDF processing clears standard Info fields and detaches catalog XMP; custom properties and unreferenced metadata bytes may remain. MP3 targets ID3v1/v2. MP4/MOV targets selected udta and XMP boxes; other metadata can remain. No universal C2PA, AI provenance or anonymization guarantee is made.
-
-See https://remover-metadados.com/en/verification/ and /verification-results.json for maintainer-run fixture evidence, environment and limitations. These checks are not a third-party security audit.
+Last updated: October 27, 2026.

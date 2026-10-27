@@ -1,3 +1,4 @@
-Contact: mailto:hello@remover-metadados.com
+Contact: mailto:dev@modernxwebs.com
 Preferred-Languages: en, pt-BR
+Canonical: https://remover-metadados.com/.well-known/security.txt
 Expires: 2027-09-01T00:00:00.000Z

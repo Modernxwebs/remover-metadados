@@ -4,14 +4,14 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
 const title = 'Sobre Nós — Remover Metadados | Nossa História e Missão';
-const description = 'Conheça o Remover Metadados e o desenvolvedor Dev Sharma. Uma ferramenta independente com processamento local de arquivos no navegador, sem upload.';
+const description = 'Conheça o Remover Metadados, mantido por Modern X Webs, seu processamento local e seus testes e limitações por formato.';
 const canonicalUrl = 'https://remover-metadados.com/sobre/';
 const alternatePt = 'https://remover-metadados.com/sobre/';
 const alternateEn = 'https://remover-metadados.com/en/about/';
 
-const email = 'hello@remover-metadados.com';
-const xUrl = 'https://x.com/DevSharmaBuilds';
-const linkedInUrl = 'https://www.linkedin.com/in/dev000111/';
+const email = 'dev@modernxwebs.com';
+const studioUrl = 'https://modernxwebs.com';
+const verificationUrl = '/verificacao/';
 ---
 
 <Layout
@@ -41,7 +41,7 @@ const linkedInUrl = 'https://www.linkedin.com/in/dev000111/';
       </div>
       <h1 class="about-title">Nossa Missão é Devolver Sua Privacidade</h1>
       <p class="about-subtitle">
-        Construído para resolver um problema real: a maioria das ferramentas de "privacidade" na internet ironicamente obriga você a enviar seus arquivos privados para servidores desconhecidos.
+        Consulte e remova os metadados compatíveis no navegador. Revise os testes publicados e as limitações antes de compartilhar a cópia baixada.
       </p>
     </header>
 
@@ -50,16 +50,16 @@ const linkedInUrl = 'https://www.linkedin.com/in/dev000111/';
       <div class="story-tag">O PONTO DE PARTIDA</div>
       <h2 class="story-title">O Paradoxo dos Conversores e Limpadores Online</h2>
       <p class="story-text">
-        Se você já tentou remover metadados de uma foto de família com localização GPS da sua residência, ou limpar o histórico de revisões de um contrato em PDF ou DOCX antes de enviá-lo a um cliente, provavelmente se deparou com um dilema perturbador:
+        Se você já tentou remover metadados de uma foto de família com localização GPS da sua residência, ou limpar propriedades de autoria compatíveis de um contrato em PDF ou DOCX antes de enviá-lo a um cliente, provavelmente se deparou com um dilema perturbador:
       </p>
       <blockquote class="story-quote">
         "Para proteger a privacidade do meu arquivo, preciso primeiro enviar o arquivo para um servidor na nuvem de uma empresa que não conheço?"
       </blockquote>
       <p class="story-text">
-        Esse modelo tradicional quebra a confiança do usuário. Não há como auditar o que esses servidores remotos fazem com seus arquivos ou por quanto tempo mantêm cópias em discos rígidos de terceiros.
+        Cada ferramenta tem políticas próprias de processamento e armazenamento. Aqui, o conteúdo dos arquivos é processado no seu dispositivo, e a política de privacidade explica separadamente as conexões do site, os mapas opcionais e o armazenamento temporário do navegador.
       </p>
       <p class="story-text">
-        O <strong>Remover Metadados</strong> foi criado para quebrar esse paradigma. Com os padrões modernos de navegadores (HTML5 Canvas, Web Workers, WebAssembly e File API), seu dispositivo possui todo o poder computacional necessário para limpar metadados <strong>sem que um único byte saia da sua máquina</strong>.
+        O <strong>Remover Metadados</strong> foi criado para quebrar esse paradigma. Com os padrões modernos de navegadores (HTML5 Canvas, Web Workers, WebAssembly e File API), seu dispositivo possui todo o poder computacional necessário para limpar metadados <strong>sem enviar o conteúdo dos arquivos para processamento</strong>.
       </p>
     </section>
 
@@ -111,29 +111,19 @@ const linkedInUrl = 'https://www.linkedin.com/in/dev000111/';
 
         <div class="creator-bio-content">
           <span class="creator-label">QUEM ESTÁ POR TRÁS</span>
-          <h2 class="creator-full-name">Dev Sharma</h2>
+          <h2 class="creator-full-name">Modern X Webs</h2>
           <p class="creator-handle">
-            Criador do <strong>Remover Metadados</strong> e desenvolvedor focado em utilitários web de alta performance e privacidade.
+            Mantenedor do <strong>Remover Metadados</strong>, responsável pela aplicação, pelos testes publicados e pelo canal de atendimento.
           </p>
           <p class="creator-paragraph">
-            Sou apaixonado por construir aplicações limpas, diretas ao ponto e que respeitam integralmente o usuário. Acredito que a web moderna deve priorizar o processamento local no cliente para devolver a soberania dos dados às pessoas.
+            O projeto processa arquivos localmente e documenta as conexões do site separadamente. Os testes publicados cobrem comportamentos selecionados; não são uma auditoria de segurança independente nem uma garantia de remoção completa.
           </p>
 
           <!-- Social Buttons -->
           <div class="creator-social-row">
-            <a href={xUrl} target="_blank" rel="noopener noreferrer" class="social-btn">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-              </svg>
-              <span>Seguir no X (@DevSharmaBuilds)</span>
-            </a>
+            <a href={studioUrl} class="social-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a18 18 0 0 1 0 18 18 18 0 0 1 0-18Z"/></svg><span>Modern X Webs</span></a>
 
-            <a href={linkedInUrl} target="_blank" rel="noopener noreferrer" class="social-btn linkedin-btn">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-              </svg>
-              <span>Conectar no LinkedIn</span>
-            </a>
+            <a href={verificationUrl} class="social-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a18 18 0 0 1 0 18 18 18 0 0 1 0-18Z"/></svg><span>Testes e limitações</span></a>
 
             <a href={`mailto:${email}`} class="social-btn email-btn">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

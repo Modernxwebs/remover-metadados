@@ -2,8 +2,8 @@
 title: "O que são Metadados EXIF: O Guia Definitivo sobre Dados Ocultos em Fotos"
 description: "Aprenda o que são metadados EXIF, quais dados confidenciais seu celular grava em segredo (GPS, modelo, número de série) e como removê-los com segurança e grátis."
 pubDate: 2026-10-03
-author: "Dev Sharma"
-authorRole: "Especialista em Privacidade & Segurança Digital"
+author: "Modern X Webs"
+authorRole: "Equipe do projeto"
 category: "Fotos & Imagens"
 categorySlug: "fotos-imagens"
 tags: ["EXIF", "Privacidade", "GPS", "Fotografia", "Segurança Digital", "Celular"]

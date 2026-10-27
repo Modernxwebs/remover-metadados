@@ -1741,6 +1741,7 @@ const t = isEn
 <script type="module">
   import { inspectFileMetadata, toDms, formatBytes } from '/src/scripts/metadataViewer.js';
   import { removeMetadata, downloadBlob, isImageFile } from '/src/scripts/metadataRemover.js';
+  import { escapeHtml } from '/src/scripts/html.js';
 
   const toolContainer  = document.getElementById('metadata-viewer-tool');
   const t              = JSON.parse(toolContainer?.dataset?.i18n || '{}');
@@ -2060,8 +2061,8 @@ const t = isEn
 
       pill.innerHTML = `
         <span aria-hidden="true">${icon}</span>
-        <span class="file-pill-name" title="${item.file.name}">${item.file.name}</span>
-        <span class="file-pill-tag">${tagText}</span>
+        <span class="file-pill-name" title="${escapeHtml(item.file.name)}">${escapeHtml(item.file.name)}</span>
+        <span class="file-pill-tag">${escapeHtml(tagText)}</span>
       `;
 
       pill.addEventListener('click', () => {
@@ -2133,7 +2134,7 @@ const t = isEn
       if (res.assessment.findings && res.assessment.findings.length > 0) {
         riskFindings.style.display = 'flex';
         riskFindings.innerHTML = res.assessment.findings
-          .map(f => `<div class="finding-item">• ${f}</div>`)
+          .map(f => `<div class="finding-item">• ${escapeHtml(f)}</div>`)
           .join('');
       } else {
         riskFindings.style.display = 'none';
@@ -2210,8 +2211,8 @@ const t = isEn
       const card = document.createElement('div');
       card.className = 'meta-item-card';
       card.innerHTML = `
-        <span class="meta-item-key">${key}</span>
-        <span class="meta-item-val">${val}</span>
+        <span class="meta-item-key">${escapeHtml(key)}</span>
+        <span class="meta-item-val">${escapeHtml(val)}</span>
       `;
       container.appendChild(card);
     });
@@ -2242,15 +2243,6 @@ const t = isEn
     }
     const str = String(v);
     return { text: str, copyVal: str };
-  }
-
-  function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
   }
 
   // ── Render Raw Tags with Live Search ──────────────────────

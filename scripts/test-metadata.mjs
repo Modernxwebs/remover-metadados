@@ -19,6 +19,7 @@ const exif = (...args) => execFileSync(tool, args, { encoding: 'utf8' });
 const metadata = file => JSON.parse(exif('-j', '-G1', '-n', file))[0];
 const rows = [];
 const checks = [];
+let heicRuntimeVersions = null;
 const check = (name, fn) => { fn(); checks.push(name); };
 const fixtures = [];
 const width = 48, height = 32;
@@ -76,6 +77,9 @@ page.on('request', request => {
 });
 const consoleErrors = [];
 page.on('pageerror', err => consoleErrors.push(String(err)));
+if (process.env.DEBUG_BROWSER === '1') page.on('console', message => {
+  if (['warn', 'error'].includes(message.type())) console.error(message.text().slice(0, 1200));
+});
 
 async function clean(input, format = 'original') {
   const bytes = [...await readFile(input)];
@@ -103,6 +107,11 @@ try {
   for (const { ext, input } of fixtures) {
     const before = selectedTags(metadata(input));
     const { output, name, mime } = await clean(input);
+    if (ext === 'heic') {
+      const versions = await page.evaluate(() => window.metadataRemoverDecoderVersions?.());
+      heicRuntimeVersions = versions;
+      check('HEIC: patched native codec versions linked at runtime', () => assert.deepEqual(versions, { libheif: '1.23.7', libde265: '1.1.3' }));
+    }
     const tags = metadata(output), after = selectedTags(tags);
     check(`${ext}: selected personal tags removed`, () => assert.equal(Object.keys(after).length, 0));
     if (!['bmp', 'svg'].includes(ext)) assert.ok(Object.keys(before).length, `${ext}: fixture must contain metadata`);
@@ -213,9 +222,15 @@ try {
   }
   assert.deepEqual(consoleErrors, []);
   const engine = await readFile('src/scripts/metadataRemover.js');
+  const vendorSha256 = {};
+  for (const file of ['heic-to.js', 'avif_enc.wasm', 'exifr.full.umd.js', 'jszip.min.js']) {
+    vendorSha256[file] = createHash('sha256').update(await readFile(`public/vendor/${file}`)).digest('hex');
+  }
   const report = {
     generatedAt: new Date().toISOString(),
     engineSha256: createHash('sha256').update(engine).digest('hex'),
+    vendorSha256,
+    heicRuntimeVersions,
     environment: { browser: await browser.version(), exiftool: exif('-ver').trim(), sharp: sharp.versions.sharp, node: process.version },
     method: 'Maintainer-run browser fixtures, checked with ExifTool, sharp and direct ZIP/byte inspection. Not a third-party security audit or proof for every file.',
     checks, results: rows,

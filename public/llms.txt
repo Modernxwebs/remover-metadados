@@ -1,13 +1,13 @@
 # Remover Metadados / Metadata Remover
 
-> A free, 100% client-side online tool to permanently remove metadata (EXIF, IPTC, XMP) from photos, PDFs, and documents — directly in your browser. No file uploads for processing. The website uses Google Analytics, Google Fonts and optional external maps. Removal coverage depends on format.
+> A free browser-based viewer and remover for supported metadata fields. File contents are processed locally without uploads for processing. External resources, optional analytics, maps, output changes and remaining metadata are documented separately.
 
 ## Key Facts
 
 - **Primary Language**: Portuguese (Brazil) — `https://remover-metadados.com/`
 - **English Version**: `https://remover-metadados.com/en/`
-- **Processing**: Entirely client-side using HTML5 Canvas, WebAssembly, jszip, pdf-lib, and piexifjs
-- **Privacy**: Zero data transmission — files never leave the user's browser
+- **Processing**: Entirely client-side using HTML5 Canvas, WebAssembly, jszip, pdf-lib, and local image codecs
+- **Privacy**: Local file processing; website delivery and external resources create separate connections. Informational-page drops use temporary browser IndexedDB.
 - **Supported Formats**: JPEG, PNG, WebP, HEIC, GIF (images) · MP4, MOV, M4V, MP3 (video/audio) · PDF · DOCX, XLSX, PPTX (Office documents)
 
 ## Pages

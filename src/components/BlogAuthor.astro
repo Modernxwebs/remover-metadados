@@ -6,8 +6,8 @@ export interface Props {
 }
 
 const {
-  author = 'Dev Sharma',
-  role = 'Especialista em Privacidade & Segurança Digital',
+  author = 'Modern X Webs',
+  role = 'Equipe do projeto',
   isEn = false,
 } = Astro.props;
 
@@ -16,12 +16,12 @@ const authorAboutUrl = isEn ? '/en/about/' : '/sobre/';
 
 <div class="blog-author-card">
   <div class="author-avatar-badge" aria-hidden="true">
-    <span>DS</span>
+    <span>MX</span>
   </div>
 
   <div class="author-info">
     <div class="author-top-row">
-      <span class="author-role-tag">{isEn ? 'Author & Privacy Engineer' : 'Autor & Especialista em Privacidade'}</span>
+      <span class="author-role-tag">{isEn ? 'Project author' : 'Autor do projeto'}</span>
       <a href={authorAboutUrl} class="author-profile-link">
         {isEn ? 'View Profile →' : 'Ver Perfil →'}
       </a>
@@ -31,8 +31,8 @@ const authorAboutUrl = isEn ? '/en/about/' : '/sobre/';
 
     <p class="author-bio">
       {isEn
-        ? 'Creator of Metadata Remover and privacy advocate. Dev builds client-side, zero-upload web tools engineered to give users full sovereignty over their files, photos, and digital footprints without corporate tracking.'
-        : 'Criador do Remover Metadados e defensor da privacidade digital. Desenvolve ferramentas web 100% locais (zero envio a servidores) que devolvem aos usuários a soberania sobre suas fotos, documentos e rastros digitais.'}
+        ? 'Maintainer of Metadata Remover. The project publishes format-specific processing details, test evidence, and website privacy disclosures.'
+        : 'Mantenedor do Remover Metadados. O projeto publica detalhes de processamento por formato, evidências de testes e informações sobre a privacidade do site.'}
     </p>
   </div>
 </div>

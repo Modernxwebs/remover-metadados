@@ -1,0 +1,73 @@
+name: Validate public source
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 6 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+      ASTRO_TELEMETRY_DISABLED: '1'
+      HEIC_FIXTURE: artifacts/ci-heic-example.heic
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Scan all Git history with Gitleaks
+        shell: bash
+        run: |
+          SCANNER_DIR=$(mktemp -d)
+          curl --fail --silent --show-error --location https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz --output "$SCANNER_DIR/gitleaks_8.30.1_linux_x64.tar.gz"
+          curl --fail --silent --show-error --location https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_checksums.txt --output "$SCANNER_DIR/checksums.txt"
+          cd "$SCANNER_DIR"
+          sha256sum --check --ignore-missing checksums.txt
+          tar -xzf gitleaks_8.30.1_linux_x64.tar.gz gitleaks
+          cd "$GITHUB_WORKSPACE"
+          "$SCANNER_DIR/gitleaks" git --redact=100 --no-banner --log-opts=--all .
+      - name: Check vendored native decoder release freshness
+        run: npm run audit:native
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: npm ci
+      - run: npm audit --audit-level=low
+      - run: npm run check:vendor
+      - name: Prepare public upstream HEIC fixture
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, tarfile
+          version = json.loads(pathlib.Path('public/licenses/source/build.json').read_text())['libheif']
+          pathlib.Path('artifacts').mkdir(exist_ok=True)
+          with tarfile.open(f'public/licenses/source/libheif-{version}.tar.gz') as archive:
+              data = archive.extractfile(f'libheif-{version}/examples/example.heic').read()
+          pathlib.Path('artifacts/ci-heic-example.heic').write_bytes(data)
+          PY
+      - run: npm run build
+      - run: npm run test:schema
+      - run: npm run check:links
+      - run: npm run audit:seo
+      - name: Install test browser
+        run: npx puppeteer browsers install chrome --install-deps
+      - run: npm run test:security
+      - name: Start local Astro server
+        run: npm run dev -- --background
+      - run: npm run test:metadata
+      - name: Stop local Astro server
+        if: always()
+        run: npm run astro -- dev stop

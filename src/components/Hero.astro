@@ -272,6 +272,7 @@ const t = isEn
 
 <script type="module">
   import { removeMetadata, bundleAsZip, downloadBlob, isImageFile } from '/src/scripts/metadataRemover.js';
+  import { escapeHtml } from '/src/scripts/html.js';
 
   const heroSection         = document.getElementById('hero-section');
   const t                   = JSON.parse(heroSection?.dataset?.i18n || '{}');
@@ -311,6 +312,11 @@ const t = isEn
     return `${(b/1048576).toFixed(1)} MB`;
   }
   function ext(name) { return (name.split('.').pop() ?? '???').toUpperCase(); }
+  function telemetryFileType(file) {
+    const candidate = file?.name?.split('.').pop()?.toLowerCase() || '';
+    const allowed = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'heic', 'heif', 'tif', 'tiff', 'bmp', 'gif', 'svg', 'pdf', 'docx', 'xlsx', 'pptx', 'odt', 'ods', 'odp', 'mp3', 'mp4', 'mov', 'm4v'];
+    return allowed.includes(candidate) ? candidate : 'unknown';
+  }
   function genId(f)  { return `${f.name}-${f.size}-${f.lastModified}`; }
 
   function updateMainButton() {
@@ -366,7 +372,7 @@ const t = isEn
       if (isImageFile(entry.file.name)) {
         formatHtml = `
           <div class="file-format-cell" title="${t.formatTooltip || 'Formato de saída'}">
-            <select class="neo-format-select-card file-format-select" data-id="${id}" aria-label="${t.formatLabel || 'Formato'}">
+            <select class="neo-format-select-card file-format-select" data-id="${escapeHtml(id)}" aria-label="${t.formatLabel || 'Formato'}">
               <option value="original" ${entry.format === 'original' ? 'selected' : ''}>${t.formatOriginalShort || 'Original'}</option>
               <option value="jpg" ${entry.format === 'jpg' ? 'selected' : ''}>JPG</option>
               <option value="png" ${entry.format === 'png' ? 'selected' : ''}>PNG</option>
@@ -379,7 +385,7 @@ const t = isEn
       } else {
         formatHtml = `
           <div class="file-format-cell" title="${t.formatDocLocked || 'Documento processado'}">
-            <span class="file-format-badge-doc">${ext(entry.file.name)}</span>
+            <span class="file-format-badge-doc">${escapeHtml(ext(entry.file.name))}</span>
           </div>
         `;
       }
@@ -387,8 +393,8 @@ const t = isEn
       if (entry.status === 'waiting') {
         statusHtml = `<span class="file-status-text status-waiting">${t.statusWaiting || 'Aguardando'}</span>`;
         actionHtml = `
-          <button class="btn-main process-one-btn" data-id="${id}" style="font-size:0.78rem;padding:0.35rem 0.75rem;" type="button">${t.btnCleanOne || t.btnRemoveOne || 'Clean'}</button>
-          <button class="btn-icon remove-btn" data-id="${id}" type="button" aria-label="${t.removeFileAria || 'Remove file from list'}" title="${t.removeFileAria || 'Remove file from list'}">
+          <button class="btn-main process-one-btn" data-id="${escapeHtml(id)}" style="font-size:0.78rem;padding:0.35rem 0.75rem;" type="button">${t.btnCleanOne || t.btnRemoveOne || 'Clean'}</button>
+          <button class="btn-icon remove-btn" data-id="${escapeHtml(id)}" type="button" aria-label="${t.removeFileAria || 'Remove file from list'}" title="${t.removeFileAria || 'Remove file from list'}">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>`;
       } else if (entry.status === 'processing') {
@@ -396,21 +402,21 @@ const t = isEn
       } else if (entry.status === 'done') {
         statusHtml = `<span class="file-status-text status-done">${t.statusDone || '✓ Concluído'}</span>`;
         actionHtml = `
-          <button class="btn-accent download-one-btn" data-id="${id}" style="font-size:0.78rem;padding:0.35rem 0.75rem;" type="button">${t.btnDownloadOne || 'Baixar'}</button>
-          <button class="btn-icon remove-btn" data-id="${id}" type="button" aria-label="${t.removeFileAria || 'Remove file from list'}" title="${t.removeFileAria || 'Remove file from list'}">
+          <button class="btn-accent download-one-btn" data-id="${escapeHtml(id)}" style="font-size:0.78rem;padding:0.35rem 0.75rem;" type="button">${t.btnDownloadOne || 'Baixar'}</button>
+          <button class="btn-icon remove-btn" data-id="${escapeHtml(id)}" type="button" aria-label="${t.removeFileAria || 'Remove file from list'}" title="${t.removeFileAria || 'Remove file from list'}">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>`;
       } else if (entry.status === 'error') {
         statusHtml = `<span class="file-status-text status-error">${t.statusError || 'Erro'}</span>`;
         actionHtml = `
-          <button class="btn-icon remove-btn" data-id="${id}" type="button" aria-label="${t.removeFileAria || 'Remove file from list'}" title="${t.removeFileAria || 'Remove file from list'}">
+          <button class="btn-icon remove-btn" data-id="${escapeHtml(id)}" type="button" aria-label="${t.removeFileAria || 'Remove file from list'}" title="${t.removeFileAria || 'Remove file from list'}">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>`;
       }
 
       row.innerHTML = `
-        <span class="file-ext">${ext(entry.file.name).slice(0,4)}</span>
-        <span class="file-name-text" title="${entry.file.name}">${entry.file.name}</span>
+        <span class="file-ext">${escapeHtml(ext(entry.file.name).slice(0,4))}</span>
+        <span class="file-name-text" title="${escapeHtml(entry.file.name)}">${escapeHtml(entry.file.name)}</span>
         <div class="file-right-meta">
           <span class="file-size-text">${fmt(entry.file.size)}</span>
           ${formatHtml}
@@ -432,7 +438,7 @@ const t = isEn
 
         track('file_format_changed', {
           format: newFormat,
-          file_type: entry.file?.name.split('.').pop()?.toLowerCase() || 'unknown',
+          file_type: telemetryFileType(entry.file),
         });
 
         // If file already processed, re-convert instantly to the newly selected format
@@ -452,7 +458,7 @@ const t = isEn
         if (entry?.result) {
           downloadBlob(entry.result.blob, entry.result.filename);
           track('file_downloaded', {
-            file_type: entry.file?.name.split('.').pop()?.toLowerCase() || 'unknown',
+            file_type: telemetryFileType(entry.file),
             file_size_kb: Math.round(entry.file?.size / 1024),
             source: 'card_button',
             download_format: entry.format,
@@ -465,7 +471,7 @@ const t = isEn
         const entry = fileMap.get(id);
         if (entry) {
           track('file_removed', {
-            file_type: entry.file?.name.split('.').pop()?.toLowerCase() || 'unknown',
+            file_type: telemetryFileType(entry.file),
             status_at_removal: entry.status,
           });
         }
@@ -485,6 +491,7 @@ const t = isEn
       globalFormatSelect.value = currentGlobalFormat;
     }
     if (count === 0) {
+      fileCards.replaceChildren();
       dropZone.style.display = '';
       actionsRow.style.display = 'none';
       fileList.style.display = 'none';
@@ -508,7 +515,7 @@ const t = isEn
       entry.status = 'done';
       // ✅ Event: successful metadata removal
       track('metadata_removed', {
-        file_type: entry.file.name.split('.').pop()?.toLowerCase() || 'unknown',
+        file_type: telemetryFileType(entry.file),
         file_size_kb: Math.round(entry.file.size / 1024),
         output_format: entry.format || currentGlobalFormat,
       });
@@ -517,8 +524,8 @@ const t = isEn
       entry.status = 'error';
       // ⚠️ Event: processing error
       track('metadata_error', {
-        file_type: entry.file.name.split('.').pop()?.toLowerCase() || 'unknown',
-        error_message: err?.message || 'unknown_error',
+        file_type: telemetryFileType(entry.file),
+        error_code: 'processing_failed',
       });
     }
     renderCards();
@@ -546,7 +553,7 @@ const t = isEn
         downloadBlob(doneEntries[0].result.blob, doneEntries[0].result.filename);
         // ✅ Event: single file downloaded
         track('file_downloaded', {
-          file_type: doneEntries[0].file?.name.split('.').pop()?.toLowerCase() || 'unknown',
+          file_type: telemetryFileType(doneEntries[0].file),
           file_size_kb: Math.round(doneEntries[0].file?.size / 1024),
           download_format: doneEntries[0].format,
         });
@@ -590,7 +597,7 @@ const t = isEn
           result: null,
         });
         newCount++;
-        types.add(f.name.split('.').pop()?.toLowerCase() || 'unknown');
+        types.add(telemetryFileType(f));
       }
     }
     if (newCount > 0) {
@@ -755,11 +762,15 @@ const t = isEn
         const getReq = store.get('pending');
         getReq.onsuccess = () => {
           const item = getReq.result;
-          if (item && item.files && item.files.length && (Date.now() - item.timestamp < 30000)) {
-            store.clear();
+          // Consume or discard every handoff, including expired entries. Never
+          // leave an old dropped file in persistent storage after a tool visit.
+          store.clear();
+          if (item && item.files && item.files.length && (Date.now() - item.timestamp >= 0) && (Date.now() - item.timestamp < 30000)) {
             handleIncomingFiles(item.files);
           }
         };
+        tx.oncomplete = () => db.close();
+        tx.onerror = () => db.close();
       };
     }
   } catch {}

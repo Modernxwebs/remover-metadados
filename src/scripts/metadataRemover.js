@@ -1,7 +1,7 @@
 /**
  * metadataRemover.js
  * Browser-side metadata removal engine.
- * All processing is local — no file ever leaves the device.
+ * File contents are processed locally. Website connections are documented separately.
  */
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
@@ -866,109 +866,42 @@ function removeMp4Udta(buffer) {
 let _jszipPromise = null;
 
 /**
- * Load JSZip reliably across environments (window.JSZip, local /vendor/jszip.min.js, CDN, or ESM).
+ * Load JSZip from the local bundle or the locally served vendor copy.
  * @returns {Promise<any>}
  */
 export async function getJSZip() {
-  if (typeof window !== 'undefined' && window.JSZip) {
-    return window.JSZip;
+  if (typeof window !== 'undefined' && window.JSZip) return window.JSZip;
+  if (!_jszipPromise) {
+    _jszipPromise = import('jszip').then(mod => mod.default || mod);
   }
-
-  if (_jszipPromise) return _jszipPromise;
-
-  _jszipPromise = (async () => {
-    if (typeof window !== 'undefined' && window.JSZip) {
-      return window.JSZip;
-    }
-
-    if (typeof document !== 'undefined') {
-      try {
-        await new Promise((resolve, reject) => {
-          const s = document.createElement('script');
-          s.src = '/vendor/jszip.min.js';
-          s.onload = resolve;
-          s.onerror = reject;
-          document.head.appendChild(s);
-        });
-        if (typeof window !== 'undefined' && window.JSZip) {
-          return window.JSZip;
-        }
-      } catch {
-        // Try CDN fallback
-        try {
-          await new Promise((resolve, reject) => {
-            const s = document.createElement('script');
-            s.src = 'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js';
-            s.onload = resolve;
-            s.onerror = reject;
-            document.head.appendChild(s);
-          });
-          if (typeof window !== 'undefined' && window.JSZip) {
-            return window.JSZip;
-          }
-        } catch (e) {
-          console.warn('Script element fallback failed, falling back to dynamic import:', e);
-        }
-      }
-    }
-
-    // Dynamic import fallback (e.g. Node/test environments)
-    try {
-      const mod = await import('jszip');
-      return typeof mod.default === 'function' ? mod.default : (mod.default?.default || mod);
-    } catch (err) {
-      throw new Error('Não foi possível inicializar o compactador ZIP: ' + err.message);
-    }
-  })();
-
   return _jszipPromise;
 }
 
 let _heicDecoderPromise = null;
 
 /**
- * Load modern HEIC decoder (heic-to with libheif 1.22.2).
+ * Load the patched HEIC worker (heic-to wrapper, libheif 1.23.7 / libde265 1.1.3).
  * Supports modern iPhone HEIC/HEIF containers, grid images, and burst photos.
  * @returns {Promise<((opts: { blob: Blob, type?: string, quality?: number }) => Promise<Blob>) | null>}
  */
 export async function getHeicDecoder() {
-  if (_heicDecoderPromise) return _heicDecoderPromise;
-
-  _heicDecoderPromise = (async () => {
-    // 1. Try ESM dynamic import
-    try {
-      const mod = await import('heic-to');
-      if (typeof mod.heicTo === 'function') {
-        return mod.heicTo;
-      }
-    } catch (e) {
-      console.warn('Dynamic import of heic-to failed, attempting CDN fallback:', e);
-    }
-
-    // 2. Fallback to CDN IIFE injection
-    if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-      if (typeof window.HeicTo === 'function') {
-        return window.HeicTo;
-      }
-      try {
-        await new Promise((resolve, reject) => {
-          const s = document.createElement('script');
-          s.src = 'https://cdn.jsdelivr.net/npm/heic-to@1.5.2/dist/iife/heic-to.js';
-          s.onload = resolve;
-          s.onerror = reject;
-          document.head.appendChild(s);
-        });
-        if (typeof window.HeicTo === 'function') {
-          return window.HeicTo;
-        }
-      } catch (cdnErr) {
-        console.error('All heic-to loaders failed:', cdnErr);
-      }
-    }
-
-    return null;
-  })();
-
+  if (!_heicDecoderPromise) {
+    // Keep the unmodified LGPL decoder separate and replaceable. Use its CSP
+    // build, which does not require unsafe-eval, and never load a remote script.
+    _heicDecoderPromise = new Promise((resolve, reject) => {
+      if (typeof document === 'undefined') return resolve(null);
+      if (typeof window.metadataRemoverHeicTo === 'function') return resolve(window.metadataRemoverHeicTo);
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = '/heic-loader.js';
+      script.onload = () => typeof window.metadataRemoverHeicTo === 'function'
+        ? resolve(window.metadataRemoverHeicTo)
+        : reject(new Error('Local HEIC decoder has no compatible export'));
+      script.onerror = () => reject(new Error('Local HEIC decoder module failed to load'));
+      document.head.appendChild(script);
+    })
+      .catch(err => { console.error('Local HEIC decoder could not load:', err); return null; });
+  }
   return _heicDecoderPromise;
 }
 
@@ -979,35 +912,9 @@ let _utifPromise = null;
  * @returns {Promise<any>}
  */
 export async function getUtif() {
-  if (_utifPromise) return _utifPromise;
-
-  _utifPromise = (async () => {
-    try {
-      const mod = await import('utif');
-      return mod.default || mod;
-    } catch (e) {
-      console.warn('Dynamic import of utif failed, attempting CDN fallback:', e);
-    }
-
-    if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-      if (typeof window.UTIF !== 'undefined') return window.UTIF;
-      try {
-        await new Promise((resolve, reject) => {
-          const s = document.createElement('script');
-          s.src = 'https://cdn.jsdelivr.net/npm/utif@3.1.0/UTIF.js';
-          s.onload = resolve;
-          s.onerror = reject;
-          document.head.appendChild(s);
-        });
-        if (typeof window.UTIF !== 'undefined') return window.UTIF;
-      } catch (cdnErr) {
-        console.error('All UTIF loaders failed:', cdnErr);
-      }
-    }
-
-    return null;
-  })();
-
+  if (!_utifPromise) {
+    _utifPromise = import('utif').then(mod => mod.default || mod);
+  }
   return _utifPromise;
 }
 
@@ -1022,7 +929,7 @@ export async function getAvifEncoder() {
 
   _avifEncoderPromise = (async () => {
     try {
-      const mod = await import('@jsquash/avif');
+      const mod = await import('@jsquash/avif/encode.js');
       const encode = mod.encode || mod.default;
       if (typeof encode === 'function') {
         try {

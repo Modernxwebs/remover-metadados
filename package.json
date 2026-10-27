@@ -12,7 +12,13 @@
     "astro": "astro",
     "audit:seo": "node scripts/audit-seo.js",
     "test:metadata": "node scripts/test-metadata.mjs",
-    "test:schema": "node scripts/test-schema.mjs"
+    "test:schema": "node scripts/test-schema.mjs",
+    "test:security": "node scripts/test-security.mjs",
+    "check:vendor": "node scripts/sync-vendor.mjs --check",
+    "check:links": "node scripts/check-links.cjs",
+    "release:public": "node scripts/export-public-release.mjs",
+    "samples:generate": "node scripts/generate-samples.mjs",
+    "audit:native": "node scripts/audit-native-codecs.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
@@ -21,10 +27,8 @@
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.2",
     "exifr": "^7.1.3",
-    "heic-to": "^1.5.2",
     "jszip": "^3.10.2",
     "pdf-lib": "^1.17.1",
-    "piexifjs": "^1.0.6",
     "tailwindcss": "^4.3.3",
     "utif": "^3.1.0"
   },
@@ -35,5 +39,12 @@
     "exiftool-vendored": "^39.0.1",
     "puppeteer": "^25.15.0",
     "sharp": "^0.35.5"
+  },
+  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Modern X Webs",
+    "email": "dev@modernxwebs.com",
+    "url": "https://modernxwebs.com"
   }
 }

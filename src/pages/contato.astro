@@ -4,14 +4,14 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
 const title = 'Contato — Remover Metadados | Fale Conosco';
-const description = 'Entre em contato com o desenvolvedor Dev Sharma do Remover Metadados. E-mail: hello@remover-metadados.com, X e LinkedIn. Envie sugestões, bugs ou dúvidas de privacidade.';
+const description = 'Entre em contato com Modern X Webs, mantenedor do Remover Metadados, pelo e-mail dev@modernxwebs.com para relatar bugs ou dúvidas de segurança e privacidade.';
 const canonicalUrl = 'https://remover-metadados.com/contato/';
 const alternatePt = 'https://remover-metadados.com/contato/';
 const alternateEn = 'https://remover-metadados.com/en/contact/';
 
-const email = 'hello@remover-metadados.com';
-const xUrl = 'https://x.com/DevSharmaBuilds';
-const linkedInUrl = 'https://www.linkedin.com/in/dev000111/';
+const email = 'dev@modernxwebs.com';
+const studioUrl = 'https://modernxwebs.com';
+const verificationUrl = '/verificacao/';
 ---
 
 <Layout
@@ -37,7 +37,7 @@ const linkedInUrl = 'https://www.linkedin.com/in/dev000111/';
     <header class="contact-header">
       <div class="contact-badge-row">
         <span class="badge-accent">CANAL DIRETO</span>
-        <span class="badge-mono">RESPOSTA EM ATÉ 48H</span>
+        <span class="badge-mono">BUGS E PRIVACIDADE</span>
       </div>
       <h1 class="contact-title">Fale Conosco</h1>
       <p class="contact-subtitle">
@@ -54,7 +54,7 @@ const linkedInUrl = 'https://www.linkedin.com/in/dev000111/';
         <div class="contact-card primary-card">
           <div class="card-icon" aria-hidden="true">✉️</div>
           <span class="card-sub">E-MAIL OFICIAL</span>
-          <h2 class="card-heading">hello@remover-metadados.com</h2>
+          <h2 class="card-heading">dev@modernxwebs.com</h2>
           <p class="card-desc">
             Nosso canal principal para suporte, dúvidas de conformidade com a LGPD e feedback geral.
           </p>
@@ -82,38 +82,16 @@ const linkedInUrl = 'https://www.linkedin.com/in/dev000111/';
         <!-- Founder Direct Socials -->
         <div class="contact-card">
           <div class="card-icon" aria-hidden="true">⚡</div>
-          <span class="card-sub">CONECTE-SE COM O CRIADOR</span>
-          <h2 class="card-heading">Dev Sharma</h2>
+          <span class="card-sub">MANTENEDOR DO PROJETO</span>
+          <h2 class="card-heading">Modern X Webs</h2>
           <p class="card-desc">
-            Acompanhe o desenvolvimento de novas funcionalidades, discussões sobre privacidade e futuros utilitários.
+            Entre em contato com o mantenedor ou consulte a cobertura de remoção, os testes e as limitações conhecidas.
           </p>
 
           <div class="social-links-stacked">
-            <a href={xUrl} target="_blank" rel="noopener noreferrer" class="social-btn-link">
-              <span class="social-icon">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
-              </span>
-              <div class="social-details">
-                <strong>@DevSharmaBuilds no X</strong>
-                <span>DMs abertas para feedbacks rápidos</span>
-              </div>
-              <span class="social-arrow">&rarr;</span>
-            </a>
+            <a href={studioUrl} class="social-btn-link"><span class="social-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a18 18 0 0 1 0 18 18 18 0 0 1 0-18Z"/></svg></span><div class="social-details"><strong>Modern X Webs</strong><span>Mantenedor do projeto</span></div><span class="social-arrow">&rarr;</span></a>
 
-            <a href={linkedInUrl} target="_blank" rel="noopener noreferrer" class="social-btn-link">
-              <span class="social-icon linkedin-bg">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                </svg>
-              </span>
-              <div class="social-details">
-                <strong>Dev Sharma no LinkedIn</strong>
-                <span>Conexões profissionais e parcerias</span>
-              </div>
-              <span class="social-arrow">&rarr;</span>
-            </a>
+            <a href={verificationUrl} class="social-btn-link"><span class="social-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a18 18 0 0 1 0 18 18 18 0 0 1 0-18Z"/></svg></span><div class="social-details"><strong>Testes e limitações</strong><span>Cobertura de remoção e testes publicados</span></div><span class="social-arrow">&rarr;</span></a>
           </div>
         </div>
 
@@ -654,7 +632,7 @@ const linkedInUrl = 'https://www.linkedin.com/in/dev000111/';
   const copyText = document.getElementById('copy-text');
   if (copyBtn && copyText) {
     copyBtn.addEventListener('click', async () => {
-      const email = copyBtn.getAttribute('data-email') || 'hello@remover-metadados.com';
+      const email = copyBtn.getAttribute('data-email') || 'dev@modernxwebs.com';
       try {
         await navigator.clipboard.writeText(email);
         const originalText = copyText.textContent;
@@ -685,10 +663,10 @@ const linkedInUrl = 'https://www.linkedin.com/in/dev000111/';
 
       const subject = encodeURIComponent(`[Remover Metadados] ${category} - ${name}`);
       const body = encodeURIComponent(
-        `Olá Dev Sharma,\n\nNome: ${name}\nCategoria: ${category}\n\nMensagem:\n${message}\n\n---\nEnviado através do remover-metadados.com/contato`
+        `Olá Modern X Webs,\n\nNome: ${name}\nCategoria: ${category}\n\nMensagem:\n${message}\n\n---\nEnviado através do remover-metadados.com/contato`
       );
 
-      window.location.href = `mailto:hello@remover-metadados.com?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:dev@modernxwebs.com?subject=${subject}&body=${body}`;
     });
   }
 </script>

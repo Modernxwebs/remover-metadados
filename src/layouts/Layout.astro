@@ -4,6 +4,7 @@ import '../styles/global.css';
 import { faqs } from '../data/faqs.js';
 import { faqsEn } from '../data/faqsEn.js';
 import LanguageSuggestion from '../components/LanguageSuggestion.astro';
+import { analyticsEnabled, analyticsHostname, analyticsMeasurementId } from '../lib/site-config';
 
 export interface Props {
   title?: string;
@@ -347,14 +348,31 @@ schemaData['@graph'].push({
     <!-- Structured Data: WebApplication + FAQPage JSON-LD -->
     <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
 
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FS50H5QYJ3"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-FS50H5QYJ3');
-    </script>
+    <!-- Analytics is opt-in at build time and restricted to the configured host. -->
+    {analyticsEnabled && <script is:inline define:vars={{ analyticsMeasurementId, analyticsHostname }}>
+      if (window.location.hostname === analyticsHostname) {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', analyticsMeasurementId, {
+          send_page_view: false,
+          page_location: window.location.origin + window.location.pathname,
+          page_title: 'Metadata Remover',
+          page_referrer: '',
+          allow_google_signals: false,
+          allow_ad_personalization_signals: false,
+        });
+        window.gtag('event', 'page_view', {
+          page_location: window.location.origin + window.location.pathname,
+          page_title: 'Metadata Remover',
+          page_referrer: '',
+        });
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(analyticsMeasurementId);
+        document.head.appendChild(script);
+      }
+    </script>}
 
     <!-- Preload local client-side ZIP engine -->
     <script is:inline src="/vendor/jszip.min.js" defer></script>
@@ -404,9 +422,11 @@ schemaData['@graph'].push({
                 const store = tx.objectStore('incoming_files');
                 store.put({ id: 'pending', files: files, timestamp: Date.now() });
                 tx.oncomplete = function() {
+                  db.close();
                   window.location.href = isEn ? '/en/' : '/';
                 };
                 tx.onerror = function() {
+                  db.close();
                   window.location.href = isEn ? '/en/' : '/';
                 };
               };
