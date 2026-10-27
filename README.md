@@ -128,7 +128,7 @@ the published evidence; review the result before committing. Run the build again
 after publishing new evidence. `npm run samples:generate` regenerates the MIT
 synthetic demonstration JPEG and PDF.
 
-The GitHub workflow runs dependency, secret, native-release freshness, build,
+The GitHub workflow uses the runner's installed Google Chrome and runs dependency, secret, native-release freshness, build,
 schema, link, SEO and browser checks on pushes and weekly. It has read-only
 repository permissions, uses pinned action commits, and does not deploy or submit
 URLs to search engines. npm audit does not inspect the native code embedded in

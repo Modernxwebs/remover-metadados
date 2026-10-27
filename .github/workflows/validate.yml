@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
       PUPPETEER_SKIP_DOWNLOAD: 'true'
@@ -62,12 +62,17 @@ jobs:
       - run: npm run test:schema
       - run: npm run check:links
       - run: npm run audit:seo
-      - name: Install test browser
-        run: npx puppeteer browsers install chrome --install-deps
+      - name: Use the runner's installed Google Chrome
+        run: |
+          CHROME_EXECUTABLE=$(command -v google-chrome)
+          test -x "$CHROME_EXECUTABLE"
+          echo "CHROME_PATH=$CHROME_EXECUTABLE" >> "$GITHUB_ENV"
+          "$CHROME_EXECUTABLE" --version
       - run: npm run test:security
       - name: Start local Astro server
+        id: astro_server
         run: npm run dev -- --background
       - run: npm run test:metadata
       - name: Stop local Astro server
-        if: always()
+        if: always() && steps.astro_server.outcome == 'success'
         run: npm run astro -- dev stop
