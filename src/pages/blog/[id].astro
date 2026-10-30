@@ -48,6 +48,10 @@ const formattedPubDate = new Intl.DateTimeFormat('pt-BR', {
   day: 'numeric',
 }).format(data.pubDate);
 
+const enUrl = data.translationId ? `/en/blog/${data.translationId}/` : '/en/blog/';
+const alternateEn = data.translationId ? `https://remover-metadados.com/en/blog/${data.translationId}/` : undefined;
+const includeHreflang = Boolean(data.translationId);
+
 const formattedUpdateDate = data.updatedDate
   ? new Intl.DateTimeFormat('pt-BR', {
       year: 'numeric',
@@ -94,7 +98,21 @@ const blogPostingSchema = {
       'url': 'https://remover-metadados.com/logo.png',
     },
   },
-  'image': data.coverImage ? `https://remover-metadados.com${data.coverImage}` : undefined,
+  'image': data.coverImage
+    ? {
+        '@type': 'ImageObject',
+        'url': `https://remover-metadados.com${data.coverImage}`,
+        'width': 1376,
+        'height': 768,
+        'caption': data.coverAlt || data.title,
+      }
+    : undefined,
+  'speakable': {
+    '@type': 'SpeakableSpecification',
+    'cssSelector': ['.post-title', '.post-lead'],
+  },
+  'isAccessibleForFree': true,
+  'timeRequired': data.readTime,
   'keywords': data.tags.join(', '),
   'articleSection': data.category,
 };
@@ -106,14 +124,17 @@ const blogPostingSchema = {
   lang="pt-BR"
   canonicalUrl={canonicalUrl}
   mainEntityId={`${canonicalUrl}#article`}
-  includeHreflang={false}
+  includeHreflang={includeHreflang}
+  alternatePt={canonicalUrl}
+  alternateEn={alternateEn}
+  alternateXDefault={alternateEn || canonicalUrl}
   ogImage={data.coverImage}
   ogType="article"
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />
 
-  <Header lang="pt-BR" ptUrl={`/blog/${id}/`} enUrl="/en/" isSubpage={true} />
+  <Header lang="pt-BR" ptUrl={`/blog/${id}/`} enUrl={enUrl} isSubpage={true} />
 
   <main class="post-main">
     <div class="page-wrap post-wrap">

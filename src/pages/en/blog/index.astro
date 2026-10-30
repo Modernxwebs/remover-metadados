@@ -1,0 +1,473 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import BlogCta from '../../../components/BlogCta.astro';
+
+const allPosts = (await getCollection('blog', ({ data }) => data.lang === 'en' && !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const featuredPost = allPosts.find((p) => p.data.featured) || allPosts[0];
+const regularPosts = allPosts.filter((p) => p.id !== featuredPost?.id);
+
+// Unique categories
+const categories = ['All', ...new Set(allPosts.map((p) => p.data.category))];
+
+const title = 'Digital Privacy & Metadata Blog | Metadata Remover';
+const description = 'Practical articles, security research, and tutorials on EXIF metadata, photo GPS coordinates, PDF data leaks, and digital privacy.';
+const canonicalUrl = 'https://remover-metadados.com/en/blog/';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  'itemListElement': [
+    { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://remover-metadados.com/en/' },
+    { '@type': 'ListItem', 'position': 2, 'name': 'Blog', 'item': canonicalUrl },
+  ],
+};
+
+const blogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  '@id': `${canonicalUrl}#blog`,
+  'name': 'Metadata Remover Blog',
+  'description': description,
+  'url': canonicalUrl,
+  'inLanguage': 'en',
+  'publisher': {
+    '@type': 'Organization',
+    'name': 'Metadata Remover',
+    'url': 'https://remover-metadados.com/en/',
+    'logo': {
+      '@type': 'ImageObject',
+      'url': 'https://remover-metadados.com/logo.png',
+    },
+  },
+  'blogPost': allPosts.map((post) => ({
+    '@type': 'BlogPosting',
+    'headline': post.data.title,
+    'description': post.data.description,
+    'url': `https://remover-metadados.com/en/blog/${post.id}/`,
+    'datePublished': post.data.pubDate.toISOString(),
+    'author': {
+      '@type': 'Person',
+      'name': post.data.author,
+    },
+  })),
+};
+---
+
+<Layout
+  pageType="CollectionPage"
+  mainEntityId={`${canonicalUrl}#blog`}
+  title={title}
+  description={description}
+  lang="en"
+  canonicalUrl={canonicalUrl}
+  includeHreflang={true}
+  alternatePt="https://remover-metadados.com/blog/"
+  alternateEn={canonicalUrl}
+  alternateXDefault={canonicalUrl}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(blogSchema)} />
+
+  <Header lang="en" ptUrl="/blog/" enUrl="/en/blog/" isSubpage={true} />
+
+  <main class="blog-main">
+    <div class="page-wrap blog-wrap">
+
+      <!-- Breadcrumbs -->
+      <nav class="blog-breadcrumb" aria-label="Breadcrumb navigation">
+        <a href="/en/">Metadata Remover</a>
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        <span class="crumb-current" aria-current="page">Blog</span>
+      </nav>
+
+      <!-- Hero Header -->
+      <header class="blog-hero">
+        <div class="blog-kicker-badge">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span>PRIVACY & SECURITY KNOWLEDGE HUB</span>
+        </div>
+
+        <h1 class="blog-hero-h1">Digital Privacy & Metadata Cleaning Blog</h1>
+
+        <p class="blog-hero-lead">
+          Technical insights, privacy research, and step-by-step guides to protect your personal identity, GPS location, and sensitive documents before sharing them online.
+        </p>
+
+        <!-- Search and Category Filters -->
+        <div class="blog-controls-box">
+          <div class="search-input-wrap">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input
+              type="search"
+              id="blog-search-input"
+              class="blog-search-input"
+              placeholder="Search articles by keyword (e.g. WhatsApp, GPS, EXIF, PDF)..."
+              aria-label="Search articles"
+            />
+          </div>
+
+          <div class="category-pills-list" role="tablist" aria-label="Filter by category">
+            {categories.map((cat, idx) => (
+              <button
+                type="button"
+                class:list={['cat-filter-btn', { active: idx === 0 }]}
+                data-category={cat}
+                role="tab"
+                aria-selected={idx === 0 ? 'true' : 'false'}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      <!-- Featured Article Spotlight -->
+      {featuredPost && (
+        <section class="featured-section" id="featured-article-wrap">
+          <div class="section-label-bar">
+            <span class="section-tag-pill">★ FEATURED ARTICLE</span>
+          </div>
+          <div data-post-card data-category={featuredPost.data.category} data-search={`${featuredPost.data.title} ${featuredPost.data.description} ${featuredPost.data.tags.join(' ')}`}>
+            <BlogCard post={featuredPost} isFeatured={true} />
+          </div>
+        </section>
+      )}
+
+      <!-- All Posts Grid -->
+      <section class="posts-grid-section">
+        <div class="section-label-bar">
+          <span class="section-tag-pill">ALL ARTICLES ({allPosts.length})</span>
+        </div>
+
+        <div id="posts-grid" class="posts-grid">
+          {regularPosts.map((post) => (
+            <div data-post-card data-category={post.data.category} data-search={`${post.data.title} ${post.data.description} ${post.data.tags.join(' ')}`}>
+              <BlogCard post={post} />
+            </div>
+          ))}
+        </div>
+
+        <!-- No results state -->
+        <div id="no-results-msg" class="no-results-box" style="display: none;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
+          <p>No articles found matching your criteria.</p>
+          <button type="button" id="reset-filters-btn" class="btn-accent" style="margin-top: 0.75rem; font-size: 0.78rem;">
+            Clear search filters
+          </button>
+        </div>
+      </section>
+
+      <!-- Bottom In-Content CTA -->
+      <BlogCta isEn={true} />
+
+    </div>
+  </main>
+
+  <Footer lang="en" />
+</Layout>
+
+<style>
+  .blog-main {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+  }
+
+  .blog-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .blog-breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    text-align: left;
+    align-self: flex-start;
+  }
+
+  .blog-breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .blog-breadcrumb a:hover {
+    color: var(--text);
+    text-decoration: underline;
+  }
+
+  .crumb-sep {
+    color: var(--text-faint);
+  }
+
+  .crumb-current {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .blog-hero {
+    text-align: center;
+    max-width: 860px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .blog-kicker-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    box-shadow: var(--neo-shadow-xs);
+    margin-bottom: 1.25rem;
+  }
+
+  .pulse-dot {
+    width: 7px;
+    height: 7px;
+    background-color: var(--primary);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .blog-hero-h1 {
+    font-family: var(--font-sans);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+
+  .blog-hero-lead {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 680px;
+    margin-bottom: 2rem;
+  }
+
+  .blog-controls-box {
+    width: 100%;
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .search-input-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  .blog-search-input {
+    width: 100%;
+    padding: 0.85rem 1rem 0.85rem 2.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    box-shadow: var(--neo-shadow-sm);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .blog-search-input:focus {
+    border-color: var(--primary);
+    box-shadow: var(--neo-shadow);
+  }
+
+  .category-pills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .cat-filter-btn {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    padding: 0.35rem 0.75rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    box-shadow: var(--neo-shadow-xs);
+    transition: all 0.12s ease;
+  }
+
+  .cat-filter-btn:hover {
+    color: var(--text);
+    border-color: var(--text);
+    transform: translateY(-1px);
+  }
+
+  .cat-filter-btn.active {
+    background: var(--primary);
+    color: var(--btn-accent-text, #fff);
+    border-color: var(--border);
+    box-shadow: var(--neo-shadow-sm);
+  }
+
+  .section-label-bar {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-tag-pill {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+
+  .featured-section {
+    margin-top: 1rem;
+    text-align: left;
+  }
+
+  .posts-grid-section {
+    margin-top: 1rem;
+    text-align: left;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .no-results-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 3.5rem 1.5rem;
+    background: var(--card-bg);
+    border: 2px dashed var(--border);
+    border-radius: 4px;
+    color: var(--text-muted);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    .posts-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  // Dynamic client-side search and category filtering
+  const searchInput = document.getElementById('blog-search-input') as HTMLInputElement | null;
+  const categoryBtns = document.querySelectorAll('.cat-filter-btn');
+  const postCards = document.querySelectorAll('[data-post-card]');
+  const noResultsMsg = document.getElementById('no-results-msg');
+  const resetBtn = document.getElementById('reset-filters-btn');
+
+  let activeCategory = 'All';
+  let searchQuery = '';
+
+  function filterPosts() {
+    let visibleCount = 0;
+
+    postCards.forEach((cardEl) => {
+      const card = cardEl as HTMLElement;
+      const cardCategory = card.getAttribute('data-category') || '';
+      const cardSearchText = (card.getAttribute('data-search') || '').toLowerCase();
+
+      const matchesCat = activeCategory === 'All' || cardCategory === activeCategory;
+      const matchesSearch = !searchQuery || cardSearchText.includes(searchQuery);
+
+      if (matchesCat && matchesSearch) {
+        card.style.display = '';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    if (noResultsMsg) {
+      noResultsMsg.style.display = visibleCount === 0 ? 'flex' : 'none';
+    }
+  }
+
+  searchInput?.addEventListener('input', (e) => {
+    searchQuery = (e.target as HTMLInputElement).value.trim().toLowerCase();
+    filterPosts();
+  });
+
+  categoryBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      categoryBtns.forEach((b) => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      activeCategory = btn.getAttribute('data-category') || 'All';
+      filterPosts();
+    });
+  });
+
+  resetBtn?.addEventListener('click', () => {
+    if (searchInput) searchInput.value = '';
+    searchQuery = '';
+    activeCategory = 'All';
+    categoryBtns.forEach((b, idx) => {
+      b.classList.toggle('active', idx === 0);
+      b.setAttribute('aria-selected', idx === 0 ? 'true' : 'false');
+    });
+    filterPosts();
+  });
+</script>
+

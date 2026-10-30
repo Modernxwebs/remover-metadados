@@ -70,7 +70,7 @@ const contactUrl = isEn ? '/en/contact/' : '/contato/';
           ) : (
             <li><a href="/ver-metadados/" class="footer-link">Visualizador de Metadados</a></li>
           )}
-          <li><a href="/blog/" class="footer-link">{isEn ? 'Privacy Blog' : 'Blog de Privacidade'}</a></li>
+          <li><a href={isEn ? '/en/blog/' : '/blog/'} class="footer-link">{isEn ? 'Privacy Blog' : 'Blog de Privacidade'}</a></li>
           <li><a href={isEn ? '/en/#how-it-works' : '/#como-funciona'} class="footer-link">{isEn ? 'How It Works' : 'Como Funciona'}</a></li>
           <li><a href={isEn ? '/en/#formats' : '/#formatos'} class="footer-link">{isEn ? 'Supported Formats' : 'Formatos Suportados'}</a></li>
           <li><a href="/guias/" class="footer-link">{isEn ? 'Guides Hub' : 'Central de Guias'}</a></li>

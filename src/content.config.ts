@@ -21,6 +21,7 @@ const blog = defineCollection({
     coverIcon: z.string().optional(),
     coverImage: z.string().optional(),
     coverAlt: z.string().optional(),
+    translationId: z.string().optional(),
     relatedPosts: z.array(z.string()).default([]),
   }),
 });

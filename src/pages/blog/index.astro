@@ -66,12 +66,15 @@ const blogSchema = {
   description={description}
   lang="pt-BR"
   canonicalUrl={canonicalUrl}
-  includeHreflang={false}
+  includeHreflang={true}
+  alternatePt={canonicalUrl}
+  alternateEn="https://remover-metadados.com/en/blog/"
+  alternateXDefault="https://remover-metadados.com/en/blog/"
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(blogSchema)} />
 
-  <Header lang="pt-BR" ptUrl="/blog/" enUrl="/en/" isSubpage={true} />
+  <Header lang="pt-BR" ptUrl="/blog/" enUrl="/en/blog/" isSubpage={true} />
 
   <main class="blog-main">
     <div class="page-wrap blog-wrap">
