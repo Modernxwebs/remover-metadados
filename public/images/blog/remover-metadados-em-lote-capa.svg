@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1376" height="768" viewBox="0 0 1376 768">
+  <rect width="1376" height="768" fill="#f4f1e9"/>
+  <g fill="none" stroke="#dcd8cf" stroke-width="1">
+    <path d="M0 96H1376M0 192H1376M0 288H1376M0 384H1376M0 480H1376M0 576H1376M0 672H1376"/>
+    <path d="M96 0V768M192 0V768M288 0V768M384 0V768M480 0V768M576 0V768M672 0V768M768 0V768M864 0V768M960 0V768M1056 0V768M1152 0V768M1248 0V768"/>
+  </g>
+  <rect x="56" y="50" width="1264" height="668" rx="8" fill="#faf8f2" stroke="#18232c" stroke-width="3"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#18232c">
+    <rect x="96" y="92" width="237" height="34" rx="3" fill="#18232c"/>
+    <text x="112" y="115" font-size="15" font-weight="700" letter-spacing="1.4" fill="#faf8f2">REMOVER METADADOS</text>
+    <text x="96" y="215" font-size="66" font-weight="700" letter-spacing="-2">Várias fotos.</text>
+    <text x="96" y="291" font-size="66" font-weight="700" letter-spacing="-2">Um único ZIP.</text>
+    <text x="99" y="345" font-size="23" fill="#515c62">Limpeza em lote, direto no navegador.</text>
+    <path d="M98 390H1278" stroke="#18232c" stroke-width="2"/>
+    <text x="98" y="443" font-size="17" font-weight="700" letter-spacing="1.5">01  SELECIONAR</text>
+    <text x="526" y="443" font-size="17" font-weight="700" letter-spacing="1.5">02  PROCESSAR</text>
+    <text x="955" y="443" font-size="17" font-weight="700" letter-spacing="1.5">03  CONFERIR</text>
+    <rect x="105" y="481" width="190" height="109" rx="5" fill="#dedad1" stroke="#18232c" stroke-width="2"/>
+    <rect x="122" y="495" width="190" height="109" rx="5" fill="#f1eee6" stroke="#18232c" stroke-width="2"/>
+    <rect x="139" y="509" width="190" height="109" rx="5" fill="#fff" stroke="#18232c" stroke-width="2"/>
+    <rect x="155" y="524" width="56" height="77" rx="3" fill="#dce6fb"/>
+    <path d="M155 584L175 558L189 576L200 563L211 582V601H155Z" fill="#4078d7"/>
+    <text x="226" y="554" font-size="15" font-weight="700">JPG · PNG</text>
+    <text x="226" y="578" font-size="14" fill="#515c62">WebP · HEIC</text>
+    <path d="M365 550H457M443 537L457 550L443 563M790 550H883M869 537L883 550L869 563" fill="none" stroke="#18232c" stroke-width="3"/>
+    <rect x="526" y="482" width="215" height="136" rx="5" fill="#1757db" stroke="#18232c" stroke-width="2"/>
+    <text x="548" y="520" font-size="15" font-weight="700" fill="#fff">DADOS DO ARQUIVO</text>
+    <text x="549" y="552" font-size="18" fill="#fff">GPS</text>
+    <text x="549" y="582" font-size="18" fill="#fff">Autoria · câmera</text>
+    <path d="M542 545H601M542 575H714" stroke="#a6c2ff" stroke-width="3"/>
+    <path d="M955 497H1030L1048 514H1218V618H955Z" fill="#dfebdf" stroke="#18232c" stroke-width="2"/>
+    <rect x="968" y="484" width="236" height="120" rx="5" fill="#fff" stroke="#18232c" stroke-width="2"/>
+    <text x="989" y="526" font-size="23" font-weight="700">Fotos prontas</text>
+    <text x="989" y="557" font-size="18" fill="#515c62">Baixe e verifique</text>
+    <path d="M1165 573L1174 582L1192 563" fill="none" stroke="#277341" stroke-width="4"/>
+    <text x="99" y="676" font-size="16" fill="#515c62">Preserve os originais. Confira as cópias antes de compartilhar.</text>
+  </g>
+</svg>

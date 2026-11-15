@@ -52,8 +52,9 @@ const blogSchema = {
     'url': `https://remover-metadados.com/blog/${post.id}/`,
     'datePublished': post.data.pubDate.toISOString(),
     'author': {
-      '@type': 'Person',
+      '@type': 'Organization',
       'name': post.data.author,
+      'url': 'https://remover-metadados.com/sobre/',
     },
   })),
 };

@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-15",
+  "method": "Three synthetic 640 × 426 images selected together in the Portuguese homepage UI, processed using default output, downloaded as one ZIP, extracted and checked with ExifTool and sharp. Source files remained unchanged. Zero GPS coordinates are synthetic. External browser requests intercepted. Maintainer-run local test; not an independent audit or a test of all files and browsers.",
+  "environment": {
+    "browser": "Chrome/157.0.8103.52",
+    "exiftool": "13.59",
+    "sharp": "0.35.5"
+  },
+  "engineSha256": "2f4f285faaaf8c8d37f47e42f42a3a2e7da763d00e831962eb54df46359ff0aa",
+  "filesInDownloadedZip": [
+    "foto-01.jpg",
+    "foto-02.png",
+    "foto-03.webp"
+  ],
+  "results": [
+    {
+      "file": "foto-01.jpg",
+      "dimensions": "640 × 426",
+      "before": {
+        "IFD0:Make": "Camera de exemplo",
+        "IFD0:Model": "Amostra sintetica",
+        "IFD0:Artist": "Autor de exemplo",
+        "ExifIFD:DateTimeOriginal": "2026:11:15 12:00:00",
+        "GPS:GPSLatitude": 0,
+        "GPS:GPSLongitude": 0,
+        "Composite:GPSLatitude": 0,
+        "Composite:GPSLongitude": 0
+      },
+      "after": {},
+      "originalBytes": 104870,
+      "cleanedBytes": 118543,
+      "changedChannelValues": 680119,
+      "originalSha256": "80ab1445a636e1896b20809839bd9b98da76d793af02ac40ce86a59e2ca33904",
+      "cleanedSha256": "07893782cdde7338e2a38c2061cedb6b538646dc018b9814708b6fe8e502afdb"
+    },
+    {
+      "file": "foto-02.png",
+      "dimensions": "640 × 426",
+      "before": {
+        "PNG:Artist": "Autor de exemplo",
+        "PNG:Make": "Camera de exemplo",
+        "PNG:Model": "Amostra sintetica",
+        "IFD0:Make": "Camera de exemplo",
+        "IFD0:Model": "Amostra sintetica",
+        "IFD0:Artist": "Autor de exemplo",
+        "ExifIFD:DateTimeOriginal": "2026:11:15 12:00:00",
+        "GPS:GPSLatitude": 0,
+        "GPS:GPSLongitude": 0,
+        "Composite:GPSLatitude": 0,
+        "Composite:GPSLongitude": 0
+      },
+      "after": {},
+      "originalBytes": 799644,
+      "cleanedBytes": 799200,
+      "changedChannelValues": 0,
+      "originalSha256": "2855e6abcea905135f937e6c5eabf37d45bd0b0ad5a39032950974de546bfabb",
+      "cleanedSha256": "506c0a667cbd8d93d705bb2f76b0d9cbfcc1dec0e7991e72cfc051f02c86d373"
+    },
+    {
+      "file": "foto-03.webp",
+      "dimensions": "640 × 426",
+      "before": {
+        "IFD0:Make": "Camera de exemplo",
+        "IFD0:Model": "Amostra sintetica",
+        "IFD0:Artist": "Autor de exemplo",
+        "ExifIFD:DateTimeOriginal": "2026:11:15 12:00:00",
+        "GPS:GPSLatitude": 0,
+        "GPS:GPSLongitude": 0,
+        "Composite:GPSLatitude": 0,
+        "Composite:GPSLongitude": 0
+      },
+      "after": {},
+      "originalBytes": 39020,
+      "cleanedBytes": 55164,
+      "changedChannelValues": 687954,
+      "originalSha256": "f10a0f69c7cb747215492235de4f718c11f7a9323190f0bd51a79cb22f9c58b4",
+      "cleanedSha256": "8fe4a735bd08f123fab5e1305eedeb9a98922228412be4a6e6d862c98fe99a48"
+    }
+  ],
+  "pageErrors": []
+}

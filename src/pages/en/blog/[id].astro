@@ -32,9 +32,14 @@ const pageDescription = data.description;
 
 // Fetch related posts (if defined in frontmatter, or fallback to same category)
 const allEnPosts = await getCollection('blog', ({ data }) => data.lang === 'en' && !data.draft);
-const relatedPosts = allEnPosts
+let relatedPosts = allEnPosts
   .filter((p) => p.id !== id && (data.relatedPosts?.includes(p.id) || p.data.category === data.category))
   .slice(0, 2);
+
+if (relatedPosts.length === 0 && data.relatedPosts && data.relatedPosts.length > 0) {
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+  relatedPosts = allPosts.filter((p) => data.relatedPosts.includes(p.id)).slice(0, 2);
+}
 
 // Calculate previous & next posts
 const sortedPosts = allEnPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());

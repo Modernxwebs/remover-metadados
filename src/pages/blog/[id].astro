@@ -27,7 +27,7 @@ const { data, id } = post;
 const { Content, headings } = await render(post);
 
 const canonicalUrl = `https://remover-metadados.com/blog/${id}/`;
-const pageTitle = `${data.title} | Blog Remover Metadados`;
+const pageTitle = `${data.seoTitle || data.title} | Blog Remover Metadados`;
 const pageDescription = data.description;
 
 // Fetch related posts (if defined in frontmatter, or fallback to same category)
@@ -102,8 +102,8 @@ const blogPostingSchema = {
     ? {
         '@type': 'ImageObject',
         'url': `https://remover-metadados.com${data.coverImage}`,
-        'width': 1376,
-        'height': 768,
+        'width': data.coverWidth,
+        'height': data.coverHeight,
         'caption': data.coverAlt || data.title,
       }
     : undefined,
@@ -112,7 +112,7 @@ const blogPostingSchema = {
     'cssSelector': ['.post-title', '.post-lead'],
   },
   'isAccessibleForFree': true,
-  'timeRequired': data.readTime,
+  'timeRequired': /^\d+/.test(data.readTime) ? `PT${parseInt(data.readTime, 10)}M` : undefined,
   'keywords': data.tags.join(', '),
   'articleSection': data.category,
 };
@@ -129,7 +129,13 @@ const blogPostingSchema = {
   alternateEn={alternateEn}
   alternateXDefault={alternateEn || canonicalUrl}
   ogImage={data.coverImage}
+  ogImageWidth={data.coverImage ? data.coverWidth : undefined}
+  ogImageHeight={data.coverImage ? data.coverHeight : undefined}
+  ogImageAlt={data.coverImage ? data.coverAlt || data.title : undefined}
   ogType="article"
+  articlePublishedTime={data.pubDate.toISOString()}
+  articleModifiedTime={(data.updatedDate || data.pubDate).toISOString()}
+  articleSection={data.category}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />
@@ -193,8 +199,8 @@ const blogPostingSchema = {
             src={data.coverImage}
             alt={data.coverAlt || data.title}
             class="post-hero-image"
-            width="1200"
-            height="675"
+            width={data.coverWidth}
+            height={data.coverHeight}
             loading="eager"
             fetchpriority="high"
           />

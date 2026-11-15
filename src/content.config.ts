@@ -6,6 +6,7 @@ const blog = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
+    seoTitle: z.string().optional(),
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
@@ -20,6 +21,8 @@ const blog = defineCollection({
     draft: z.boolean().default(false),
     coverIcon: z.string().optional(),
     coverImage: z.string().optional(),
+    coverWidth: z.number().int().positive().default(1376),
+    coverHeight: z.number().int().positive().default(768),
     coverAlt: z.string().optional(),
     translationId: z.string().optional(),
     relatedPosts: z.array(z.string()).default([]),

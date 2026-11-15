@@ -1,7 +1,7 @@
 ---
 title: "Como Ver Metadados de uma Foto no Celular e no PC: Guia Passo a Passo"
 description: "Aprenda a ver metadados EXIF e localização GPS de fotos no Android, iPhone, Windows e Mac. Saiba interpretar cada campo técnico e verificar fotos antes de compartilhar."
-pubDate: 2026-10-18
+pubDate: 2026-11-15
 author: "Modern X Webs"
 authorRole: "Equipe do projeto"
 category: "Fotos & Imagens"
@@ -56,7 +56,7 @@ No sistema Android, a visualização depende do aplicativo de galeria padrão do
 4. Na folha de informações que se abre na parte inferior, você verá:
    - **Data e hora**: O carimbo cronológico da captura.
    - **Nome e resolução do arquivo**: Exemplo: `IMG_20260315_142030.jpg`, `12 MP • 4032 × 3024`.
-   - **Detalhes da câmera**: Fabricante e modelo (ex.: `Google Pixel 8`), abertura do diafragma (ex.: `f/1.68`), velocidade do obturador (`1/500s`), distância focal (`6.9 mm`) e ISO (`ISO 50`).
+   - **Detalhes da câmera**: Fabricante e modelo (ex.: `Google Pixel 9 Pro`), abertura do diafragma (ex.: `f/1.68`), velocidade do obturador (`1/500s`), distância focal (`6.9 mm`) e ISO (`ISO 50`).
    - **Localização com Mapa**: Se a foto tiver coordenadas geográficas, um mapa estilizado do Google Maps será renderizado com um alfinete apontando onde o clique foi feito.
 
 ### 2. Na Galeria Samsung (One UI)
@@ -102,7 +102,7 @@ A Apple tornou a inspeção de metadados extremamente simples e transparente a p
    - **Data e horário de captura**, acompanhados do fuso horário em que a foto foi tirada.
    - **Nome técnico do arquivo** (ex.: `IMG_0412.HEIC` ou `IMG_0412.JPG`).
    - **Resolução e tamanho**: Exemplo: `24 MP • 5712 × 4284 • 3,8 MB`.
-   - **Lente e parâmetros ópticos**: Modelo do iPhone (ex.: `iPhone 15 Pro`), câmera utilizada (ex.: `Câmera Traseira Principal — 24 mm f/1.78`), velocidade de disparo, sensibilidade ISO e compensação de exposição.
+   - **Lente e parâmetros ópticos**: Modelo do iPhone (ex.: `iPhone 16 Pro`), câmera utilizada (ex.: `Câmera Traseira Principal — 24 mm f/1.78`), velocidade de disparo, sensibilidade ISO e compensação de exposição.
    - **Mapa de Localização Apple Maps**: Um mapa com alfinete exato indicando o endereço aproximado da foto.
 
 ### Dica de Segurança Oficial da Apple
@@ -112,6 +112,17 @@ Conforme documentado no [Guia de Segurança Pessoal da Apple (Suporte Apple BR)]
 - **Remover o local de uma foto individual**: No painel de informações da foto, toque em **Ajustar** no canto superior direito do mapa e selecione **Nenhum Local**.
 - **Ocultar localização ao compartilhar**: Ao tocar no botão de compartilhamento do iOS, toque em **Opções** no topo da janela e desative a chave **Localização** antes de enviar por AirDrop, Mensagens ou e-mail.
 - **Bloquear gravação permanente de GPS na Câmera**: Acesse *Ajustes > Privacidade e Segurança > Serviços de Localização > Câmera* e selecione **Nunca**.
+
+#### Novo no iOS 18.2: Controle de Metadados por Aplicativo
+
+A partir do **iOS 18.2**, a Apple introduziu uma camada adicional de controle de privacidade para metadados de fotos — desta vez configurável *por aplicativo*, de forma permanente e sem depender de confirmar a opção a cada envio:
+
+1. Acesse **Ajustes > Privacidade e Segurança > Fotos**.
+2. Selecione o **aplicativo específico** que você quer configurar (ex.: WhatsApp, Instagram, Telegram, aplicativos de marketplace).
+3. Na seção **Acesso Privado**, toque em **Opções**.
+4. Na seção **Incluir**, desative a chave **Localização** (e, opcionalmente, **Legendas**).
+
+> 💡 **Vantagem em relação ao método anterior**: O controle via Share Sheet (*Opções > Localização*) precisava ser ativado manualmente a cada compartilhamento individual — fácil de esquecer. A configuração por app do iOS 18.2 é **persistente**: uma vez desativada para um app específico, o sistema sempre bloqueia o envio de localização para aquele app automaticamente. É a proteção mais prática para quem usa diariamente aplicativos de mensagens ou redes sociais no iPhone.
 
 ---
 
@@ -178,11 +189,11 @@ Aqui está a tradução dos principais campos técnicos gravados no cabeçalho:
 | :--- | :--- | :--- | :--- |
 | `DateTimeOriginal` | Instante exato do disparo registrado pelo sensor | `12 Out 2023 14:45:30` | **Médio**: Revela sua rotina e horários |
 | `OffsetTimeOriginal` | Fuso horário local do momento do disparo | `-03:00` (Horário de Brasília) | **Médio**: Revela o país/fuso da viagem |
-| `Make` & `Model` | Fabricante e modelo exato do dispositivo | `Apple iPhone 15 Pro` | **Baixo/Médio**: Identifica o valor do aparelho |
+| `Make` & `Model` | Fabricante e modelo exato do dispositivo | `Apple iPhone 16 Pro` | **Baixo/Médio**: Identifica o valor do aparelho |
 | `LensModel` | Especificação óptica da lente utilizada | `24mm f/1.78` | **Técnico**: Interessa a fotógrafos |
 | `GPSLatitude` / `GPSLongitude` | Coordenadas de satélite em formato geográfico | `22° 56' 57.1" S, 43° 09' 51.5" W` | **Crítico**: Localiza a rua e número do imóvel |
 | `GPSAltitude` | Altura acima do nível do mar em metros | `154m` | **Alto**: Pode indicar o andar de um prédio |
-| `Software` | Versão do firmware ou app de edição | `iOS 17.5.1` ou `Photoshop 2024` | **Técnico**: Revela softwares instalados |
+| `Software` | Versão do firmware ou app de edição | `iOS 18.3.2` ou `Photoshop 2025` | **Técnico**: Revela softwares instalados |
 | `SerialNumber` | Número de série de fábrica do sensor | `F2L...` (presente em DSLRs e alguns celulares) | **Alto**: Conecta fotos anônimas ao mesmo dono |
 
 ### Graus Decimais vs. DMS (Graus, Minutos e Segundos)
@@ -271,5 +282,6 @@ Saber inspecionar os metadados das suas fotos dá a você controle real sobre a 
 - **[O que são Metadados EXIF: O Guia Definitivo sobre Dados Ocultos em Fotos](/blog/o-que-sao-metadados-exif-guia-completo/)**: Entenda o padrão técnico, as miniaturas embutidas ocultas e casos reais de vazamentos.
 - **[Metadados Ocultos em PDFs: Riscos Jurídicos e LGPD](/blog/metadados-em-pdf-riscos-e-como-remover/)**: Descubra como contratos e documentos corporativos vazam nomes de autores, históricos e pastas internas da sua empresa.
 - **[Guia Prático para Remover Metadados de Imagem](/guias/remover-metadados-de-imagem/)**: Instruções detalhadas para higienizar JPEG, PNG, WebP e HEIC em lote.
+- **[Como remover metadados de fotos em lote](/blog/remover-metadados-fotos-em-lote/)**: Selecione várias imagens, baixe as cópias em ZIP e confira o resultado com um teste documentado.
 
 Use agora o **[Visualizador de Metadados](/ver-metadados/)** para checar seus arquivos ou acesse a **[página inicial do removedor](/)** para limpar suas imagens com processamento local de arquivos.

@@ -1,7 +1,7 @@
 ---
 title: "O que são Metadados EXIF: O Guia Definitivo sobre Dados Ocultos em Fotos"
 description: "Aprenda o que são metadados EXIF, quais dados confidenciais seu celular grava em segredo (GPS, modelo, número de série) e como removê-los com segurança e grátis."
-pubDate: 2026-10-03
+pubDate: 2026-11-15
 author: "Modern X Webs"
 authorRole: "Equipe do projeto"
 category: "Fotos & Imagens"
@@ -49,9 +49,9 @@ Este é o aspecto mais perigoso para sua segurança física e familiar:
 - **Direção da Bússola (*GPS Img Direction*)**: Indica com precisão para qual ponto cardeal (Norte, Sul, Leste, Oeste) a lente estava apontada.
 
 ### 2. Identificação Única do Aparelho e Hardware
-- **Marca e Modelo**: Ex.: `Apple iPhone 16 Pro Max` ou `Samsung Galaxy S24 Ultra`.
+- **Marca e Modelo**: Ex.: `Apple iPhone 16 Pro Max`, `Samsung Galaxy S25 Ultra` ou `Google Pixel 9 Pro`.
 - **Número de Série do Sensor ou Câmera**: Em câmeras profissionais e diversos smartphones, o número de série da fábrica fica carimbado no arquivo. Isso permite que investigadores ou perseguidores associem fotos anônimas publicadas em sites diferentes à mesma pessoa.
-- **Versão do Sistema Operacional**: Ex.: `iOS 19.3.1` ou compilações específicas do Android.
+- **Versão do Sistema Operacional**: Ex.: `iOS 18.3.2` ou compilações específicas do Android 15.
 
 ### 3. Configurações Técnicas de Exposição
 - Tempo de exposição / velocidade do obturador (ex.: `1/500s`), abertura do diafragma (ex.: `f/1.8`) e sensibilidade do sensor (`ISO 100`).
