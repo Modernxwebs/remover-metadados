@@ -10,7 +10,7 @@ const canonicalUrl = 'https://remover-metadados.com/guias/remover-metadados-de-v
 const faqItems = [
   {
     question: 'Quais caixas de metadados o código tenta remover?',
-    answer: 'O caminho atual ignora caixas udta e caixas uuid cujo identificador começa com be 7a cf cb. Isso pode atingir alguns dados de usuário e XMP. Não é uma lista de campos GPS, câmera ou datas garantidamente removidos; outras estruturas podem permanecer.',
+    answer: 'O código substitui caixas udta e caixas uuid com o identificador XMP be7acfcb-97a9-42e8-9c71-999491e3afac por espaço vazio do mesmo tamanho. Assim, as posições dos dados de áudio e vídeo são preservadas. Dados de GPS, câmera e datas podem permanecer em outras estruturas.',
   },
   {
     question: 'Quais formatos são aceitos e foram testados?',
@@ -250,7 +250,7 @@ const faqSchema = {
                 </div>
               </div>
             </div>
-            <p class="video-verification-note">O relatório público do projeto ainda não inclui amostra de vídeo. Não há teste de reprodução nem de remoção completa para MP4, MOV ou M4V. <a href="/verificacao/">Consulte o relatório, o método e os formatos verificados.</a></p>
+            <p class="video-verification-note">O relatório público do projeto ainda não inclui amostras de vídeo para verificar a reprodução ou a cobertura de metadados em MP4, MOV e M4V. <a href="/verificacao/">Consulte o relatório, o método e os formatos verificados.</a></p>
           </section>
 
           <!-- Why clean metadata -->
@@ -336,7 +336,7 @@ const faqSchema = {
                 <div class="step-info">
                     <h3>Baixe e verifique a cópia</h3>
                   <p>
-                    Baixe a cópia e inspecione as tags com <code>exiftool -a -G1 -s arquivo.mp4</code>. Em seguida, abra-a em um player e confira imagem, som e duração. Guarde o original.
+                    Baixe a cópia e inspecione as tags com <code>exiftool -a -G1 -s arquivo.mp4</code>. Em seguida, abra-a em um player e confira imagem, som e duração. Guarde o original. Se for publicar gameplay, veja <a href="/blog/remover-metadados-clipes-gta-6/">como preparar cortes de GTA 6 para TikTok, Reels e Shorts</a>.
                   </p>
                 </div>
               </div>
@@ -365,7 +365,7 @@ const faqSchema = {
                 <tbody>
                   <tr>
                     <td><strong>MP4</strong></td>
-                    <td>Caixas <code>udta</code> e caixas <code>uuid</code> com prefixo XMP específico.</td>
+                    <td>Caixas <code>udta</code> e caixas <code>uuid</code> com o identificador XMP específico.</td>
                     <td>Sem amostra publicada; outras caixas e tags podem permanecer. Reprodução não verificada.</td>
                   </tr>
                   <tr>
@@ -381,7 +381,7 @@ const faqSchema = {
                 </tbody>
               </table>
             </div>
-            <p class="video-verification-note">O código não percorre todas as estruturas possíveis: outras caixas, datas, metadados de faixas e dados em caixas não reconhecidas podem ficar no arquivo. Até haver testes de vídeo, processe apenas cópias e confira cada saída.</p>
+            <p class="video-verification-note">O código não percorre todas as estruturas possíveis: outras caixas, datas, metadados de faixas e dados em caixas não reconhecidas podem ficar no arquivo. Processe uma cópia e confira a saída do seu vídeo.</p>
           </section>
 
           <!-- FAQ Accordion -->

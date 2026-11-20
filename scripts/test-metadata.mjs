@@ -102,6 +102,14 @@ function pngChunks(buffer, type) {
   }
   return Buffer.concat(chunks);
 }
+
+function mp4Box(type, ...payload) {
+  const header = Buffer.alloc(8);
+  header.writeUInt32BE(8 + payload.reduce((size, bytes) => size + bytes.length, 0));
+  header.write(type, 4, 'ascii');
+  return Buffer.concat([header, ...payload]);
+}
+
 try {
   await page.goto(origin, { waitUntil: 'networkidle0' });
   for (const { ext, input } of fixtures) {
@@ -195,6 +203,42 @@ try {
   const mp3Bytes = await readFile(mp3Out.output);
   check('MP3: ID3v1/v2 envelopes removed; audio bytes preserved', () => assert.deepEqual(mp3Bytes, audio));
   rows.push({ format: 'mp3', output: 'mp3', verified: 'Synthetic ID3v1/v2 envelopes removed; enclosed bytes unchanged. Other tag families and playback not checked.' });
+
+  // Synthetic fast-start layout with metadata inside and outside the movie box.
+  const ftyp = mp4Box('ftyp', Buffer.from('isom'), Buffer.alloc(4), Buffer.from('isom'));
+  const sample = mp4Box('mdat', Buffer.from('Synthetic video sample'));
+  const secret = Buffer.from('Private video metadata');
+  const userData = mp4Box('udta', secret);
+  const xmpUuid = Buffer.from('be7acfcb97a942e89c71999491e3afac', 'hex');
+  const xmpBox = mp4Box('uuid', Buffer.alloc(8), xmpUuid, secret);
+  xmpBox.writeUInt32BE(1);
+  xmpBox.writeBigUInt64BE(BigInt(xmpBox.length), 8);
+  const otherUuid = Buffer.from(xmpUuid);
+  otherUuid[15] ^= 1;
+  const other = mp4Box('uuid', otherUuid, Buffer.from('Unrelated UUID payload'));
+  const chunkOffsets = mp4Box('stco', Buffer.alloc(12));
+  chunkOffsets.writeUInt32BE(1, 12);
+  const makeMovie = data => {
+    const track = ['stbl', 'minf', 'mdia', 'trak'].reduce((child, type) => mp4Box(type, child), chunkOffsets);
+    return mp4Box('moov', track, data);
+  };
+  chunkOffsets.writeUInt32BE(ftyp.length + makeMovie(userData).length + xmpBox.length + other.length + 8, 16);
+  const mp4Bytes = Buffer.concat([ftyp, makeMovie(userData), xmpBox, other, sample]);
+  const mp4Input = path.join(dir, 'offsets.mp4');
+  await writeFile(mp4Input, mp4Bytes);
+  const mp4Out = await clean(mp4Input);
+  const mp4Output = await readFile(mp4Out.output);
+  const freeBox = original => mp4Box('free', Buffer.alloc(original.length - 8));
+  const expectedMp4 = Buffer.concat([ftyp, makeMovie(freeBox(userData)), freeBox(xmpBox), other, sample]);
+  check('MP4: metadata bytes erased while chunk offsets, media data and unrelated UUIDs stay intact', () => {
+    assert.deepEqual(mp4Output, expectedMp4);
+  });
+  const truncatedMp4 = path.join(dir, 'truncated.mp4');
+  await writeFile(truncatedMp4, mp4Bytes.subarray(0, -1));
+  await assert.rejects(clean(truncatedMp4), /dados de vídeo incompletos/);
+  checks.push('MP4: truncated box rejected');
+  rows.push({ format: 'mp4', output: 'mp4', verified: 'Synthetic fast-start container. Selected metadata erased with media data and offsets preserved. Truncated media box rejected.' });
+
   // Network regression: inspect sample, visit GPS tab, opt in, switch files, clear.
   for (const route of ['/ver-metadados/', '/en/metadata-viewer/']) {
     await page.goto(`${origin}${route}`, { waitUntil: 'networkidle0' });

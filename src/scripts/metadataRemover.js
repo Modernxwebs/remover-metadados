@@ -676,11 +676,11 @@ export async function removeMetadata(file, onProgress, options = {}) {
     return { blob: new Blob([stripped], { type: 'audio/mpeg' }), filename: file.name };
   }
 
-  // ── MP4 / MOV / M4V — metadata strip (box-level, stco-aware) ──
+  // ── MP4 / MOV / M4V — metadata strip (offset-preserving) ──
   if (['mp4', 'm4v', 'mov'].includes(ext)) {
     onProgress?.(20);
     try {
-      const blob = await stripMp4Metadata(file, (p) => onProgress?.(20 + Math.round(p * 0.75)));
+      const blob = await stripMp4Metadata(file);
       onProgress?.(100);
       return { blob, filename: file.name };
     } catch (err) {
@@ -739,324 +739,108 @@ function stripMp3Id3(buffer) {
 
 // ─── MP4 / MOV / M4V metadata stripper ─────────────────────────────────────
 
-/**
- * Strip MP4/MOV metadata (udta boxes & XMP uuid boxes) without corrupting
- * chunk-offset tables (stco / co64).
- *
- * Strategy
- * --------
- * 1. Walk the top-level box list and collect every box except 'udta' and
- *    XMP-uuid boxes.  When we encounter 'moov', recurse into it and rebuild
- *    it without its 'udta'/'uuid' children.
- * 2. After the new moov is assembled we know exactly how many bytes it
- *    shrank by (oldMoovSize − newMoovSize = delta).
- * 3. If moov came BEFORE mdat in the file the absolute chunk offsets stored
- *    in stco/co64 atoms inside moov still point at the original mdat
- *    positions, which is correct (mdat itself didn't move).  BUT the moov
- *    box that we just wrote is smaller, so we do NOT need to adjust stco —
- *    moov and mdat are independent regions.
- *    However some encoders put a top-level 'free'/'skip'/'wide' spacer
- *    between moov and mdat specifically so that moov can shrink without
- *    requiring stco rewriting.  We handle both cases.
- * 4. The only case that actually breaks stco is when udta lives as a
- *    TOP-LEVEL box (not inside moov) between ftyp and mdat.  In that
- *    situation removing it shifts mdat and all stco offsets need a
- *    negative adjustment.  We detect and fix this.
- *
- * @param {File} file
- * @returns {Promise<Blob>}
- */
-async function stripMp4Metadata(file, onProgress) {
-  // Read the file in one shot.  For very large files the browser may OOM;
-  // that is an inherent limitation of pure-JS in-browser processing.
-  onProgress?.(0.1);
-  const buffer = await readAsArrayBuffer(file);
-  onProgress?.(0.5);
-  const cleaned = removeMp4Boxes(buffer);
-  onProgress?.(1);
-  return new Blob([cleaned], { type: file.type || 'video/mp4' });
-}
-
-// ── Low-level helpers ───────────────────────────────────────────────────────
-
-/**
- * Parse a single box header at `offset` inside `data`.
- * Returns { boxType, headerSize, boxSize } or null when the header is malformed.
- * @param {Uint8Array} data
- * @param {number} offset
- * @param {number} end
- */
-function parseBoxHeader(data, offset, end) {
-  if (offset + 8 > end) return null;
-  const view = new DataView(data.buffer, data.byteOffset + offset);
-  let boxSize = view.getUint32(0);
-  const boxType = String.fromCharCode(
-    view.getUint8(4), view.getUint8(5), view.getUint8(6), view.getUint8(7)
-  );
-  let headerSize = 8;
-  if (boxSize === 1) {
-    // Extended 64-bit size
-    if (offset + 16 > end) return null;
-    boxSize = Number(view.getBigUint64(8));
-    headerSize = 16;
-  }
-  if (boxSize === 0) boxSize = end - offset; // box extends to EOF
-  if (boxSize < headerSize) return null;
-  return { boxType, headerSize, boxSize };
-}
-
-/**
- * Build a new box header with the given size, copying the type (and uuid
- * bytes if present) from the original header bytes.
- * @param {Uint8Array} origHeader  original header slice (8 or 16 bytes)
- * @param {number} newSize         new total box size (header + children)
- * @returns {Uint8Array}
- */
-function rebuildBoxHeader(origHeader, newSize) {
-  const headerSize = origHeader.byteLength; // 8 or 16
-  const out = new Uint8Array(headerSize);
-  const dv = new DataView(out.buffer);
-  if (headerSize === 16) {
-    // Extended size: write 1 as 32-bit marker, then 64-bit size
-    dv.setUint32(0, 1);
-    dv.setBigUint64(8, BigInt(newSize));
-  } else {
-    dv.setUint32(0, newSize);
-  }
-  // Copy the box type (bytes 4-7) from the original header
-  out.set(origHeader.subarray(4, 8), 4);
-  return out;
-}
-
-/**
- * Returns true if this 'uuid' box carries XMP metadata.
- * UUID: be 7a cf cb 97 a9 42 e8 9c 71 99 94 91 e3 af ac
- * @param {Uint8Array} data
- * @param {number} offset         start of the box (not of the UUID bytes)
- * @param {number} headerSize     8 or 16
- * @param {number} boxSize
- */
-function isXmpUuidBox(data, offset, headerSize, boxSize) {
-  if (boxSize < headerSize + 16) return false;
-  const u = data.subarray(offset + headerSize, offset + headerSize + 16);
-  return u[0] === 0xbe && u[1] === 0x7a && u[2] === 0xcf && u[3] === 0xcb;
-}
-
-/**
- * Returns true if the box type is one we want to strip at any level.
- * @param {string} boxType
- * @param {Uint8Array} data
- * @param {number} offset
- * @param {number} headerSize
- * @param {number} boxSize
- */
-function isMetadataBox(boxType, data, offset, headerSize, boxSize) {
-  if (boxType === 'udta') return true;
-  if (boxType === 'uuid' && isXmpUuidBox(data, offset, headerSize, boxSize)) return true;
-  return false;
-}
-
-// ── Container types that hold child boxes (not raw data) ────────────────────
-const CONTAINER_BOXES = new Set([
+const MP4_CONTAINERS = new Set([
   'moov', 'trak', 'mdia', 'minf', 'stbl', 'dinf', 'edts',
-  'udta', // kept here so we can recurse if needed; we skip it elsewhere
-  'meta',  // meta has a 4-byte version/flags before its children
-  'ilst', 'moof', 'traf', 'mvex', 'mfra',
+  'meta', 'ilst', 'moof', 'traf', 'mvex', 'mfra',
 ]);
+const XMP_UUID = [
+  0xbe, 0x7a, 0xcf, 0xcb, 0x97, 0xa9, 0x42, 0xe8,
+  0x9c, 0x71, 0x99, 0x94, 0x91, 0xe3, 0xaf, 0xac,
+];
 
 /**
- * Walk a list of sibling boxes in `data[offset..end]`, strip metadata boxes,
- * and recurse into known containers.  Returns the rebuilt bytes.
- *
- * @param {Uint8Array} data
- * @param {number} start
- * @param {number} end
- * @param {boolean} [isMeta]  true when the first 4 bytes are version/flags
- * @returns {{ bytes: Uint8Array, removedBytes: number }}
+ * Find user data and XMP boxes at the top level and inside the movie box.
+ * Read only box headers so large media payloads stay in the original File.
  */
-function processBoxList(data, start, end, isMeta = false) {
+async function collectMp4Metadata(file, start, end, ranges, movie) {
+  for (let offset = start; offset < end;) {
+    // Read at most a normal header, extended size, and UUID.
+    const buffer = await readAsArrayBuffer(file.slice(offset, Math.min(offset + 32, end)));
+    const bytes = new Uint8Array(buffer);
+    const view = new DataView(buffer);
+    if (bytes.length < 8) throw new Error('Cabeçalho de vídeo incompleto.');
+
+    const type = String.fromCharCode(...bytes.subarray(4, 8));
+    let size = view.getUint32(0);
+    let headerSize = 8;
+    if (size === 1) {
+      if (bytes.length < 16) throw new Error('Cabeçalho de vídeo incompleto.');
+      size = Number(view.getBigUint64(8));
+      headerSize = 16;
+    } else if (size === 0) {
+      size = end - offset;
+    }
+
+    const minSize = headerSize + (type === 'uuid' ? XMP_UUID.length : 0);
+    if (!Number.isSafeInteger(size) || size < minSize || size > end - offset) {
+      throw new Error('Tamanho inválido ou dados de vídeo incompletos.');
+    }
+
+    if (movie) {
+      if (type === 'moov') movie.hasMovie = true;
+      if (type === 'mdat' && size > headerSize) movie.hasMedia = true;
+    }
+
+    const boxEnd = offset + size;
+    if (type === 'udta' || (type === 'uuid' && XMP_UUID.every((byte, i) => bytes[headerSize + i] === byte))) {
+      ranges.push({ offset, size });
+    } else if (movie ? type === 'moov' : MP4_CONTAINERS.has(type)) {
+      let childStart = offset + headerSize;
+      // ISO meta starts with zeroed version/flags. QuickTime meta may
+      // start directly with a child atom.
+      if (type === 'meta' && size >= headerSize + 4 && view.getUint32(headerSize) === 0) {
+        childStart += 4;
+      }
+      await collectMp4Metadata(file, childStart, boxEnd, ranges);
+    }
+    offset = boxEnd;
+  }
+}
+
+function makeMp4FreeHeader(size) {
+  const extended = size > 0xffffffff;
+  const bytes = new Uint8Array(extended ? 16 : 8);
+  const view = new DataView(bytes.buffer);
+  view.setUint32(0, extended ? 1 : size);
+  view.setUint32(4, 0x66726565); // free
+  if (extended) view.setBigUint64(8, BigInt(size));
+  return bytes;
+}
+
+/**
+ * Replace metadata with zero-filled free boxes of the same size. Keeping
+ * every box in place preserves both chunk offsets and fragment indexes.
+ */
+async function stripMp4Metadata(file) {
+  const ranges = [];
+  const movie = { hasMovie: false, hasMedia: false };
+  await collectMp4Metadata(file, 0, file.size, ranges, movie);
+  if (!movie.hasMovie || !movie.hasMedia) {
+    throw new Error('Estrutura do vídeo incompleta: faltam informações do filme ou dados de mídia.');
+  }
+
   const parts = [];
-  let removedBytes = 0;
-  let offset = start;
+  let cursor = 0;
+  let zeroBlock;
+  for (const { offset, size } of ranges) {
+    const header = makeMp4FreeHeader(size);
+    if (cursor < offset) parts.push(file.slice(cursor, offset));
+    parts.push(header);
 
-  // 'meta' boxes have a 4-byte version/flags field before child boxes
-  if (isMeta && offset + 4 <= end) {
-    parts.push(data.slice(offset, offset + 4));
-    offset += 4;
-  }
-
-  while (offset < end) {
-    const hdr = parseBoxHeader(data, offset, end);
-    if (!hdr) break;
-    const { boxType, headerSize, boxSize } = hdr;
-    const boxEnd = offset + boxSize;
-
-    // ── Strip metadata boxes ──────────────────────────────────────────────
-    if (isMetadataBox(boxType, data, offset, headerSize, boxSize)) {
-      removedBytes += boxSize;
-      offset = boxEnd;
-      continue;
-    }
-
-    // ── Recurse into containers ───────────────────────────────────────────
-    if (CONTAINER_BOXES.has(boxType) && boxType !== 'udta') {
-      const origHeader = data.slice(offset, offset + headerSize);
-      const childStart = offset + headerSize;
-      const childEnd = boxEnd;
-
-      const isMeta = (boxType === 'meta');
-      const { bytes: childBytes, removedBytes: childRemoved } =
-        processBoxList(data, childStart, childEnd, isMeta);
-
-      if (childRemoved > 0) {
-        const newSize = headerSize + childBytes.byteLength;
-        const newHdr = rebuildBoxHeader(origHeader, newSize);
-        parts.push(newHdr);
-        parts.push(childBytes);
-        removedBytes += childRemoved;
-      } else {
-        // Nothing was removed inside; keep the original bytes verbatim
-        parts.push(data.slice(offset, boxEnd));
+    let padding = size - header.byteLength;
+    if (padding > 0) {
+      zeroBlock ??= new Blob([new Uint8Array(64 * 1024)]);
+      while (padding >= zeroBlock.size) {
+        parts.push(zeroBlock);
+        padding -= zeroBlock.size;
       }
-      offset = boxEnd;
-      continue;
+      if (padding > 0) parts.push(zeroBlock.slice(0, padding));
     }
-
-    // ── Keep everything else verbatim ─────────────────────────────────────
-    parts.push(data.slice(offset, boxEnd));
-    offset = boxEnd;
+    cursor = offset + size;
   }
 
-  // Concatenate parts
-  const total = parts.reduce((s, p) => s + p.byteLength, 0);
-  const out = new Uint8Array(total);
-  let pos = 0;
-  for (const p of parts) { out.set(p, pos); pos += p.byteLength; }
-  return { bytes: out, removedBytes };
-}
-
-// ── stco / co64 offset adjustment ───────────────────────────────────────────
-
-/**
- * Walk a rebuilt moov Uint8Array and subtract `delta` from every entry in
- * stco and co64 boxes.  Call this ONLY when top-level metadata boxes were
- * removed before mdat (so mdat shifted left by `delta` bytes).
- * @param {Uint8Array} moovBytes   the already-rebuilt moov payload (children only, no header)
- * @param {number} delta           number of bytes removed before mdat
- */
-function adjustChunkOffsets(moovBytes, delta) {
-  if (delta === 0) return;
-
-  let offset = 0;
-  const end = moovBytes.byteLength;
-
-  while (offset < end) {
-    const hdr = parseBoxHeader(moovBytes, offset, end);
-    if (!hdr) break;
-    const { boxType, headerSize, boxSize } = hdr;
-    const boxEnd = offset + boxSize;
-
-    if (boxType === 'stco') {
-      // version(1) + flags(3) + entry_count(4) + entries
-      const dv = new DataView(moovBytes.buffer, moovBytes.byteOffset + offset + headerSize);
-      const count = dv.getUint32(4);
-      for (let i = 0; i < count; i++) {
-        const off32 = 8 + i * 4;
-        const cur = dv.getUint32(off32);
-        dv.setUint32(off32, cur - delta);
-      }
-    } else if (boxType === 'co64') {
-      const dv = new DataView(moovBytes.buffer, moovBytes.byteOffset + offset + headerSize);
-      const count = dv.getUint32(4);
-      for (let i = 0; i < count; i++) {
-        const off64 = 8 + i * 8;
-        const cur = dv.getBigUint64(off64);
-        dv.setBigUint64(off64, cur - BigInt(delta));
-      }
-    } else if (CONTAINER_BOXES.has(boxType)) {
-      // Recurse
-      const isMeta = (boxType === 'meta');
-      const childStart = offset + headerSize + (isMeta ? 4 : 0);
-      const childSlice = moovBytes.subarray(childStart, boxEnd);
-      adjustChunkOffsets(childSlice, delta);
-    }
-
-    offset = boxEnd;
-  }
-}
-
-// ── Main entry point ─────────────────────────────────────────────────────────
-
-/**
- * Remove metadata boxes from an MP4/MOV/M4V ArrayBuffer and fix chunk offsets.
- * @param {ArrayBuffer} buffer
- * @returns {ArrayBuffer}
- */
-function removeMp4Boxes(buffer) {
-  const data = new Uint8Array(buffer);
-  const outputParts = []; // { bytes: Uint8Array, isMoov: boolean }
-
-  // ── Pass 1: collect boxes, strip top-level udta/uuid, rebuild moov ───────
-  let offset = 0;
-  const end = data.byteLength;
-  let topLevelRemovedBeforeMdat = 0; // bytes stripped before we see 'mdat'
-  let seenMdat = false;
-  let moovPartIndex = -1; // index in outputParts where moov lives
-
-  while (offset < end) {
-    const hdr = parseBoxHeader(data, offset, end);
-    if (!hdr) break;
-    const { boxType, headerSize, boxSize } = hdr;
-    const boxEnd = offset + boxSize;
-
-    if (boxType === 'mdat') seenMdat = true;
-
-    // Strip top-level metadata boxes
-    if (isMetadataBox(boxType, data, offset, headerSize, boxSize)) {
-      if (!seenMdat) topLevelRemovedBeforeMdat += boxSize;
-      offset = boxEnd;
-      continue;
-    }
-
-    if (boxType === 'moov') {
-      const origHeader = data.slice(offset, offset + headerSize);
-      const { bytes: childBytes, removedBytes } =
-        processBoxList(data, offset + headerSize, boxEnd);
-
-      const newSize = headerSize + childBytes.byteLength;
-      const newHdr = rebuildBoxHeader(origHeader, newSize);
-
-      // Combine header + children into one buffer for easy offset patching later
-      const moovOut = new Uint8Array(newSize);
-      moovOut.set(newHdr, 0);
-      moovOut.set(childBytes, headerSize);
-
-      moovPartIndex = outputParts.length;
-      outputParts.push({ bytes: moovOut, isMoov: true, headerSize });
-      offset = boxEnd;
-      continue;
-    }
-
-    outputParts.push({ bytes: data.slice(offset, boxEnd), isMoov: false, headerSize: 0 });
-    offset = boxEnd;
-  }
-
-  // ── Pass 2: fix stco/co64 if top-level boxes were stripped before mdat ───
-  // (moov typically comes before mdat; removing top-level udta before mdat
-  //  shifts mdat's position, invalidating stco entries)
-  if (topLevelRemovedBeforeMdat > 0 && moovPartIndex !== -1) {
-    const moovEntry = outputParts[moovPartIndex];
-    // The moov payload (children) starts after the box header
-    const moovPayload = moovEntry.bytes.subarray(moovEntry.headerSize);
-    adjustChunkOffsets(moovPayload, topLevelRemovedBeforeMdat);
-  }
-
-  // ── Pass 3: concatenate output ────────────────────────────────────────────
-  const total = outputParts.reduce((s, p) => s + p.bytes.byteLength, 0);
-  const out = new Uint8Array(total);
-  let pos = 0;
-  for (const part of outputParts) { out.set(part.bytes, pos); pos += part.bytes.byteLength; }
-  return out.buffer;
+  if (cursor < file.size) parts.push(file.slice(cursor));
+  return new Blob(parts, { type: file.type || 'video/mp4' });
 }
 
 // ─── Bulk ZIP download ──────────────────────────────────────────────────────

@@ -27,7 +27,7 @@ const { data, id } = post;
 const { Content, headings } = await render(post);
 
 const canonicalUrl = `https://remover-metadados.com/blog/${id}/`;
-const pageTitle = `${data.seoTitle || data.title} | Blog Remover Metadados`;
+const pageTitle = data.seoTitle || `${data.title} | Blog Remover Metadados`;
 const pageDescription = data.description;
 
 // Fetch related posts (if defined in frontmatter, or fallback to same category)

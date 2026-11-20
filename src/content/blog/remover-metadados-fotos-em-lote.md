@@ -1,6 +1,6 @@
 ---
 title: "Como remover metadados de várias fotos de uma vez, sem instalar programas"
-seoTitle: "Remover metadados de fotos em lote"
+seoTitle: "Remover metadados de fotos em lote | Blog Remover Metadados"
 description: "Remova metadados de fotos em lote no celular ou PC, baixe as cópias em ZIP e confira o GPS. Veja o passo a passo, testes e cuidados com a qualidade."
 pubDate: 2026-11-15
 author: "Modern X Webs"
