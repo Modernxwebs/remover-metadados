@@ -12,10 +12,10 @@ lang: "pt-BR"
 readTime: "7 min de leitura"
 featured: false
 draft: false
-coverImage: "/images/blog/cortes-gta-6-metadados.webp"
+coverImage: "/images/blog/gta-6-vice-city-clips.webp"
 coverWidth: 1600
 coverHeight: 900
-coverAlt: "Ilustração de um celular exibindo um clipe vertical de carro em uma estrada litorânea, ao lado de um controle e de um ícone de arquivo com etiquetas de metadados"
+coverAlt: "Ilustração inspirada em GTA 6 com um carro esportivo verde-azulado em uma avenida à beira-mar ao pôr do sol, entre palmeiras e prédios iluminados por neon"
 translationId: "remove-video-metadata-gta-6-clips"
 relatedPosts: ["o-que-sao-metadados-exif-guia-completo", "como-ver-metadados-de-uma-foto"]
 ---

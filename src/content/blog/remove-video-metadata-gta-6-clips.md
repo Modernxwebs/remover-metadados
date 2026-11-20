@@ -12,10 +12,10 @@ lang: "en"
 readTime: "7 min read"
 featured: false
 draft: false
-coverImage: "/images/blog/cortes-gta-6-metadados.webp"
+coverImage: "/images/blog/gta-6-vice-city-clips.webp"
 coverWidth: 1600
 coverHeight: 900
-coverAlt: "Illustration of a phone showing a vertical clip of a car on a coastal road, beside a game controller and a video file icon with metadata tags"
+coverAlt: "GTA 6-inspired illustration of a teal sports car on a waterfront boulevard at sunset, with palm trees and neon-lit buildings"
 translationId: "remover-metadados-clipes-gta-6"
 ---
 
